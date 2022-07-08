@@ -4,8 +4,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      background: {
-        'homeGradiend': 'linear-gradient(180deg, rgba(66, 228, 206, 0.15) 0%, #42E4CE 87.67%)'
+      backgroundImage: {
+        'homeGradiend': 'linear-gradient(180deg, rgba(66, 228, 206, 0.15) 0%, #42E4CE 87.67%)',
+        'heroGradient': "linear-gradient(180deg, rgba(66, 228, 206, 0) 0%, #42E4CE 100%)"
       },
       fontFamily:{
         'lato': ['Lato', 'sans-serif'],
@@ -13,7 +14,10 @@ module.exports = {
       },
       colors: {
         'primary': '#A5F0E6',
-        'secondary': '#404642'
+        'secondary': '#404642',
+        'tertiary': '#A3ADAF',
+        'error': '#FF3737',
+        'search': '#F1F1F1'
       },
     },
   },
