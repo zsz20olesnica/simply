@@ -1,6 +1,8 @@
 import React from 'react'
 import { Heart, DownArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
+import OccasionCategories from '../../Reusable/OccasionCategories'
+import MoodCategories from '../../Reusable/MoodCategories'
 
 export default function Search() {
 
@@ -16,34 +18,34 @@ export default function Search() {
 
             {/* SearchField */}
             <p className='w-full font-playfair font-extrabold text-secondary text-3xl'>Search</p>
-            <input placeholder='Search for artists and moods' type='text' className='w-full h-11 rounded-full bg-search px-5 text-secondary'></input>
+            <input placeholder='Search for artists and moods' type='text' className='w-full h-11 rounded-full bg-search px-5 text-secondary focus:outline-primary'></input>
 
             
             {/* MoodFilters */}
             <h3 className='w-full font-lato text-[19px] text-secondary font-bold'>Mood</h3>
             <div className='w-full flex flex-row flex-wrap gap-5'>
-               <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Move</button>
-               <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Chill</button>
-               <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Relaxing</button>
-               <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Hard porn</button>
-               <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Beach time</button>
-               <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Move</button>
-               <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>For the Anxious</button>
-               <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Move</button>
+               <MoodCategories category={'Move'}/>
+               <MoodCategories category={'Sad'}/>
+               <MoodCategories category={'Chill'}/>
+               <MoodCategories category={'Hard porn'}/>
+               <MoodCategories category={'Beach time'}/>
+               <MoodCategories category={'Reading'}/>
+               <MoodCategories category={'For black people'}/>
+               <MoodCategories category={'Angry'}/>
             </div>
 
             
             {/* Occasion filters */}
             <h3 className='w-full font-lato text-[19px] text-secondary font-bold'>Occasion</h3>
                 <div className='w-full flex flex-row flex-wrap gap-5 mb-16'>
-                    <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Party</button>
-                    <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Breakup</button>
-                    <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Valentine's</button>
-                    <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Angry</button>
-                    <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Gym</button>
-                    <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Relaxing</button>
-                    <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>For the Anxious</button>
-                    <button className='text-primary font-lato rounded-full ring-[1.5px] ring-primary  min-h-[30px] px-3 min-w-[100px]'>Move</button>
+                    <OccasionCategories category={'Party'}/>
+                    <OccasionCategories category={'Chill'}/>
+                    <OccasionCategories category={'Breakup'}/>
+                    <OccasionCategories category={'Angry'}/>
+                    <OccasionCategories category={'Gym'}/>
+                    <OccasionCategories category={'Relaxing'}/>
+                    <OccasionCategories category={'For the gays'}/>
+                    <OccasionCategories category={'Move'}/>
                 </div>
             
             

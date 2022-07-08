@@ -1,5 +1,4 @@
 import React from 'react'
-import '../../../App.css'
 import '../../../vanilla.css'
 import { useNavigate } from 'react-router-dom'
 
@@ -9,7 +8,7 @@ export default function Home() {
 
   return (
     <div className='homeContainer w-full h-full relative'>
-      <div className='homeGradiendContainer w-full h-full absolute top-0 left-0 z-10'></div>
+      <div className='homeGradientContainer w-full h-full absolute top-0 left-0 z-10'></div>
       <div className='homeImageContainer w-full h-full absolute top-0 left-0 z-0'></div>
 
       <div className='homeContentContainer h-full w-full flex flex-col items-center justify-center absolute top-0 left-0 z-20'>

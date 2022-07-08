@@ -9,3 +9,27 @@
 * {
     color: white;
 }
+
+
+#PlayerSlider
+{
+    background-color: #F1F1F1;
+    border-radius: 9999px;
+
+}
+
+input[type=range]{
+    -webkit-appearance: none;
+}
+
+#PlayerSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border-radius: 9999px;
+    height: 17px;
+    width: 17px;
+    background: #A5F0E6;
+}
+
+#maincontainer {
+    min-height: calc(100% + 270px)
+}

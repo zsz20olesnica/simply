@@ -1,14 +1,35 @@
 import React from 'react'
 import { Switch, DownArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 export default function Settings() {
 
   const history = useNavigate()
+  const [isOpen, setIsOpen] = useState(false)
   
+  const DeleteForm = ({isVisible}) => {
+    return <>
+      <div className={`${isVisible ? 'visible' : 'invisible'} absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[80%] h-[200px] overflow-hidden rounded-2xl flex flex-col justify-between items-center bg-white border-[1px] border-primary`}>
+        <div className='w-full h-full flex justify-center items-center'>
+          <p className='font-lato text-[19px] p-9 text-secondary text-center font-semibold '>Are you sure you want to delete your account?</p>
+        </div>
+        <div className='w-full h-12 flex flex-row items-center justify-center divide-x divide-solid'>
+          <button className='w-1/2 h-full p-6 font-lato text-[25px] bg-primary flex justify-center items-center'>Yes</button>
+          <button onClick={handleClick} className='w-1/2 h-full p-6 font-lato text-[25px] bg-primary flex justify-center items-center'>No</button>
+        </div>
+      </div>
+    </>
+  }
+
+  const handleClick = () => {
+    setIsOpen(!isOpen)
+    
+  }
+
   return (
     <div className='mainContainer w-full h-full relative'>
-
+      <DeleteForm isVisible={isOpen}/>
         <div className='w-full h-full p-8 bg-white flex flex-col justify-between items-cetner'>
             {/* BackArrow */}
             <div className='w-full h-auto'>
@@ -31,8 +52,8 @@ export default function Settings() {
                 <div>
                     <p className='text-[19px] font-lato text-secondary'>Dark Mode</p>
                     <p className='text-[14px] font-lato text-tertiary'>Currently off</p>
-                </div>
-                <Switch className={'scale-[70%]'}/>
+                </div> 
+                <Switch className={`${isOpen ? 'invisible' : 'visible'} scale-[70%]`}/>
                 </li>
 
                 <li className='flex flex-coljustify-start items-center mt-10'>
@@ -44,8 +65,8 @@ export default function Settings() {
                 </li>
               </ul>
 
-              <ul className='w-full h-[60px] mt-32 mb-20'>
-                <li className='flex flex-col justify-center items-start'>
+              <ul className='w-full h-[60px] mt-16 mb-10'>
+                <li onClick={handleClick} className='flex flex-col justify-center items-start'>
                 <p className='text-[19px] font-lato text-error'>Delete Account</p>
                 </li>
                 <li className='flex flex-col justify-center items-start mt-5'>
@@ -55,7 +76,7 @@ export default function Settings() {
             </div>
             {/* Footer */}
             <div className='w-full flex flex-row justify-between items-center '>
-                <p className='text-tertiary'>App version 0.1</p>
+                <p className='text-tertiary'>App version 0.2</p>
                 <p className='text-primary font-playfair text-2xl'>Simply</p>
               </div>
         </div>  
