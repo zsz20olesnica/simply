@@ -10,9 +10,9 @@ export default function Settings() {
   
   const DeleteForm = ({isVisible}) => {
     return <>
-      <div className={`${isVisible ? 'visible' : 'invisible'} absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[80%] h-[200px] overflow-hidden rounded-2xl flex flex-col justify-between items-center bg-white border-[1px] border-primary`}>
+      <div className={`${isVisible ? 'visible' : 'invisible'} absolute z-10 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[80%] h-[200px] overflow-hidden rounded-2xl flex flex-col justify-between items-center bg-white border-[1px] border-primary`}>
         <div className='w-full h-full flex justify-center items-center'>
-          <p className='font-lato text-[19px] p-9 text-secondary text-center font-semibold '>Are you sure you want to delete your account?</p>
+          <p className='font-lato text-[19px] p-9 text-secondary text-center font-semibold'>Are you sure you want to delete your account?</p>
         </div>
         <div className='w-full h-12 flex flex-row items-center justify-center divide-x divide-solid'>
           <button className='w-1/2 h-full p-6 font-lato text-[25px] bg-primary flex justify-center items-center'>Yes</button>
@@ -53,7 +53,14 @@ export default function Settings() {
                     <p className='text-[19px] font-lato text-secondary'>Dark Mode</p>
                     <p className='text-[14px] font-lato text-tertiary'>Currently off</p>
                 </div> 
-                <Switch className={`${isOpen ? 'invisible' : 'visible'} scale-[70%]`}/>
+                {/* <Switch className={`${isOpen ? 'invisible' : 'visible'} scale-[70%]`}/> */}
+                <label for='check' className='relative bg-[#8D8D8D] cursor-pointer  w-16 h-7 rounded-full'>
+                  <input type='checkbox' id='check' className='sr-only peer z-1'/>
+                    <span className='absolute w-7 h-7  bg-primary left-[-1px] rounded-full peer-checked:bg-red-900 peer-checked:left-[35px] bottom-[12px] top-0 transition-all duration-150'></span>
+                </label>
+                
+
+                
                 </li>
 
                 <li className='flex flex-coljustify-start items-center mt-10'>

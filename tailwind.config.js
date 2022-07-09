@@ -5,8 +5,10 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'homeGradiend': 'linear-gradient(180deg, rgba(66, 228, 206, 0.15) 0%, #42E4CE 87.67%)',
-        'heroGradient': "linear-gradient(180deg, rgba(66, 228, 206, 0) 0%, #42E4CE 100%)"
+        'heroGradient': "linear-gradient(180deg, rgba(66, 228, 206, 0) 0%, #42E4CE 100%)",
+      },
+      background :{
+        'homeGradient': "linear-gradient(180deg, rgba(66, 228, 206, 0.15) 0%, #42E4CE 87.67%), url('Images/background.png')",
       },
       fontFamily:{
         'lato': ['Lato', 'sans-serif'],

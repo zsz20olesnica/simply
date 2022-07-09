@@ -34,36 +34,35 @@ export default function Main() {
             </div>
       </div>
       
-      {/* ForYouSection */}
+      {/* FORYOU Section */}
       <div className='w-full flex flex-col px-4'>
           <h3 className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>For you</h3>
           {/* ContainerKafelków */}
           <div className='w-full bg-white flex flex-row gap-2 '>
-              <SongTile />
+              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={HomeHero}/>
+              <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
           </div>
       </div>
 
-      {/* PopularSection */}
+      {/* POPULAR Section */}
       <div className='w-full flex flex-col px-4'>
           <h3 className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>Popular</h3>
           {/* ContainerKafelków */}
           <div className='w-full bg-white flex flex-row gap-2 '>
-              
-              {/* Kafelek */}
-              <div onClick={() => history('/player')} className='flex flex-col items-start justify-center'>
-                        <img src={FeelingArtsy} className='h-[136px] rounded-[12px]'></img>
-                        <h4 className='font-lato text-[19px] text-secondary font-bold'>Feeling Artsy</h4>
-                        <p className='font-lato text-[14px] text-tertiary'>2 hours</p>      
-              </div>
-              {/* Kafelek */}
-              <div onClick={() => history('/player')} className='flex flex-col items-start justify-center'>
-                        <img src={PlayImage} className='h-[136px] rounded-[12px]'></img>
-                        <h4 className='font-lato text-[19px] text-secondary font-bold'>Feel Like Dancing</h4>
-                        <p className='font-lato text-[14px] text-tertiary'>2 hours</p>      
-              </div>
+              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={FeelingArtsy}/>
+              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={PlayImage}/>   
           </div>
       </div>
      
+        
+
+
+
+
+
+
+
+
         {/* SongPlaying */}
         <div className='songplaying bg-white w-full h-[88px] gap-2 flex justify-center items-center fixed z-10 bottom-[56px] shadow-inner'>
               {/* DetailsContainer */}

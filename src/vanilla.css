@@ -1,9 +1,9 @@
-.homeGradiendContainer {
+/* .homeGradiendContainer {
     background: linear-gradient(180deg, rgba(66, 228, 206, 0.15) 0%, #42E4CE 87.67%);
-}
+} */
 
 .homeImageContainer {
-    background: url('Images/background.png')
+    background: linear-gradient(180deg, rgba(66, 228, 206, 0.15) 0%, #42E4CE 87.67%), url('Images/background.png')
 }
 
 * {
