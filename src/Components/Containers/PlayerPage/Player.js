@@ -1,14 +1,19 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useContext } from 'react'
+import { useState, useEffect } from 'react'
 import { DownArrow, DownArrowWhite, Prev, Next, Pause, Play, More, CastToDevice, Share, Heart } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import PlayerHero from '../../../Images/hero_player.png'
 import '../../../vanilla.css'
 
+import {handleDownAnim} from '../../../Utils/Animations'
+
+
 export default function Player() {
 
-  const history = useNavigate()
-  const [isOpen, setIsOpen] = useState(false)
+    const history = useNavigate()
+    const [isOpen, setIsOpen] = useState(false)
+
+
 
   const MoreOptionss = ({ isOpenn }) => {
     return(
@@ -29,38 +34,34 @@ export default function Player() {
                     <p className=' text-secondary text-[14px] font-lato'>Cast to Device</p>
                 </li>
             </ul>
-        
+
         </div>
-    </>) 
+    </>)
   }
 
   const HandleMoreOptions = () => {
     setIsOpen(!isOpen)
   }
 
-  
-
-
   return (
-    <div className='mainContainer w-full h-full relative'>
-        
+    <div id='container' className='animation_container_up mainContainer w-full h-full relative'>
+
       <div className='absolute z-100 w-full h-full p-8 flex flex-col justify-between items-center'>
             {/* HeaderContainer */}
             <div className='w-full h-auto flex flex-row justify-between items-center'>
                 {/* BackArrow */}
-                <button className='' onClick={() => history('/home')}><DownArrowWhite/></button>
+                <button className='' onClick={() => handleDownAnim(()=>{ history('/home')})}><DownArrowWhite/></button>
                 {/* Author */}
                 <span className='h-full min-w-[160px] flex justify-center items-center bg-white opacity-90 rounded-full text-tertiary text-[14px] p-1'>Art by someone</span>
-            </div>  
-            
-               
-      </div>
+            </div>
+
+                     </div>
       {/* HeroSection */}
       <div className='w-full h-[60%]'>
             <img src={PlayerHero} className='top-0 z-0 w-full h-full object-cover'/>
     </div>
-      
-        
+
+
     {/* Container */}
     <div className='w-full h-[40%] px-8 flex flex-col items-center justify-between py-10 relative'>
     <MoreOptionss isOpenn={isOpen}/>
@@ -81,7 +82,7 @@ export default function Player() {
                     <p className='text-[14px] text-tertiary font-lato'>7 tracks</p>
                 </div>
             </div>
-            
+
             {/* Next Container */}
             <div className='w-full flex flex-col gap-3'>
                 <div className='flex flex-row'>
@@ -99,9 +100,9 @@ export default function Player() {
                 <div className='flex flex-row justify-center items-center gap-16'>
                     <Prev className={'!fill-primary'}/>
                     <Play className={'!fill-primary'}/>
-                    <Next className={'!fill-primary'}/>   
+                    <Next className={'!fill-primary'}/>
                 </div>
-            </div>     
+            </div>
           </div>
     </div>
   )

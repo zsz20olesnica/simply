@@ -4,16 +4,18 @@ import { useNavigate } from 'react-router-dom'
 import OccasionCategories from '../../Reusable/OccasionCategories'
 import MoodCategories from '../../Reusable/MoodCategories'
 
+import {handleDownAnim} from '../../../Utils/Animations'
+
 export default function Search() {
 
   const history = useNavigate()
   
   return (
-    <div className='mainContainer w-full h-full relative'>
+    <div id='container' className='animation_container_up mainContainer w-full h-full relative'>
 
         <div className='w-full h-full p-8 bg-white flex flex-col justify-between items-center gap-4'>
             <div className='w-full h-auto'>
-                <button className='' onClick={() => history('/home')}><DownArrow/></button>
+                <button onClick={() => handleDownAnim(()=>{ history('/home')})} className=''><DownArrow/></button>
             </div>
 
             {/* SearchField */}
@@ -23,7 +25,7 @@ export default function Search() {
             
             {/* MoodFilters */}
             <h3 className='w-full font-lato text-[19px] text-secondary font-bold'>Mood</h3>
-            <div className='w-full flex flex-row flex-wrap gap-5'>
+            <div className='w-full flex flex-row flex-wrap gap-3'>
                <MoodCategories category={'Move'}/>
                <MoodCategories category={'Sad'}/>
                <MoodCategories category={'Chill'}/>
@@ -37,7 +39,7 @@ export default function Search() {
             
             {/* Occasion filters */}
             <h3 className='w-full font-lato text-[19px] text-secondary font-bold'>Occasion</h3>
-                <div className='w-full flex flex-row flex-wrap gap-5 mb-16'>
+                <div className='w-full flex flex-row flex-wrap gap-3 mb-16'>
                     <OccasionCategories category={'Party'}/>
                     <OccasionCategories category={'Chill'}/>
                     <OccasionCategories category={'Breakup'}/>
