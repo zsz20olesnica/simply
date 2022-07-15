@@ -7,6 +7,7 @@ export default function Settings() {
 
   const history = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
+  const [notifications, setNotifications] = useState(true)
   
   const DeleteForm = ({isVisible}) => {
     return <>
@@ -16,21 +17,25 @@ export default function Settings() {
         </div>
         <div className='w-full h-12 flex flex-row items-center justify-center divide-x divide-solid'>
           <button className='w-1/2 h-full p-6 font-lato text-[25px] bg-primary flex justify-center items-center'>Yes</button>
-          <button onClick={handleClick} className='w-1/2 h-full p-6 font-lato text-[25px] bg-primary flex justify-center items-center'>No</button>
+          <button onClick={handleClickDelAccount} className='w-1/2 h-full p-6 font-lato text-[25px] bg-primary flex justify-center items-center'>No</button>
         </div>
       </div>
     </>
   }
 
-  const handleClick = () => {
+  const handleClickDelAccount = () => {
     setIsOpen(!isOpen)
     
+  }
+
+  const handleClickNotifications = () => {
+    setNotifications(!notifications)
   }
 
   return (
     <div className='mainContainer w-full h-full relative'>
       <DeleteForm isVisible={isOpen}/>
-        <div className='w-full h-full p-8 bg-white flex flex-col justify-between items-cetner'>
+        <div className='w-full h-full p-8 bg-white flex flex-col justify-between items-center'>
             {/* BackArrow */}
             <div className='w-full h-auto'>
                 <button className='' onClick={() => history('/home')}><DownArrow/></button>
@@ -38,12 +43,12 @@ export default function Settings() {
             {/* SettingsContainer */}
             <div className='mb-20 w-full flex flex-col justify-center items-start gap-4 text-secondary'>
               <ul className='w-full'>
-                <li className='flex flex-col justify-center items-start mt-10'>
+                <li onClick={handleClickNotifications} className='flex flex-col justify-center items-start mt-10'>
                 <p className='text-[19px] font-lato text-secondary'>Push Notifications</p>
-                <p className='text-[14px] font-lato text-tertiary'>Currently on</p>
+                <p className='text-[14px] font-lato text-tertiary'>Currently {notifications ? 'on' : 'off'}</p>
                 </li>
 
-                <li className='flex flex-col justify-center items-start mt-10'>
+                <li onClick={() => history('/privacy')} className='flex flex-col justify-center items-start mt-10'>
                 <p className='text-[19px] font-lato text-secondary'>Account & privacy</p>
                 <p className='text-[14px] font-lato text-tertiary'>Manage password and your account</p>
                 </li>
@@ -63,17 +68,17 @@ export default function Settings() {
                 
                 </li>
 
-                <li className='flex flex-coljustify-start items-center mt-10'>
+                <li  onClick={() => history('/about')} className='flex flex-coljustify-start items-center mt-10'>
                 <p className='text-[19px] font-lato text-secondary'>About</p>       
                 </li>
 
-                <li className='flex flex-col justify-center items-start mt-10'>
+                <li onClick={() => history('/feedback')} className='flex flex-col justify-center items-start mt-10'>
                 <p className='text-[19px] font-lato text-secondary'>Feedback</p>       
                 </li>
               </ul>
 
               <ul className='w-full h-[60px] mt-16 mb-10'>
-                <li onClick={handleClick} className='flex flex-col justify-center items-start'>
+                <li onClick={handleClickDelAccount} className='flex flex-col justify-center items-start'>
                 <p className='text-[19px] font-lato text-error'>Delete Account</p>
                 </li>
                 <li className='flex flex-col justify-center items-start mt-5'>
