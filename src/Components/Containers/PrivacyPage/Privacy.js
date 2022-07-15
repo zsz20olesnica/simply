@@ -1,7 +1,6 @@
 import React from 'react'
 import { LeftArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
 
 export default function Privacy() {
 

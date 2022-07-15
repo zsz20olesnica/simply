@@ -1,10 +1,10 @@
 import React from 'react'
-import { Heart, DownArrow } from '../../../Icons'
+import { DownArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import OccasionCategories from '../../Reusable/OccasionCategories'
 import MoodCategories from '../../Reusable/MoodCategories'
 
-import {handleDownAnim} from '../../../Utils/Animations'
+import { handleDownAnim } from '../../../Utils/Animations'
 
 export default function Search() {
 

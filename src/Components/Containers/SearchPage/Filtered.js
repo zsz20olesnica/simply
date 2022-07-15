@@ -1,7 +1,8 @@
 import React from 'react'
-import { LeftArrow, Settings } from '../../../Icons'
+import { LeftArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 
+import SongTile from '../../Reusable/SongTile'
 
 import FeelingArtsy from '../../../Images/playlist1.png'
 import PlayImage from '../../../Images/playlist2.png'
@@ -14,7 +15,7 @@ import ImageHorror from '../../../Images/playlist8.png'
 import ImageSport from '../../../Images/playlist9.png'
 
 
-export default function Search() {
+export default function Filtered() {
 
   const history = useNavigate()
   
@@ -47,87 +48,37 @@ export default function Search() {
             <div className='w-full flex flex-row flex-wrap items-start justify-start gap-5  overflow-y-auto'>
              {/* RowKafelkiContainer */}
               <div className='flex flex-row gap-5'>
-                  {/* Kafelek */}
-                  <div className='w-fit flex flex-col items-start justify-center'>
-                            <img src={PlayImage} className='h-[136px] rounded-[12px]'></img>
-                            <h4 className='font-lato text-[19px] text-secondary font-bold'>Feel Like Dancing</h4>
-                            <p className='font-lato text-[14px] text-tertiary'>2 hours</p>      
-                  </div>
-                  {/* Kafelek */}
-                  <div className='w-fit flex flex-col items-start justify-center'>
-                            <img src={ImageGruby} className='h-[136px] rounded-[12px]'></img>
-                            <h4 className='font-lato text-[19px] text-secondary font-bold'>I feel like a gruby</h4>
-                            <p className='font-lato text-[14px] text-tertiary'>23 minutes</p>      
-                  </div>
+                  
+                  <SongTile title={'Feel Like Dancing'} img={FeelingArtsy} time={'2 hours'} />
+                  
+                  <SongTile title={'Be active'} img={ImageSport} time={'5 minutes'} />
               </div>
               {/* RowKafelkiContainer */}
               <div className='flex flex-row gap-5'>
-                  {/* Kafelek */}
-                  <div className='w-fit flex flex-col items-start justify-center'>
-                            <img src={PlayImage} className='h-[136px] rounded-[12px]'></img>
-                            <h4 className='font-lato text-[19px] text-secondary font-bold'>Feel Like Dancing</h4>
-                            <p className='font-lato text-[14px] text-tertiary'>4 hours</p>      
-                  </div>
-                  {/* Kafelek */}
-                  <div className='w-fit flex flex-col items-start justify-center'>
-                            <img src={PlayImage} className='h-[136px] rounded-[12px]'></img>
-                            <h4 className='font-lato text-[19px] text-secondary font-bold'>Feel Like Dancing</h4>
-                            <p className='font-lato text-[14px] text-tertiary'>2 hours</p>      
-                  </div>
+
+                  <SongTile title={'Eat healthy'} img={ImageDinner} time={'4 days'} />
+                 
+                  <SongTile title={'I feel like a gruby'} img={ImageGruby} time={'2 weeks'} />
               </div>
               {/* RowKafelkiContainer */}
               <div className='flex flex-row gap-5'>
-                                {/* Kafelek */}
-                                <div className='w-fit flex flex-col items-start justify-center'>
-                                          <img src={FeelingArtsy} className='h-[136px] rounded-[12px]'></img>
-                                          <h4 className='font-lato text-[19px] text-secondary font-bold'>Feeling Artsy</h4>
-                                          <p className='font-lato text-[14px] text-tertiary'>1 hour</p>      
-                                </div>
-                                {/* Kafelek */}
-                                <div className='w-fit flex flex-col items-start justify-center'>
-                                          <img src={PlayImage} className='h-[136px] rounded-[12px]'></img>
-                                          <h4 className='font-lato text-[19px] text-secondary font-bold'>Feel Like Dancing</h4>
-                                          <p className='font-lato text-[14px] text-tertiary'>2 hours</p>      
-                                </div>
-                            </div>
-                            {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
-                  {/* Kafelek */}
-                  <div className='w-fit flex flex-col items-start justify-center'>
-                            <img src={PlayImage} className='h-[136px] rounded-[12px]'></img>
-                            <h4 className='font-lato text-[19px] text-secondary font-bold'>Feel Like Dancing</h4>
-                            <p className='font-lato text-[14px] text-tertiary'>2 hours</p>      
-                  </div>
-                  {/* Kafelek */}
-                  <div className='w-fit flex flex-col items-start justify-center'>
-                            <img src={ImageGruby} className='h-[136px] rounded-[12px]'></img>
-                            <h4 className='font-lato text-[19px] text-secondary font-bold'>I feel like a gruby</h4>
-                            <p className='font-lato text-[14px] text-tertiary'>23 minutes</p>      
-                  </div>
+              <SongTile title={'Halloween suko'} img={ImageHorror} time={'3 minutes'} />
+              <SongTile title={'Feel like a kid'} img={ImageInsomnia} time={'20 seconds'} />
               </div>
               {/* RowKafelkiContainer */}
               <div className='flex flex-row gap-5'>
-                  {/* Kafelek */}
-                  <div className='w-fit flex flex-col items-start justify-center'>
-                            <img src={PlayImage} className='h-[136px] rounded-[12px]'></img>
-                            <h4 className='font-lato text-[19px] text-secondary font-bold'>Feel Like Dancing</h4>
-                            <p className='font-lato text-[14px] text-tertiary'>2 hours</p>      
-                  </div>
-                  {/* Kafelek */}
-                  <div className='w-fit flex flex-col items-start justify-center'>
-                            <img src={ImageGruby} className='h-[136px] rounded-[12px]'></img>
-                            <h4 className='font-lato text-[19px] text-secondary font-bold'>I feel like a gruby</h4>
-                            <p className='font-lato text-[14px] text-tertiary'>23 minutes</p>      
-                  </div>
+              <SongTile title={'Colorful'} img={ImageColors} time={'1 hour'} />
+              <SongTile title={'I feel like a gruby'} img={ImageHorror} time={'20 minutes'} />
               </div>
               {/* RowKafelkiContainer */}
               <div className='flex flex-row gap-5'>
-                  {/* Kafelek */}
-                  <div className='w-fit flex flex-col items-start justify-center'>
-                            <img src={PlayImage} className='h-[136px] rounded-[12px]'></img>
-                            <h4 className='font-lato text-[19px] text-secondary font-bold'>Feel Like Dancing</h4>
-                            <p className='font-lato text-[14px] text-tertiary'>2 hours</p>      
-                  </div>
+              <SongTile title={'Old school times'} img={PlayImage} time={'69 seconds'} />
+              <SongTile title={'Bedoes'} img={ImageFiesco} time={'420 minutes'} />
+              </div>
+              {/* RowKafelkiContainer */}
+              <div className='flex flex-row gap-5'>
+              <SongTile title={'I feel like a gruby'} img={ImageGruby} time={'20 minutes'} />
+              <SongTile title={'I feel like a gruby'} img={ImageColors} time={'420 minutes'} />
                   
               </div>
               </div>    
