@@ -14,6 +14,8 @@ import ImageFiesco from '../../../Images/playlist7.png'
 import ImageHorror from '../../../Images/playlist8.png'
 import ImageSport from '../../../Images/playlist9.png'
 
+import FilteredCategory from '../../Reusable/FilteredCategory'
+
 
 export default function Filtered() {
 
@@ -34,13 +36,9 @@ export default function Filtered() {
             
             <div className='w-full flex flex-row flex-wrap gap-5'>
             
-              <button className='relative text-white font-lato rounded-full ring-[1.5px] ring-primary bg-primary  min-h-[30px] px-3 min-w-[100px]'>Hard porn
-              <span className='absolute w-[20px] h-[20px] flex justify-center items-center p-2 rounded-full bg-primary font-bold text-sm top-[-8px] right-[-8px] shadow-lg'>X</span>
-              </button>
-              
-              <button className='relative text-white font-lato rounded-full ring-[1.5px] ring-primary bg-primary  min-h-[30px] px-3 min-w-[100px]'>Gym
-              <span className='absolute w-[20px] h-[20px] flex justify-center items-center p-2 rounded-full bg-primary font-bold text-sm top-[-8px] right-[-8px] shadow-lg'>X</span>
-              </button>
+              <FilteredCategory category={'Gym'}/>
+              <FilteredCategory category={'Chill'}/>
+             
                     
             </div>
              
