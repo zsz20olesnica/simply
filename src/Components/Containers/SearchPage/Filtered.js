@@ -16,13 +16,17 @@ import ImageSport from '../../../Images/playlist9.png'
 
 import FilteredCategory from '../../Reusable/FilteredCategory'
 
+import { motion } from 'framer-motion';
 
 export default function Filtered() {
 
   const history = useNavigate()
-  
+  let viewportWidth = window.innerWidth;
+
   return (
-    <div className='mainContainer w-full h-full relative'>
+    <motion.div transition={{duration: 0.5, ease: "easeInOut" }} initial={{x: viewportWidth, opacity: 0}} 
+    animate={{x: 0, opacity: 1}} exit={{x: viewportWidth, opacity: 0}}
+    className='mainContainer w-full h-full relative'>
 
         <div className='w-full h-full p-8 bg-white flex flex-col justify-start items-start gap-4'>
         
@@ -81,6 +85,6 @@ export default function Filtered() {
               </div>
               </div>    
         </div>       
-    </div>
+    </motion.div>
   )
 }

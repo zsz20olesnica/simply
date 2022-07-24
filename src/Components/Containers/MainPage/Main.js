@@ -7,12 +7,15 @@ import HomeHero from '../../../Images/home_hero.png'
 import NavBar from '../../Reusable/Navbar'
 import SongTile from '../../Reusable/SongTile'
 
+import { motion } from 'framer-motion';
+
 export default function Main() {
 
   const history = useNavigate()
-  
+  let viewportHeight = window.innerHeight;
   return (
-    <div id="maincontainer" className='mainContainer w-full relative'>
+    <motion.div transition={{duration: 0.5, ease: "easeInOut" }} initial={{y: -viewportHeight}} animate={{y: 0}} exit={{y: -viewportHeight}}
+    id="maincontainer" className='mainContainer w-full relative'>
 
       {/* HeroSection */}
       <div className='w-full h-[410px] relative'>
@@ -90,6 +93,6 @@ export default function Main() {
 
         <NavBar/>
         
-    </div>
+    </motion.div>
   )
 }

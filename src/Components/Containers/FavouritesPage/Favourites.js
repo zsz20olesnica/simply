@@ -3,16 +3,22 @@ import { Heart, DownArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import { handleDownAnim } from '../../../Utils/Animations'
 import '../../../vanilla.css'
+
+import { motion } from 'framer-motion';
+
 export default function Favorites() {
 
   const history = useNavigate()
+  let viewportHeight = window.innerHeight;
   
   return (
-    <div id='container' className='mainContainer animation_container_up w-full h-full relative'>
+    <motion.div transition={{duration: 0.5, ease: "easeInOut" }} initial={{y: viewportHeight, opacity: 0}} 
+    animate={{y: 0, opacity: 1}} exit={{y: viewportHeight, opacity: 0}}
+     id='container' className='mainContainer w-full h-full relative'>
 
         <div className='w-full h-full p-8 bg-white flex flex-col justify-start items-center'>
             <div className='w-full h-auto '>
-                <button className='' onClick={() => handleDownAnim(()=>{ history('/home')})}><DownArrow/></button>
+                <button className='' onClick={() =>  history('/home')}><DownArrow/></button>
             </div>
             <div className='mt-40 flex flex-col items-center justify-center gap-6'>
                 <Heart className={'scale-[250%] !fill-primary'}/>
@@ -21,6 +27,6 @@ export default function Favorites() {
                 <h2 className='font-lato mt-9 font-bold text-primary text-[23px]'>Explore simplylists</h2>
             </div>
         </div>    
-    </div>
+    </motion.div>
   )
 }

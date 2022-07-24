@@ -7,6 +7,7 @@ import '../../../vanilla.css'
 
 import {handleDownAnim} from '../../../Utils/Animations'
 
+import { motion } from 'framer-motion';
 
 export default function Player() {
 
@@ -18,6 +19,7 @@ export default function Player() {
   const MoreOptionss = ({ isOpenn }) => {
     return(
     <>
+    
         <div className={`${isOpenn ? 'block' : 'hidden'} absolute h-[147px] w-[226px] rounded-xl bg-white shadow-2xl`}>
 
             <ul className='w-full  h-full flex flex-col items-start justify-center divide-y divide-solid'>
@@ -36,21 +38,28 @@ export default function Player() {
             </ul>
 
         </div>
+
     </>)
   }
 
   const HandleMoreOptions = () => {
     setIsOpen(!isOpen)
   }
+  
+  let viewportHeight = window.innerHeight;
 
   return (
-    <div id='container' className='animation_container_up mainContainer w-full h-full relative'>
+    <motion.div  transition={{duration: 0.5, ease: "easeInOut" }} initial={{y: viewportHeight, opacity: 0}} 
+    animate={{y: 0, opacity: 1}} exit={{y: viewportHeight, opacity: 0}}>
+    <div id='container' className='mainContainer w-full h-full relative'>
 
       <div className='absolute z-100 w-full h-full p-8 flex flex-col justify-between items-center'>
             {/* HeaderContainer */}
             <div className='w-full h-auto flex flex-row justify-between items-center'>
                 {/* BackArrow */}
-                <button className='' onClick={() => handleDownAnim(()=>{ history('/home')})}><DownArrowWhite/></button>
+                <button className='' 
+                onClick={() => history('/home')}
+                ><DownArrowWhite/></button>
                 {/* Author */}
                 <span className='h-full min-w-[160px] flex justify-center items-center bg-white opacity-90 rounded-full text-tertiary text-[14px] p-1'>Art by someone</span>
             </div>
@@ -105,5 +114,6 @@ export default function Player() {
             </div>
           </div>
     </div>
+    </motion.div>
   )
 }

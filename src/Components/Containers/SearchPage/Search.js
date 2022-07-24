@@ -4,18 +4,22 @@ import { useNavigate } from 'react-router-dom'
 import OccasionCategories from '../../Reusable/OccasionCategories'
 import MoodCategories from '../../Reusable/MoodCategories'
 
-import { handleDownAnim } from '../../../Utils/Animations'
+import { motion } from 'framer-motion';
+
 
 export default function Search() {
 
   const history = useNavigate()
-  
+  let viewportHeight = window.innerHeight;
+
   return (
-    <div id='container' className='animation_container_up mainContainer w-full h-full relative'>
+    <motion.div transition={{duration: 0.5, ease: "easeInOut" }} initial={{y: viewportHeight, opacity: 0}} 
+    animate={{y: 0, opacity: 1}} exit={{y: viewportHeight, opacity: 0}} 
+    id='container' className='mainContainer w-full h-full relative'>
 
         <div className='w-full h-full p-8 bg-white flex flex-col justify-between items-center gap-4'>
             <div className='w-full h-auto'>
-                <button onClick={() => handleDownAnim(()=>{ history('/home')})} className=''><DownArrow/></button>
+                <button onClick={() => history('/home')} className=''><DownArrow/></button>
             </div>
 
             {/* SearchField */}
@@ -54,6 +58,6 @@ export default function Search() {
 
             <button className='text-white rounded-full w-[186px] h-[46px] bg-primary text-2xl' onClick={() => history('/filtered')}>Filter</button>
         </div>       
-    </div>
+    </motion.div>
   )
 }

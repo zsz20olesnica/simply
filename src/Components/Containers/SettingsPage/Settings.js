@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { handleDownAnim } from '../../../Utils/Animations'
 import '../../../vanilla.css'
+
+
+import { motion } from 'framer-motion';
+
+
 export default function Settings() {
 
   const history = useNavigate()
@@ -32,9 +37,13 @@ export default function Settings() {
   const handleClickNotifications = () => {
     setNotifications(!notifications)
   }
+  
+  let viewportHeight = window.innerHeight;
 
   return (
-    <div id='container' className='mainContainer animation_container_up w-full h-full relative'>
+    <motion.div transition={{duration: 0.5, ease: "easeInOut" }} initial={{y: viewportHeight, opacity: 0}} 
+    animate={{y: 0, opacity: 1}} exit={{y: viewportHeight, opacity: 0}}
+    id='container' className='mainContainer w-full h-full relative'>
       <DeleteForm isVisible={isOpen}/>
         <div className='w-full h-full p-8 bg-white flex flex-col justify-between items-center'>
             {/* BackArrow */}
@@ -93,6 +102,6 @@ export default function Settings() {
                 <p className='text-primary font-playfair text-2xl'>Simply</p>
               </div>
         </div>  
-    </div>
+    </motion.div>
   )
 }
