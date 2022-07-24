@@ -1,70 +1,88 @@
-import React from 'react'
-import { Loupe, Heart, Menu, UpArrow, Pause } from '../../../Icons'
+import {React, useState } from 'react'
+import { Loupe, Heart, Menu, UpArrow, Pause, Play} from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import PlayImage from '../../../Images/playlist2.png'
-import FeelingArtsy from '../../../Images/playlist1.png'
-import HomeHero from '../../../Images/home_hero.png'
+import FeelingArtsy from '../../../Images/playlist1.png' 
+import HeroImage from '../../../Images/home_hero.png'
+
 import NavBar from '../../Reusable/Navbar'
 import SongTile from '../../Reusable/SongTile'
+import HomeAlbum from '../../Reusable/HomeAlbum'
 
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 export default function Main() {
 
   const history = useNavigate()
   let viewportHeight = window.innerHeight;
+  const [IsPaused, setIsPaused] = useState('false') 
+
+
+
   return (
-    <motion.div transition={{duration: 0.5, ease: "easeInOut" }} initial={{y: -viewportHeight}} animate={{y: 0}} exit={{y: -viewportHeight}}
+    <motion.div initial={{opacity: 0}} animate={{opacity: 1}}  
     id="maincontainer" className='mainContainer w-full relative'>
 
       {/* HeroSection */}
-      <div className='w-full h-[410px] relative'>
-            <img src={HomeHero} className='absolute z-0 w-full h-full'/>
-                <div className='absolute bottom-0 w-full h-[279px] p-8 pt-24 z-1 bg-heroGradient'>
-                    <div className='flex flex-col gap-3 z-1'>
-                        <p className='h-[28px] w-[87px] flex justify-center items-center rounded-full outline outline-offset-[1.5px] outline-1 '>Featured</p>
-                        {/* Title */}
-                        <h2 className='text-4xl font-playfair font-extrabold'>Funk Gets<br></br> A Groove</h2>
-                        {/* Album Title */}
-                        <div className='flex flex-row justify-start items-center gap-2'>
-                        <p className='font-lato font-bold text-[14px]'>Fell the Bass</p>
-                        {/* Dot */}
-                        <div className='w-[5px] h-[5px] rounded-full bg-white'></div>
-                        {/* Time */}
-                        <p className='font-lato font-bold text-[14px]'>1 hour</p>
-                        </div>
-                    </div>
-            </div>
-      </div>
+      <HomeAlbum image={HeroImage} time={'1 hour'} title={'Feel the bass'} album_title={'Funk Gets A Groove Like A Nigger '}/>
       
       {/* FORYOU Section */}
-      <div className='w-full flex flex-col px-4'>
-          <h3 className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>For you</h3>
+      <motion.div initial={{opacity: 0}}  whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.8 }}
+      className='w-full flex flex-col px-4'>
+          <motion.h3 transition={{delay: 0.1, duration: 0.5}} initial={{x: -120}} animate={{x: 0}}
+          className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>For you</motion.h3>
           {/* ContainerKafelków */}
           <div className='w-full bg-white flex flex-row gap-2 '>
-              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={HomeHero}/>
+              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={HeroImage}/>
               <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
           </div>
-      </div>
+      </motion.div>
 
       {/* POPULAR Section */}
-      <div className='w-full flex flex-col px-4'>
-          <h3 className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>Popular</h3>
+      <motion.div initial={{opacity: 0}}  whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.8 }}
+      className='w-full flex flex-col px-4'>
+          <motion.h3 transition={{delay: 0.1, duration: 0.5}} initial={{x: -120}} animate={{x: 0}}
+          className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>Popular</motion.h3>
           {/* ContainerKafelków */}
-          <div className='w-full bg-white flex flex-row gap-2 '>
+          <div className='w-full bg-white flex flex-row gap-2'>
               <SongTile title={'Feeling Artsy'} time={'2 hours'} img={FeelingArtsy}/>
               <SongTile title={'Feeling Artsy'} time={'2 hours'} img={PlayImage}/>   
           </div>
-      </div>
-     
-        
+      </motion.div>
 
+      <motion.div initial={{opacity: 0}}  whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.8 }}
+      className='w-full flex flex-col px-4'>
+          <motion.h3 transition={{delay: 0.1, duration: 0.5}} initial={{x: -120}} animate={{x: 0}}
+          className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>Popular</motion.h3>
+          {/* ContainerKafelków */}
+          <div className='w-full bg-white flex flex-row gap-2'>
+              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={FeelingArtsy}/>
+              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={PlayImage}/>   
+          </div>
+      </motion.div>
+      <motion.div initial={{opacity: 0}}  whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.8 }}
+      className='w-full flex flex-col px-4'>
+          <motion.h3 transition={{delay: 0.1, duration: 0.5}} initial={{x: -120}} animate={{x: 0}}
+          className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>Popular</motion.h3>
+          {/* ContainerKafelków */}
+          <div className='w-full bg-white flex flex-row gap-2'>
+              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={FeelingArtsy}/>
+              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={PlayImage}/>   
+          </div>
+      </motion.div>
+      <motion.div initial={{opacity: 0}}  whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.8 }}
+      className='w-full flex flex-col px-4'>
+          <motion.h3 transition={{delay: 0.1, duration: 0.5}} initial={{x: -120}} animate={{x: 0}}
+          className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>Popular</motion.h3>
+          {/* ContainerKafelków */}
+          <div className='w-full bg-white flex flex-row gap-2'>
+              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={FeelingArtsy}/>
+              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={PlayImage}/>   
+          </div>
+      </motion.div>
+      
 
-
-
-
-
-
+ 
 
         {/* SongPlaying */}
         <div className='songplaying bg-white w-full h-[88px] gap-2 flex justify-center items-center fixed z-10 bottom-[56px] shadow-inner'>
@@ -72,10 +90,15 @@ export default function Main() {
               <div className='w-full h-full flex flex-row gap-6 justify-center items-center '>
                     
                     {/* Image/Pause Container */}
-                    <div className='w-[55px] h-[55px] rounded-full ring-4 ring-primary flex flex-col justify-center items-center relative '>
+                    <div onClick={() => {setIsPaused(!IsPaused)}} className='w-[55px] h-[55px] rounded-full ring-4 ring-primary flex flex-col justify-center items-center relative '>
                         <img src={PlayImage} className='absolute rounded-full h-full'/>
-                        <div className='absolute rounded-full h-full w-full bg-[#1D1D1D] opacity-[27%]'></div>
-                        <Pause className={'h-[22px] w-[14px] !fill-white bg-transparent absolute'}/>
+                        <div className='absolute rounded-full h-full w-full bg-[#1D1D1D] bg-opacity-[40%]'>
+                            <div className='w-full h-full flex flex-row justify-center items-center'>
+                            {IsPaused? <Pause className={'!fill-white w-6 h-6 '}/>:<Play className={'w-10 h-10'}second_fill='#fff'/>}
+                            </div>
+                        </div>
+                        
+                        
                     </div>
                     {/* Song title/author container */}
                     <div className='flex flex-col justify-center items-start'>

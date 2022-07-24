@@ -1,43 +1,45 @@
 import React, { useContext } from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { DownArrow, DownArrowWhite, Prev, Next, Pause, Play, More, CastToDevice, Share, Heart } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import PlayerHero from '../../../Images/hero_player.png'
 import '../../../vanilla.css'
 
-import {handleDownAnim} from '../../../Utils/Animations'
 
 import { motion } from 'framer-motion';
+
 
 export default function Player() {
 
     const history = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
+    const [IsPaused, setIsPaused] = useState(false) 
+    
 
-
-
-  const MoreOptionss = ({ isOpenn }) => {
+const MoreOptionss = ({ isOpenn }) => {
     return(
     <>
-    
-        <div className={`${isOpenn ? 'block' : 'hidden'} absolute h-[147px] w-[226px] rounded-xl bg-white shadow-2xl`}>
+        <motion.div transition={{duration: 0.2}} animate={{opacity: 1}} exit={{opacity: 0}} className={`${isOpenn ? 'block' : 'hidden'} absolute h-[147px] w-[226px] rounded-xl bg-white shadow-2xl`}>
 
             <ul className='w-full  h-full flex flex-col items-start justify-center divide-y divide-solid'>
-                <li className='w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6'>
+                <motion.li transition={{delay: 0.2, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}}
+                className={'w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6'}>
                     <Heart className={'fill-secondary w-6 h-6'}/>
                     <p className='text-secondary text-[14px] font-lato'>Add to Favorites</p>
-                </li>
-                <li className='w-full  p-6 h-1/3 flex flex-row items-center justify-start gap-6'>
+                </motion.li>
+                <motion.li transition={{delay: 0.4, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}} 
+                className='w-full  p-6 h-1/3 flex flex-row items-center justify-start gap-6'>
                     <Share className={'fill-secondary w-6 h-6'}/>
                     <p className=' text-secondary text-[14px] font-lato'>Share</p>
-                </li>
-                <li className='w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6'>
+                </motion.li>
+                <motion.li transition={{delay: 0.6, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}} 
+                className='w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6'>
                     <CastToDevice className={'fill-secondary w-6 h-6'}/>
                     <p className=' text-secondary text-[14px] font-lato'>Cast to Device</p>
-                </li>
+                </motion.li>
             </ul>
 
-        </div>
+        </motion.div>
 
     </>)
   }
@@ -107,9 +109,22 @@ export default function Player() {
 
                 {/* Music controler */}
                 <div className='flex flex-row justify-center items-center gap-16'>
+                    
                     <Prev className={'!fill-primary'}/>
-                    <Play className={'!fill-primary'}/>
+                    
+                    <div className='h-[53.67px] w-[53.67px] rounded-full bg-primary' onClick={() => {setIsPaused(!IsPaused)}}>
+                        {
+                        IsPaused
+                        ?                 
+                        <Pause  className={'h-full w-full scale-[55%]'} first_fill={'#fff'} second_fill={'#fff'}/>               
+                        :             
+                        <Play className={''}  second_fill={'#fff'}/>
+                        } 
+                    </div>  
+
                     <Next className={'!fill-primary'}/>
+                    
+                    
                 </div>
             </div>
           </div>
