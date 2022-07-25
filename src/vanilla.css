@@ -2,6 +2,10 @@
     background: linear-gradient(180deg, rgba(66, 228, 206, 0.15) 0%, #42E4CE 87.67%);
 } */
 
+:root {
+    --mainPadding: 0px;
+}
+
 .homeImageContainer {
     background: linear-gradient(180deg, rgba(66, 228, 206, 0.15) 0%, #42E4CE 87.67%), url('Images/background.png')
 }
@@ -31,7 +35,7 @@ input[type=range]{
 }
 
 #maincontainer {
-    min-height: calc(100% + 270px)
+    padding-bottom: var(--mainPadding);
     
 }
 

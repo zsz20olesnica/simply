@@ -29,7 +29,7 @@ export default function Favorites() {
   let viewportHeight = window.innerHeight;
   const SiteTitle = 'Favourites - Simply'
   document.title = SiteTitle
-  let UserHasFavourites = false
+  let UserHasFavourites = true
   const NoFavourites = () => {
     return(
       <div className='w-full h-full p-8 bg-white flex flex-col justify-start items-center'>
