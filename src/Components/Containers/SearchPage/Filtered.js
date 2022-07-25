@@ -22,6 +22,9 @@ export default function Filtered() {
 
   const history = useNavigate()
   let viewportWidth = window.innerWidth;
+  const SiteTitle = 'Filtered - Simply'
+  document.title = SiteTitle
+
 
   return (
     <motion.div transition={{duration: 0.5, ease: "easeInOut" }} initial={{x: viewportWidth, opacity: 0}} 

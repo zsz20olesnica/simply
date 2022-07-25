@@ -14,7 +14,10 @@ export default function Settings() {
   const history = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const [notifications, setNotifications] = useState(true)
-  
+  const SiteTitle = 'Settings - Simply'
+  document.title = SiteTitle
+
+
   const DeleteForm = ({isVisible}) => {
     return <>
       <div className={`${isVisible ? 'visible' : 'invisible'} absolute z-10 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[80%] h-[200px] overflow-hidden rounded-2xl flex flex-col justify-between items-center bg-white border-[1px] border-primary`}>

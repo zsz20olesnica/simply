@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom'
 export default function Privacy() {
 
   const history = useNavigate()
-  
+  const SiteTitle = 'Privacy - Simply'
+  document.title = SiteTitle
 
   return (
     <div className='mainContainer w-full h-full relative'>

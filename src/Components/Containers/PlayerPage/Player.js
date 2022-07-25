@@ -14,7 +14,8 @@ export default function Player() {
     const history = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const [IsPaused, setIsPaused] = useState(false) 
-    
+    const SiteTitle = 'Player-Simply'
+    document.title = SiteTitle
 
 const MoreOptionss = ({ isOpenn }) => {
     return(
@@ -22,17 +23,17 @@ const MoreOptionss = ({ isOpenn }) => {
         <motion.div transition={{duration: 0.2}} animate={{opacity: 1}} exit={{opacity: 0}} className={`${isOpenn ? 'block' : 'hidden'} absolute h-[147px] w-[226px] rounded-xl bg-white shadow-2xl`}>
 
             <ul className='w-full  h-full flex flex-col items-start justify-center divide-y divide-solid'>
-                <motion.li transition={{delay: 0.2, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}}
+                <motion.li transition={{delay: 0.15, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}}
                 className={'w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6'}>
                     <Heart className={'fill-secondary w-6 h-6'}/>
                     <p className='text-secondary text-[14px] font-lato'>Add to Favorites</p>
                 </motion.li>
-                <motion.li transition={{delay: 0.4, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}} 
+                <motion.li transition={{delay: 0.25, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}} 
                 className='w-full  p-6 h-1/3 flex flex-row items-center justify-start gap-6'>
                     <Share className={'fill-secondary w-6 h-6'}/>
                     <p className=' text-secondary text-[14px] font-lato'>Share</p>
                 </motion.li>
-                <motion.li transition={{delay: 0.6, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}} 
+                <motion.li transition={{delay: 0.35, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}} 
                 className='w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6'>
                     <CastToDevice className={'fill-secondary w-6 h-6'}/>
                     <p className=' text-secondary text-[14px] font-lato'>Cast to Device</p>

@@ -1,11 +1,20 @@
 import React from "react";
+import { useState } from "react";
+import { wrap } from "popmotion";
 import { motion } from 'framer-motion';
-
 export default function HomeAlbum({image, time, album_title, title }) {
-      return (
+    
+    
+   
+      
+
+   
+    
+    return (
         
       <div className='w-full h-[420px] relative'>
-            <motion.img transition={{duration: 1}} initial={{opacity: 0.8}} animate={{opacity: 1}} src={image} className='absolute z-0 w-full h-full object-cover' />
+            <motion.img transition={{duration: 1}} initial={{opacity: 0.8}} animate={{opacity: 1}} src={image}
+             className='absolute z-0 w-full h-full object-cover' />
                 <div className='absolute bottom-0 w-full h-[279px] p-8 pt-[85px] z-1 bg-heroGradient'>
                     <div className='flex flex-col gap-3 z-1'>
                         <p className='h-[28px] w-[87px] flex justify-center items-center rounded-full outline outline-offset-[1.5px] outline-1 '>Featured</p>

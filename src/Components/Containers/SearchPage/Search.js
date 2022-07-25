@@ -11,6 +11,8 @@ export default function Search() {
 
   const history = useNavigate()
   let viewportHeight = window.innerHeight;
+  const SiteTitle = 'Search - Simply'
+  document.title = SiteTitle
 
   return (
     <motion.div transition={{duration: 0.5, ease: "easeInOut" }} initial={{y: viewportHeight, opacity: 0}} 

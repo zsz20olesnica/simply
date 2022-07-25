@@ -5,7 +5,9 @@ import { useNavigate } from 'react-router-dom'
 export default function Home() {
 
   const history = useNavigate()
-
+  const SiteTitle = 'Simply'
+  document.title = SiteTitle
+  
   return (
     <div className='w-full h-full relative'>
       {/* Image with gradient */}

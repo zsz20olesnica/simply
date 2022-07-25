@@ -16,8 +16,8 @@ export default function Main() {
   const history = useNavigate()
   let viewportHeight = window.innerHeight;
   const [IsPaused, setIsPaused] = useState('false') 
-
-
+  const SiteTitle = 'Home-Simply'
+  document.title = SiteTitle
 
   return (
     <motion.div initial={{opacity: 0}} animate={{opacity: 1}}  
@@ -32,9 +32,13 @@ export default function Main() {
           <motion.h3 transition={{delay: 0.1, duration: 0.5}} initial={{x: -120}} animate={{x: 0}}
           className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>For you</motion.h3>
           {/* ContainerKafelków */}
-          <div className='w-full bg-white flex flex-row gap-2 '>
+          <div className='min-w-full overflow-x-scroll whitespace-nowrap bg-white flex flex-row gap-2 '>
               <SongTile title={'Feeling Artsy'} time={'2 hours'} img={HeroImage}/>
               <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
+              <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
+              <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
+              <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
+
           </div>
       </motion.div>
 

@@ -8,8 +8,10 @@ import { motion } from 'framer-motion';
 export default function About() {
 
   const history = useNavigate()
-  
   let viewportWidth = window.innerWidth;
+  const SiteTitle = 'About - Simply'
+  document.title = SiteTitle
+
 
   return (
     <motion.div transition={{duration: 0.5, ease: "easeInOut" }} initial={{x: viewportWidth, opacity: 0}} 
