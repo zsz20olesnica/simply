@@ -1,7 +1,7 @@
 import React from 'react'
 import '../../../vanilla.css'
 import { useNavigate } from 'react-router-dom'
-
+import { motion } from 'framer-motion'
 export default function Home() {
 
   const history = useNavigate()
@@ -9,7 +9,8 @@ export default function Home() {
   document.title = SiteTitle
   
   return (
-    <div className='w-full h-full relative'>
+    <motion.div initial={{opacity: 0}} animate={{opacity: 1}}
+     className='w-full h-full relative'>
       {/* Image with gradient */}
       <div className='homeImageContainer w-full h-full absolute top-0 left-0 z-0'></div>
       {/* MainContainer */}
@@ -28,9 +29,9 @@ export default function Home() {
           {/* LoginButton */}
           <button onClick={() => history('/home')} className='w-[180px] h-11 my-[16px] mt-[25px] text-xl rounded-full bg-white font-lato text-primary'>Login</button> 
           {/* SingUp */}
-          <p className='homeSingUpButton w-[65%] text-center mt-0 cursor-pointer'>Sing up</p>
+          <p onClick={() => history('/signup')} className='homeSingUpButton w-[65%] text-center mt-0 cursor-pointer'>Sing up</p>
       </div>
 
-    </div>
+    </motion.div>
   )
 }

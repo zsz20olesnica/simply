@@ -4,6 +4,8 @@ import { Route, Routes, BrowserRouter as Router, useLocation} from 'react-router
 import { AnimatePresence } from 'framer-motion';
 
 import Home from './Components/Containers/HomePage/Home';
+import SingUp from './Components/Containers/SingUpPage/SingUp';
+import CreateAccount from './Components/Containers/CreateAccountPage/CreateAccount';
 import Main from './Components/Containers/MainPage/Main';
 import Favorites from './Components/Containers/FavouritesPage/Favourites';
 import Settings from './Components/Containers/SettingsPage/Settings';
@@ -16,6 +18,7 @@ import Privacy from './Components/Containers/PrivacyPage/Privacy';
 
 
 
+
 function App() {
   const location = useLocation()
   return (
@@ -24,6 +27,8 @@ function App() {
       <AnimatePresence exitBeforeEnter>
             <Routes key={location.pathname} location={location}>
                 <Route path='/' element={<Home />}/>
+                <Route path='/signup' element={<SingUp />}/>
+                <Route path='/createaccount' element={<CreateAccount />}/>
                 <Route path='/home' element={<Main />}/>
                 <Route path='/favorites' element={<Favorites />}/>
                 <Route path='/settings' element={<Settings />}/>
