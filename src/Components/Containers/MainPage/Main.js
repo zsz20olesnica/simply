@@ -57,7 +57,42 @@ export default function Main() {
 //     }
 // }
 
+// var myElement = document.getElementById('my-element');
+// var bounding = myElement.getBoundingClientRect();
+const GalleryContainer = useRef()
 
+
+function elementInViewport() {
+    
+}
+
+useEffect(() => {
+
+    const element = GalleryContainer.current;
+    
+
+    const HandleTouchEnd = () => {
+        console.log('touch end')
+        var bounding = element.getBoundingClientRect();
+
+        if (bounding.top >= 0 && bounding.left >= 0 && bounding.right <= (window.innerWidth || document.documentElement.clientWidth) && bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)) 
+        {
+        console.log('Element is in the viewport!');
+        document.getElementById('dot-1').classList.remove('bg-white')
+        document.getElementById('dot-2').classList.add('bg-white')
+        } 
+        else 
+        {
+            console.log('Element is NOT in the viewport!');
+        }
+    }
+
+    element.addEventListener('touchend', HandleTouchEnd);
+
+    return () => {
+      element.removeEventListener('touchend', HandleTouchEnd);
+    };
+  }, []);
 
 
 
@@ -66,7 +101,7 @@ export default function Main() {
     id="maincontainer" className='mainContainer w-full relative'>
     <div className='w-full h-[420px] relative'>
             <div className='absolute w-full h-full'>
-                <div id='wrapRef' className='min-w-full overflow-x-scroll whitespace-nowrap flex flex-row snap-x snap-mandatory'>
+                <div ref={GalleryContainer} className='min-w-full overflow-x-scroll whitespace-nowrap flex flex-row snap-x snap-mandatory'>
 
                     {/* HeroSection */}
                     <HomeAlbum image={HeroImage} time={'1 hour'} title={'Feel the bass'} album_title={'Funk Gets A Groove Like A Nigger'}/>
@@ -81,10 +116,10 @@ export default function Main() {
 
             <div className='absolute bottom-0 left-0 w-full pb-[15px]'>
                 <div className='w-full flex flex-row justify-center items-center gap-2 self-center'>
-                    <div className='w-[11px] h-[11px] rounded-full bg-white'></div>
-                    <div className='w-[11px] h-[11px] rounded-full border-2'></div>
-                    <div className='w-[11px] h-[11px] rounded-full border-2'></div>
-                    <div className='w-[11px] h-[11px] rounded-full border-2'></div>
+                    <div id='dot-1' className='w-[11px] h-[11px] rounded-full bg-white border-2'></div>
+                    <div id='dot-2' className='w-[11px] h-[11px] rounded-full border-2'></div>
+                    <div id='dot-3' className='w-[11px] h-[11px] rounded-full border-2'></div>
+                    <div id='dot-4' className='w-[11px] h-[11px] rounded-full border-2'></div>
                 </div>
             </div>
     </div>
