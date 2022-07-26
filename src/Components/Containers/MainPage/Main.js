@@ -73,7 +73,7 @@ export default function Main() {
                     {/* HeroSection */}
                     <HomeAlbum image={FeelingArtsy} time={'2 hours'} title={`Don't be gay`} album_title={'I hate gays'}/>
                     {/* HeroSection */}
-                    <HomeAlbum image={FatImage} time={'3 hours'} title={`Don't be fat`} album_title={'Go to fucking gym '}/>
+                    <HomeAlbum image={FatImage} time={'3 hours'} title={`Don't be fat David Mat`} album_title={'Go to fucking gym fat David '}/>
                     {/* HeroSection */}
                     <HomeAlbum image={HorrorImage} time={'4 hours'} title={`Are u scared ?`} album_title={'Only pussy can be scared'}/>
                 </div>

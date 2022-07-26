@@ -29,7 +29,7 @@ export default function Favorites() {
   let viewportHeight = window.innerHeight;
   const SiteTitle = 'Favourites - Simply'
   document.title = SiteTitle
-  let UserHasFavourites = true
+  let UserHasFavourites =  Math.random() < 0.5
   const NoFavourites = () => {
     return(
       <div className='w-full h-full p-8 bg-white flex flex-col justify-start items-center'>
@@ -39,7 +39,7 @@ export default function Favorites() {
             <div className='mt-40 flex flex-col items-center justify-center gap-6'>
                 {/* <Heart className={'scale-[250%] !fill-primary'}/> */}
 
-
+               
 
                 <svg 
                   className={'scale-[250%] !fill-primary'} width="48" height="43" viewBox="0 0 48 43" fill="none" >
