@@ -69,13 +69,13 @@ export default function Main() {
                 <div id='wrapRef' className='min-w-full overflow-x-scroll whitespace-nowrap flex flex-row snap-x snap-mandatory'>
 
                     {/* HeroSection */}
-                    <HomeAlbum image={HeroImage} time={'1 hour'} title={'Feel the bass'} album_title={'Funk Gets A Groove Like A Nigger '}/>
+                    <HomeAlbum image={HeroImage} time={'1 hour'} title={'Feel the bass'} album_title={'Funk Gets A Groove Like A Nigger'}/>
                     {/* HeroSection */}
                     <HomeAlbum image={FeelingArtsy} time={'2 hours'} title={`Don't be gay`} album_title={'I hate gays'}/>
                     {/* HeroSection */}
                     <HomeAlbum image={FatImage} time={'3 hours'} title={`Don't be fat David Mat`} album_title={'Go to fucking gym fat David '}/>
                     {/* HeroSection */}
-                    <HomeAlbum image={HorrorImage} time={'4 hours'} title={`Are u scared ?`} album_title={'Only pussy can be scared'}/>
+                    <HomeAlbum image={HorrorImage} time={'4 hours'} title={`Are u scared?`} album_title={'Only pussy can be scared'}/>
                 </div>
             </div>
 

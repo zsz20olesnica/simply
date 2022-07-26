@@ -21,7 +21,7 @@ export default function HomeAlbum({image, time, album_title, title }) {
                         {/* Title */}
                         <motion.h2 transition={{delay: 0.3}} initial={{opacity: 0}} animate={{opacity: 1}} 
                         // Do zrobienia: Ucinanie tytułu jestli jest za dlugi za pomoca js
-                        className='w-full text-4xl font-playfair font-extrabold h-20 truncate'>
+                        className='w-full text-4xl font-playfair font-extrabold h-[82px] whitespace-normal break-words truncate'>
                         {album_title}
                         </motion.h2>
                         {/* Album Title */}
