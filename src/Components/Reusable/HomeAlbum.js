@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { wrap } from "popmotion";
 import { motion } from 'framer-motion';
-export default function HomeAlbum({image, time, album_title, title }) {
+export default function HomeAlbum({image, time, album_title, title, id, reference, touchend}) {
     
     
    
@@ -12,7 +12,7 @@ export default function HomeAlbum({image, time, album_title, title }) {
     
     return (
         
-      <div className='min-w-full h-[420px] relative snap-center scroll-auto'>
+      <div ref={reference} id={id} onTouchEnd={touchend}  className='homealbum min-w-full h-[420px] relative snap-center scroll-auto'>
             <motion.img transition={{duration: 1}} initial={{opacity: 0.8}} animate={{opacity: 1}} src={image}
              className='absolute z-0 min-w-full h-full object-cover' />
                 <div className='absolute bottom-0 w-full h-[279px] p-8 pt-[85px] z-1 bg-heroGradient'>
