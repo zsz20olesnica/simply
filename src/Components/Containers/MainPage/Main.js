@@ -82,8 +82,8 @@ useEffect(() => {
         document.getElementById('dot-1').classList.remove('bg-white')
         document.getElementById('dot-2').classList.add('bg-white')
         
-        } 
-        else 
+        }
+        else
         {
             console.log('Element is NOT in the viewport!');
         }
