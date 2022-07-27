@@ -78,15 +78,7 @@ let dots = Array.from(document.getElementsByClassName('dots'))
         var bounding = element.getBoundingClientRect();
 
         const FilterDots = (e) => {
-            if(id)
-            {
-                return e.id != ID
-            }
-            else
-            {
-                return e
-            }
-            
+                return e.id+1 != ID      
         }
 
 
@@ -96,18 +88,20 @@ let dots = Array.from(document.getElementsByClassName('dots'))
         
         
         
-        //Filter the elements that does not contain id
-        dots.filter(FilterDots)
-        //Add bg to one dot
-
-        // //Remove bg from other dots
-        dots.forEach(dot => {
-            dot.classList.remove('bg-white')
-        })  
+        
         }
         else
         {
             console.log('Element is NOT in the viewport!');   
+            //Filter the elements that does not contain id
+            dots.filter(element => FilterDots(element))
+            console.log(dots)
+            //Add bg to one dot
+
+            // //Remove bg from other dots
+            dots.forEach(dot => {
+                dot.classList.remove('bg-white')
+            })  
         }
     }
 
