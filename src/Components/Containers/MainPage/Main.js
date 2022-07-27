@@ -78,8 +78,10 @@ useEffect(() => {
         if (bounding.top >= 0 && bounding.left >= 0 && bounding.right <= (window.innerWidth || document.documentElement.clientWidth) && bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)) 
         {
         console.log('Element is in the viewport!');
+        
         document.getElementById('dot-1').classList.remove('bg-white')
         document.getElementById('dot-2').classList.add('bg-white')
+        
         } 
         else 
         {
@@ -88,6 +90,7 @@ useEffect(() => {
     }
 
     element.addEventListener('touchend', HandleTouchEnd);
+    
 
     return () => {
       element.removeEventListener('touchend', HandleTouchEnd);
