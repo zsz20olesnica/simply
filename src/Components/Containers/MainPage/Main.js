@@ -112,10 +112,6 @@ let dots = Array.from(document.getElementsByClassName('dots'))
     }
 
 
-    albums.forEach(element => {
-        console.log(element)
-        element.addEventListener('touchend', HandleTouchEnd(element));
-    }) 
 
 
 
@@ -133,13 +129,13 @@ let dots = Array.from(document.getElementsByClassName('dots'))
                 <div id={'someid'} className='min-w-full overflow-x-scroll whitespace-nowrap flex flex-row snap-x snap-mandatory'>
 
                     {/* HeroSection */}
-                    <HomeAlbum touchend={(e) => {HandleTouchEnd(e.target)}} reference={(element) => albumsRef.current.push(element)} id={'album-1'} image={HeroImage} time={'1 hour'} title={'Feel the bass'} album_title={'Funk Gets A Groove Like A Nigger'}/>
+                    <HomeAlbum touchend={(e) => HandleTouchEnd(e.target)} reference={(element) => albumsRef.current.push(element)} id={'album-1'} image={HeroImage} time={'1 hour'} title={'Feel the bass'} album_title={'Funk Gets A Groove Like A Nigger'}/>
                     {/* HeroSection */}
-                    <HomeAlbum  touchend={(e) => {HandleTouchEnd(e.target)}} reference={(element) => albumsRef.current.push(element)} id={'album-2'} image={FeelingArtsy} time={'2 hours'} title={`Don't be gay`} album_title={'I hate gays'}/>
+                    <HomeAlbum  touchend={(e) => HandleTouchEnd(e.target)} reference={(element) => albumsRef.current.push(element)} id={'album-2'} image={FeelingArtsy} time={'2 hours'} title={`Don't be gay`} album_title={'I hate gays'}/>
                     {/* HeroSection */}
-                    <HomeAlbum  touchend={(e) => {HandleTouchEnd(e.target)}} reference={(element) => albumsRef.current.push(element)} id={'album-3'} image={FatImage} time={'3 hours'} title={`Don't be fat David Mat`} album_title={'Go to fucking gym fat David '}/>
+                    <HomeAlbum  touchend={(e) => HandleTouchEnd(e.target)} reference={(element) => albumsRef.current.push(element)} id={'album-3'} image={FatImage} time={'3 hours'} title={`Don't be fat David Mat`} album_title={'Go to fucking gym fat David '}/>
                     {/* HeroSection */}
-                    <HomeAlbum  touchend={(e) => {HandleTouchEnd(e.target)}} reference={(element) => albumsRef.current.push(element)} id={'album-4'} image={HorrorImage} time={'4 hours'} title={`Are u scared?`} album_title={'Only pussy can be scared'}/>
+                    <HomeAlbum  touchend={(e) => HandleTouchEnd(e.target)} reference={(element) => albumsRef.current.push(element)} id={'album-4'} image={HorrorImage} time={'4 hours'} title={`Are u scared?`} album_title={'Only pussy can be scared'}/>
                 </div>
             </div>
 
