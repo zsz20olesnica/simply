@@ -22,7 +22,7 @@ import Privacy from './Components/Containers/PrivacyPage/Privacy';
 function App() {
   const location = useLocation()
   return (
-    <div className="h-screen w-full font-lato">
+    <div className="h-screen w-full font-lato scroll-smooth">
     {/* Tu jest wszystko dobrze i prosze mi tu nie ruszac nie dodawać zadnego BrowserRouter ani nic takiego - Kamil */}
       <AnimatePresence exitBeforeEnter>
             <Routes key={location.pathname} location={location}>

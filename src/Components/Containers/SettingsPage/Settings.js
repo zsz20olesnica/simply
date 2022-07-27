@@ -101,7 +101,7 @@ export default function Settings() {
             </div>
             {/* Footer */}
             <div className='w-full flex flex-row justify-between items-center '>
-                <p className='text-tertiary'>App version 0.2.1</p>
+                <p className='text-tertiary'>App version 0.3</p>
                 <p className='text-primary font-playfair text-2xl'>Simply</p>
               </div>
         </div>  

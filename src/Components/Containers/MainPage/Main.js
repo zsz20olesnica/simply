@@ -15,6 +15,7 @@ import { motion } from "framer-motion";
 
 import '../../../vanilla.css'
 import { ElementFlags } from 'typescript'
+import { comment } from 'postcss'
 
 export default function Main() {
 
@@ -24,8 +25,7 @@ export default function Main() {
   const SiteTitle = 'Home-Simply'
   document.title = SiteTitle
 
-//   const albums1 = useRef(arr.map(() => React.createRef()))
-    const albumsRef = useRef(new Array())
+
 //AddPadding
   useEffect(() => {
     const SongPlaying = document.querySelector('#songplaying').clientHeight
@@ -37,82 +37,74 @@ export default function Main() {
   }, [])
   
 
+//Utility
+function isInViewport(element) {
+    if(element) 
+    {
+        let myElementHeight = element.offsetHeight;
+        let myElementWidth = element.offsetWidth;
+        let bounding = element.getBoundingClientRect();
+            
+            if (bounding.top >= -myElementHeight 
+                && bounding.left >= -myElementWidth
+                && bounding.right <= (window.innerWidth || document.documentElement.clientWidth) + myElementWidth
+                && bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) + myElementHeight) 
+                {
+                    return true
+                } 
+                else 
+                {
+                    return false
+                }
+    }
+    else
+    {
+        
+        return false
+    }
+}
 
 
-let dots = Array.from(document.getElementsByClassName('dots'))
-    const albums = Array.from(albumsRef.current)
-    console.log(albums)
-    let IdNumber;
-    let ID;
+let dots;
+let albums;
 
-    function hasInt(me){
-        let i = 1,
-        a = me.split(""),b = "",c = "";
-        a.forEach(function(e){
-         if (!isNaN(e)){
-          //  console.log(`CONTAIN NUMBER «${e}» AT POSITION ${a.indexOf(e)} => TOTAL COUNT ${i}`)
-           c += e
-           i++
-         } else {b += e}
-        })
-        console.log(`STRING IS «${b}», NUMBER IS «${c}»`)
-        IdNumber = c
-        if (i === 0){
-          return false
-          // return b
-        } else {
-          return true
-          // return +c
-        }
-      }
+useEffect(() => {
+    dots  = Array.from(document.getElementsByClassName('dots'))
+    albums = Array.from(document.getElementsByClassName('homealbum'))
+}, [])
 
-    const HandleTouchEnd = (element) => 
+
+    const HandleTouchEnd = (element, index) => 
     {
         console.log('Touch end')
-        console.log(element)
-        //Get id of container
-        let id = element.id
-        hasInt(id)
-        console.log(IdNumber)
-        ID = 'dot-'+IdNumber
-        var bounding = element.getBoundingClientRect();
-
-        const FilterDots = (e) => {
-                return e.id+1 != ID      
-        }
-
-
-        if (bounding.top >= 0 && bounding.left >= 0 && bounding.right <= (window.innerWidth || document.documentElement.clientWidth) && bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)) 
+      //  console.log(element)
+        console.log(index)
+        let prev = albums[index-1]
+        let next = albums[index+1]
+        console.log(prev)
+        console.log(next)
+        if(isInViewport(prev))
         {
-        console.log('Element is in the viewport!');
-        
-        
-        
-        
+            console.log('Prev is in the viewport!')
+            dots[index-1].classList.add('bg-white')
+            dots[index].classList.remove('bg-white')
+            dots[index+1].classList.remove('bg-white')
+        }
+        else if (isInViewport(next))
+        {
+            console.log('Next is in the viewport!')
+            dots[index+1].classList.add('bg-white')
+            dots[index].classList.remove('bg-white')
+            dots[index-1].classList.remove('bg-white')
         }
         else
         {
-            console.log('Element is NOT in the viewport!');   
-            //Filter the elements that does not contain id
-            dots.filter(element => FilterDots(element))
-            console.log(dots)
-            //Add bg to one dot
-
-            // //Remove bg from other dots
-            dots.forEach(dot => {
-                dot.classList.remove('bg-white')
-            })  
+            console.log('Original is in the viewport!')
+            dots[index].classList.add('bg-white')
+            dots[index+1].classList.remove('bg-white')
+            dots[index-1].classList.remove('bg-white')
         }
     }
-
-
-
-
-
-
-
-
-
 
 
   return (
@@ -120,32 +112,28 @@ let dots = Array.from(document.getElementsByClassName('dots'))
     id="maincontainer" className='mainContainer w-full relative'>
     <div className='w-full h-[420px] relative'>
             <div className='absolute w-full h-full'>
-                <div id={'someid'} className='min-w-full overflow-x-scroll whitespace-nowrap flex flex-row snap-x snap-mandatory'>
+                <div id={'someid'} className='gallerycontainer min-w-full overflow-x-scroll srcoll whitespace-nowrap flex gap-[1px] flex-row snap-x snap-mandatory'>
 
                     {/* HeroSection */}
-                    <HomeAlbum touchend={(e) => HandleTouchEnd(e.target)} reference={(element) => albumsRef.current.push(element)} id={'album-1'} image={HeroImage} time={'1 hour'} title={'Feel the bass'} album_title={'Funk Gets A Groove Like A Nigger'}/>
+                    <HomeAlbum touchend={(e) => HandleTouchEnd(e.target, 0)}  image={HeroImage} time={'1 hour'} title={'Feel the bass'} album_title={'Funk Gets A Groove Like A Nigger'}/>
                     {/* HeroSection */}
-                    <HomeAlbum  touchend={(e) => HandleTouchEnd(e.target)} reference={(element) => albumsRef.current.push(element)} id={'album-2'} image={FeelingArtsy} time={'2 hours'} title={`Don't be gay`} album_title={'I hate gays'}/>
+                    <HomeAlbum touchend={(e) => HandleTouchEnd(e.target, 1)}  image={FeelingArtsy} time={'2 hours'} title={`Don't be gay`} album_title={'I hate gays'}/>
                     {/* HeroSection */}
-                    <HomeAlbum  touchend={(e) => HandleTouchEnd(e.target)} reference={(element) => albumsRef.current.push(element)} id={'album-3'} image={FatImage} time={'3 hours'} title={`Don't be fat David Mat`} album_title={'Go to fucking gym fat David '}/>
+                    <HomeAlbum touchend={(e) => HandleTouchEnd(e.target, 2)}  image={FatImage} time={'3 hours'} title={`Don't be fat David Mat`} album_title={'Go to fucking gym fat David '}/>
                     {/* HeroSection */}
-                    <HomeAlbum  touchend={(e) => HandleTouchEnd(e.target)} reference={(element) => albumsRef.current.push(element)} id={'album-4'} image={HorrorImage} time={'4 hours'} title={`Are u scared?`} album_title={'Only pussy can be scared'}/>
+                    <HomeAlbum touchend={(e) => HandleTouchEnd(e.target, 3)}  image={HorrorImage} time={'4 hours'} title={`Are u scared?`} album_title={'Only pussy can be scared'}/>
                 </div>
             </div>
 
             <div className='absolute bottom-0 left-0 w-full pb-[15px]'>
                 <div className='w-full flex flex-row justify-center items-center gap-2 self-center'>
-                    <div id='dot-1' className='dots w-[11px] h-[11px] rounded-full bg-white border-2'></div>
-                    <div id='dot-2' className='dots w-[11px] h-[11px] rounded-full border-2'></div>
-                    <div id='dot-3' className='dots w-[11px] h-[11px] rounded-full border-2'></div>
-                    <div id='dot-4' className='dots w-[11px] h-[11px] rounded-full border-2'></div>
+                    <div id='dot0' className='dots w-[11px] h-[11px] rounded-full bg-white border-2'></div>
+                    <div id='dot1' className='dots w-[11px] h-[11px] rounded-full border-2'></div>
+                    <div id='dot2' className='dots w-[11px] h-[11px] rounded-full border-2'></div>
+                    <div id='dot3' className='dots w-[11px] h-[11px] rounded-full border-2'></div>
                 </div>
             </div>
     </div>
-
-
-
-
 
       {/* FORYOU Section */}
       <motion.div initial={{opacity: 0}}  whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.8 }}
@@ -159,7 +147,6 @@ let dots = Array.from(document.getElementsByClassName('dots'))
               <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
               <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
               <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
-
           </div>
       </motion.div>
 

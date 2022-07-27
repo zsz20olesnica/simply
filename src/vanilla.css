@@ -13,7 +13,7 @@
 * {
     color: white;
 }
-
+scrollbar-width: none;  /* Firefox */
 
 #PlayerSlider
 {
@@ -48,6 +48,13 @@ input[type=range]{
 {
     animation:slide-top .4s cubic-bezier(.25,.46,.45,.94) both;
     animation-direction: reverse;
+}
+
+*{
+    -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+    display: none;
 }
 
 /* Animations */
