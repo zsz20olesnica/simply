@@ -76,13 +76,9 @@ useEffect(() => {
 
     const HandleTouchEnd = (element, index) => 
     {
-        console.log('Touch end')
-      //  console.log(element)
         console.log(index)
         let prev = albums[index-1]
         let next = albums[index+1]
-        console.log(prev)
-        console.log(next)
         if(isInViewport(prev))
         {
             console.log('Prev is in the viewport!')
