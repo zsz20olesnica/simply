@@ -41,7 +41,7 @@ export default function SingUp() {
                   {/* Password */}
                   <p className='w-full text-[19px] font-lato text-secondary'>Password</p>
                   <input placeholder='Type your password' type='password' className='w-full h-11 rounded-full bg-search px-5 text-secondary focus:outline-primary'></input>
-                  <input placeholder='Confrim your password' type='password' className='w-full h-11 rounded-full bg-search px-5 text-secondary focus:outline-primary'></input>
+                  <input placeholder='Confirm your password' type='password' className='w-full h-11 rounded-full bg-search px-5 text-secondary focus:outline-primary'></input>
                   {/* IfPasswordChangeFailed/To sie powinno pokazywac jak sie zle wpisze haslo w sensie takie poza tymi wymogami */}
                   <p className='text-[14px] font-lato text-error'>Password should be at least 8 characters long and contain special characters.</p>
 
