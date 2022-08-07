@@ -104,7 +104,7 @@ const MoreOptionss = ({ isOpenn }) => {
 
                 {/* Time and slider */}
                 <div className='w-full '>
-                        <input type="range" id="PlayerSlider" defaultValue="0" className='w-full h-2'></input>
+                        <input type="range" id="PlayerSlider" defaultValue="0" className='w-full h-2 bg-search rounded-lg'></input>
                         <p className='font-lato text-[12px] text-tertiary'>00:00</p>
                 </div>
 
