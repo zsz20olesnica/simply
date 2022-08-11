@@ -9,7 +9,9 @@ export default function PlayerNavbar() {
     const [IsPaused, setIsPaused] = useState('false')
 
   return (
-    <div  id='songplaying' className='songplaying bg-white w-full h-[88px] gap-2 flex justify-center items-center fixed z-10 bottom-0 shadow-inner'>
+    <>
+        {/* SongPlaying */}
+        <div  id='songplaying' className='songplaying bg-white w-full h-[88px] gap-2 flex justify-center items-center fixed z-10 bottom-0 shadow-inner'>
               {/* DetailsContainer */}
               <div className='w-full h-full flex flex-row gap-6 justify-center items-center '>
 
@@ -28,6 +30,7 @@ export default function PlayerNavbar() {
                     <div className='flex flex-col justify-center items-start'>
                         <p className='text-secondary'>Tunes For The Anxious</p>
                         <p className='text-tertiary'>David Manson - The ways to live</p>
+
                     </div>
                     {/* Arrow */}
                     <div onClick={() => history('/player')}>
@@ -36,5 +39,6 @@ export default function PlayerNavbar() {
               </div>
 
         </div>
+    </>
   )
 }
