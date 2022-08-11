@@ -84,8 +84,8 @@ export default function Home() {
           {/* Logo */}
           <h1 className='logo font-playfair text-[90px] mt-[150px] font-medium'>Simply</h1>
           
-          <div className='w-full  relative'>
-                    <div className=' w-full '>
+          <div className='w-full relative'>
+                    <div className='w-full flex flex-col justify-center items-center'>
                         <div className='infocontainer min-w-full overflow-x-scroll scroll flex gap-[1px] flex-row snap-x snap-mandatory'>
                             {/* Paragraph */}
                             <HomeInfo touchend={(e) => HandleTouchEnd(e.target, 0)} title={'Discover music'} paragraph={'Listen your favorite music anywhere you are.'}/>
@@ -94,7 +94,7 @@ export default function Home() {
                         </div>
                     </div>
                     {/* 3 dots */}
-                    <div className='absolute bottom-0 left-0 w-full pb-[40px]'>
+                    <div className='absolute bottom-0 left-0 w-full pb-[55px]'>
                           <div className='w-full flex flex-row justify-center items-center gap-2 self-center'>
                               <div id='dot0' className='dots w-[11px] h-[11px] rounded-full border-2 bg-white'></div>
                               <div id='dot1' className='dots w-[11px] h-[11px] rounded-full border-2'></div>
@@ -104,9 +104,9 @@ export default function Home() {
             </div>
 
           {/* LoginButton */}
-          <button onClick={() => history('/home')} className='w-[180px] h-11 my-[16px] mt-[25px] text-xl rounded-full bg-white font-lato text-primary'>Log in</button> 
+          <button onClick={() => history('/home')} className='w-[180px] h-11 my-[16px] text-xl rounded-full bg-white font-lato text-primary'>Log in</button> 
           {/* SingUp */}
-          <p onClick={() => history('/signup')} className='homeSingUpButton w-[65%] text-center  mt-0 cursor-pointer'>Sign up</p>
+          <p onClick={() => history('/signup')} className='homeSingUpButton w-[65%] text-center mb-20 cursor-pointer'>Sign up</p>
       </div>
 
     </motion.div>

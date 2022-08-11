@@ -15,7 +15,7 @@ import Player from './Components/Containers/PlayerPage/Player'
 import About from './Components/Containers/AboutPage/About'
 import Feedback from './Components/Containers/FeedbackPage/Feedback'
 import Privacy from './Components/Containers/PrivacyPage/Privacy';
-
+import Album from './Components/Containers/AlbumPage/AlbumPage';
 
 
 
@@ -38,6 +38,7 @@ function App() {
                 <Route path='/search' element={<Search />}/>
                 <Route path='/filtered' element={<Filtered />}/>
                 <Route path='/player' element={<Player />}/>
+                <Route path='/album' element={<Album />}/>
             </Routes> 
       </AnimatePresence>
     </div>

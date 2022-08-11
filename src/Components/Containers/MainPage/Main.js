@@ -6,7 +6,6 @@ import FatImage from '../../../Images/playlist3.png'
 import PlayImage from '../../../Images/playlist2.png'
 import FeelingArtsy from '../../../Images/playlist1.png'
 import HeroImage from '../../../Images/home_hero.png'
-
 import NavBar from '../../Reusable/Navbar'
 import SongTile from '../../Reusable/SongTile'
 import HomeAlbum from '../../Reusable/HomeAlbum'
@@ -229,7 +228,7 @@ useEffect(() => {
                     </div>
               </div>
 
-          </div>
+        </div>
 
         <NavBar/>
 
