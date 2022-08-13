@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { DownArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import OccasionCategories from '../../Reusable/OccasionCategories'
 import MoodCategories from '../../Reusable/MoodCategories'
 
 import { motion } from 'framer-motion';
+import { Categories } from '../../../firebase'
 
 
 export default function Search() {
@@ -13,6 +14,14 @@ export default function Search() {
   let viewportHeight = window.innerHeight;
   const SiteTitle = 'Search - Simply'
   document.title = SiteTitle
+  
+  
+  useEffect(() => {
+    Categories.splice(0, Categories.length)
+    console.log(Categories)
+  }, [])
+  
+  
 
   return (
     <motion.div transition={{duration: 0.5, ease: "easeInOut" }} initial={{y: viewportHeight, opacity: 0}} 
@@ -32,28 +41,28 @@ export default function Search() {
             {/* MoodFilters */}
             <h3 className='w-full font-lato text-[19px] text-secondary font-bold'>Mood</h3>
             <div className='w-full flex flex-row flex-wrap gap-3'>
-               <MoodCategories category={'Move'}/>
-               <MoodCategories category={'Sad'}/>
-               <MoodCategories category={'Chill'}/>
-               <MoodCategories category={'Hard porn'}/>
-               <MoodCategories category={'Beach time'}/>
-               <MoodCategories category={'Reading'}/>
-               <MoodCategories category={'For black people'}/>
-               <MoodCategories category={'Angry'}/>
+               <MoodCategories category={'Move'} />
+               <MoodCategories category={'Sad'} />
+               <MoodCategories category={'Chill'} />
+               <MoodCategories category={'Hard porn'} />
+               <MoodCategories category={'Beach time'} />
+               <MoodCategories category={'Reading'} />
+               <MoodCategories category={'For black people'} />
+               <MoodCategories category={'Angry'} />
             </div>
 
             
             {/* Occasion filters */}
             <h3 className='w-full font-lato text-[19px] text-secondary font-bold'>Occasion</h3>
                 <div className='w-full flex flex-row flex-wrap gap-3 mb-16'>
-                    <OccasionCategories category={'Party'}/>
-                    <OccasionCategories category={'Chill'}/>
-                    <OccasionCategories category={'Breakup'}/>
-                    <OccasionCategories category={'Angry'}/>
-                    <OccasionCategories category={'Gym'}/>
-                    <OccasionCategories category={'Relaxing'}/>
-                    <OccasionCategories category={'For the gays'}/>
-                    <OccasionCategories category={'Move'}/>
+                    <OccasionCategories category={'Party'} />
+                    <OccasionCategories category={'Chill'} />
+                    <OccasionCategories category={'Breakup'} />
+                    <OccasionCategories category={'Angry'} />
+                    <OccasionCategories category={'Gym'} />
+                    <OccasionCategories category={'Relaxing'} />
+                    <OccasionCategories category={'For the gays'} />
+                    <OccasionCategories category={'Move'} />
                 </div>
             
             

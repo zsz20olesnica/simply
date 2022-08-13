@@ -2,10 +2,9 @@ import React from 'react'
 import { LeftArrow, Google, Facebook, Twitter, CustomApp, Microsoft } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { SignInWithGoogle, appVersion} from '../../../firebase'
+import { SignInWithGoogle, appVersion } from '../../../firebase'
 
-
-export default function SingUp() {
+export default function LogIn() {
 
   const history = useNavigate()
   const SiteTitle = 'Sign Up - Simply'
@@ -32,8 +31,8 @@ export default function SingUp() {
 
             {/* CreateAccount */}
               <div className='w-full flex flex-col items-center justify-center gap-5 mt-10'>
-              <p className='text-6xl font-playfair text-secondary mb-32 text-center'>Welcome to Simply!</p>
-              <p className='text-[20px] font-lato text-secondary'>Sing up with:</p>
+              <p className='text-6xl font-playfair text-secondary mb-32 text-center'>Log In to Simply!</p>
+              <p className='text-[20px] font-lato text-secondary'>Log in with:</p>
 
               <div className='mx-10 flex flex-row justify-center items-center gap-2'>
                 <button onClick={Login} className='h-16 w-16 rounded-lg bg-primary p-3'>
@@ -51,7 +50,7 @@ export default function SingUp() {
               <p className='text-[20px] font-lato text-secondary'>or</p>
 
               {/* ConfrimButton */}
-              <button onClick={() => {history('/createaccount')}} className='w-[200px] h-11 text-lg rounded-full bg-primary font-lato text-white'>Create Account</button>
+              <button onClick={() => {history('/loginviasimply')}} className='w-[200px] h-11 text-lg rounded-full bg-primary font-lato text-white'>Simply Account</button>
                  
                  
               </div>

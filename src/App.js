@@ -5,6 +5,8 @@ import { AnimatePresence } from 'framer-motion';
 
 import Home from './Components/Containers/HomePage/Home';
 import SingUp from './Components/Containers/SingUpPage/SingUp';
+import LogIn from './Components/Containers/LogIn/LogIn';
+import LogInViaSimply from './Components/Containers/LogIn/LogInViaSimply';
 import CreateAccount from './Components/Containers/CreateAccountPage/CreateAccount';
 import Main from './Components/Containers/MainPage/Main';
 import Favorites from './Components/Containers/FavouritesPage/Favourites';
@@ -16,6 +18,7 @@ import About from './Components/Containers/AboutPage/About'
 import Feedback from './Components/Containers/FeedbackPage/Feedback'
 import Privacy from './Components/Containers/PrivacyPage/Privacy';
 import Album from './Components/Containers/AlbumPage/AlbumPage';
+
 
 
 
@@ -39,6 +42,8 @@ function App() {
                 <Route path='/filtered' element={<Filtered />}/>
                 <Route path='/player' element={<Player />}/>
                 <Route path='/album' element={<Album />}/>
+                <Route path='/login' element={<LogIn/>}/>
+                <Route path='/loginviasimply' element={<LogInViaSimply/>}/>
             </Routes> 
       </AnimatePresence>
     </div>

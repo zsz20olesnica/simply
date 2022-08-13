@@ -12,6 +12,7 @@ import SongListTile from "../../Reusable/SongListTile";
 import { motion, Reorder, useDragControls } from 'framer-motion';
 
 export default function AlbumPage({}) {
+
     let viewportWidth = window.innerWidth;
     const history = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
@@ -25,11 +26,19 @@ export default function AlbumPage({}) {
         setIsOpen(!isOpen)
       }
 
+    //AddPadding
+    useEffect(() => {
+        const SongPlaying = document.querySelector('#songplaying').clientHeight
+        const root = document.querySelector(':root')
+        root.style.setProperty('--mainPadding', `${SongPlaying +10}px`)
+
+    }, [])
+
     return (
         <>
     <motion.div  transition={{duration: 0.5, ease: "easeInOut" }} initial={{x: viewportWidth, opacity: 0}} 
     animate={{x: 0, opacity: 1}} exit={{x: viewportWidth, opacity: 0}}>
-    <div id='container' className='mainContainer w-full h-full relative'>
+    <div id='maincontainer' className='mainContainer w-full h-full relative'>
 
         <div className='w-full h-[250px] bg-slate-200 p-8 flex flex-col justify-between items-center'>
             
@@ -55,14 +64,13 @@ export default function AlbumPage({}) {
             </div>
             
         </div>
+        <Reorder.Group axis="y" onReorder={setItems} values={items}>
+            {items.map(item => (
+                <SongListTile key={item} item={item} image={PlayerHero} title={'Grill u Gawrona'} authors={'Białas, Lanek'}/>
+            ))}    
+        </Reorder.Group>
     </div>
-    <Reorder.Group axis="y" onReorder={setItems} values={items}>
-        {items.map(item => (
-            <SongListTile key={item} item={item} image={PlayerHero} title={'Grill u Gawrona'} authors={'Białas, Lanek'}/>
-        ))}    
-    </Reorder.Group>
     
-
     <PlayerNavbar/>
    
     </motion.div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { LeftArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 
@@ -17,6 +17,7 @@ import ImageSport from '../../../Images/playlist9.png'
 import FilteredCategory from '../../Reusable/FilteredCategory'
 
 import { motion } from 'framer-motion';
+import { Categories } from '../../../firebase'
 
 export default function Filtered() {
 
@@ -24,6 +25,15 @@ export default function Filtered() {
   let viewportWidth = window.innerWidth;
   const SiteTitle = 'Filtered - Simply'
   document.title = SiteTitle
+  console.log(Categories)
+  const [categ, setCateg] = useState([])
+
+  const handleDelete = (index) => {
+    Categories.splice(index, 1)
+    
+    // Rerender
+    setCateg((prev) => prev.splice(index, 1))
+  }
 
 
   return (
@@ -42,11 +52,15 @@ export default function Filtered() {
             
             
             <div className='w-full flex flex-row flex-wrap gap-5'>
+            {
+              Categories.map((category, index) => (
+                <FilteredCategory category={category} index={index} handleDelete={handleDelete}/>
+                )
+              )
             
-              <FilteredCategory category={'Gym'}/>
-              <FilteredCategory category={'Chill'}/>
-             
-                    
+            } 
+               
+
             </div>
              
              {/* KafelkiContainer */}

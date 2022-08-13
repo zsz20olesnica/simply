@@ -4,9 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { handleDownAnim } from '../../../Utils/Animations'
 import '../../../vanilla.css'
-
-
 import { motion } from 'framer-motion';
+import { SignOut, appVersion } from '../../../firebase'
 
 
 export default function Settings() {
@@ -41,6 +40,10 @@ export default function Settings() {
     setNotifications(!notifications)
   }
   
+  const Logout = () => {
+    SignOut(()=>{history("/")})
+  }
+
   let viewportHeight = window.innerHeight;
 
   return (
@@ -94,14 +97,14 @@ export default function Settings() {
                 <li onClick={handleClickDelAccount} className='flex flex-col justify-center items-start'>
                 <p className='text-[19px] font-lato text-error'>Delete Account</p>
                 </li>
-                <li className='flex flex-col justify-center items-start mt-5'>
+                <li onClick={Logout} className='flex flex-col justify-center items-start mt-5'>
                 <p className='text-[19px] font-lato text-secondary'>Sign Out</p>
                 </li>
               </ul>
             </div>
             {/* Footer */}
             <div className='w-full flex flex-row justify-between items-center '>
-                <p className='text-tertiary'>App version 0.3</p>
+                <p className='text-tertiary'>App version {appVersion}</p>
                 <p className='text-primary font-playfair text-2xl'>Simply</p>
               </div>
         </div>  

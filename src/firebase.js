@@ -1,5 +1,15 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore"
+import { getAuth, 
+  GoogleAuthProvider, 
+  signInWithPopup, 
+  signOut, 
+  createUserWithEmailAndPassword, 
+  updateProfile, 
+  confirmPasswordReset, 
+  signInWithEmailAndPassword,
+  onAuthStateChanged } from "firebase/auth";
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -16,6 +26,61 @@ const firebaseConfig = {
   measurementId: "G-BV9BX83Z7E"
 };
 
+//FilteredCategoriesInSearchPanel
+export let Categories = []
+
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+export const appVersion = '0.5'
+//Firestore DB
 export const firestore = getFirestore(app)
+//Kto jest zalogowany jego dane itp
+export const auth = getAuth(app)
+//LoginProvider
+const provider = new GoogleAuthProvider()
+
+
+export const SignInWithGoogle = (history) => {
+  console.log('SignedIn')
+  signInWithPopup(auth, provider)
+  .then((result)=>{
+    const name = result.user.displayName
+    const email = result.user.email
+    localStorage.setItem('UserName', name)
+    localStorage.setItem('UserEmail', email)
+    console.log(result)
+    history()
+  }).catch((error) =>{
+    console.log(error)
+  })
+}
+
+
+
+export const SignOut = (history) => {
+  signOut(auth)
+  history()
+  localStorage.removeItem('UserName')
+  localStorage.removeItem('UserEmail')
+}
+
+export const registerUser = (email, login, password) => {
+  createUserWithEmailAndPassword(auth, email, password).then(() =>{
+    return updateProfile(auth.currentUser, {
+      displayName: login,
+    });
+  }).then((response) => console.log(response))
+  .catch((error) =>console.log(error))
+  localStorage.setItem('UserName', login)
+  localStorage.setItem('UserEmail', email)
+}
+
+export const SingInWithEmail = (email, password, history) => {
+  signInWithEmailAndPassword(auth, email, password)
+  .then((result) => console.log(result))
+  .catch((error) =>console.log(error))
+  localStorage.setItem('UserEmail', email)
+}
+
+

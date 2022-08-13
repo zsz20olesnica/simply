@@ -88,7 +88,7 @@ export default function Home() {
                     <div className='w-full flex flex-col justify-center items-center'>
                         <div className='infocontainer min-w-full overflow-x-scroll scroll flex gap-[1px] flex-row snap-x snap-mandatory'>
                             {/* Paragraph */}
-                            <HomeInfo touchend={(e) => HandleTouchEnd(e.target, 0)} title={'Discover music'} paragraph={'Listen your favorite music anywhere you are.'}/>
+                            <HomeInfo touchend={(e) => HandleTouchEnd(e.target, 0)} title={'Discover music'} paragraph={'Listen to your favorite music anywhere you are.'}/>
                             <HomeInfo touchend={(e) => HandleTouchEnd(e.target, 1)} title={'All for free'} paragraph={'Use all the features of our website for free.'}/>
                             <HomeInfo touchend={(e) => HandleTouchEnd(e.target, 2)} title={'Lorem Ipsum'} paragraph={'Lorem Ipsum is simply dummy text of the printing and typesetting.'}/>
                         </div>
@@ -104,7 +104,7 @@ export default function Home() {
             </div>
 
           {/* LoginButton */}
-          <button onClick={() => history('/home')} className='w-[180px] h-11 my-[16px] text-xl rounded-full bg-white font-lato text-primary'>Log in</button> 
+          <button onClick={() => history('/login')} className='w-[180px] h-11 my-[16px] text-xl rounded-full bg-white font-lato text-primary'>Log in</button> 
           {/* SingUp */}
           <p onClick={() => history('/signup')} className='homeSingUpButton w-[65%] text-center mb-20 cursor-pointer'>Sign up</p>
       </div>

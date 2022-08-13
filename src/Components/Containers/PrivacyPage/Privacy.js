@@ -1,7 +1,7 @@
 import React from 'react'
 import { LeftArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
-
+import { appVersion } from '../../../firebase'
 export default function Privacy() {
 
   const history = useNavigate()
@@ -37,7 +37,7 @@ export default function Privacy() {
             </div>
             {/* Footer */}
             <div className='w-full flex flex-row justify-between items-center'>
-                <p className='text-tertiary'>App version 0.2</p>
+                <p className='text-tertiary'>App version {appVersion}</p>
                 <p className='text-primary font-playfair text-2xl'>Simply</p>
               </div>
         </div>  

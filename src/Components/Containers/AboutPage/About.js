@@ -2,7 +2,7 @@ import React from 'react'
 import { LeftArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-
+import { appVersion } from '../../../firebase' 
 import { motion } from 'framer-motion';
 
 export default function About() {
@@ -25,13 +25,13 @@ export default function About() {
             {/* SettingsContainer */}
             <div className='mb-20 w-full flex flex-col justify-center items-center gap-4 text-secondary'>
                 <p className='text-primary font-playfair text-6xl'>Simply</p>
-                <p className='text-tertiary'>App version 0.2</p>
+                <p className='text-tertiary'>App version {appVersion}</p>
                 <p className='text-tertiary text-center'>Created by Kamil Kubiczek, Hubert Kuświk <br></br> & Dawid Matiaszewski</p>
                 <p className='text-tertiary'>Designed by <a href='https://fabrx.co'>fabrx.co</a></p>
             </div>
             {/* Footer */}
             <div className='w-full flex flex-row justify-between items-center'>
-                <p className='text-tertiary'>App version 0.2</p>
+                <p className='text-tertiary'>App version {appVersion}</p>
                 <p className='text-primary font-playfair text-2xl'>Simply</p>
               </div>
         </div>  
