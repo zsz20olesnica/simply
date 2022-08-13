@@ -6,6 +6,8 @@ import { onAuthStateChanged } from 'firebase/auth'
 import {appVersion, SingInWithEmail, auth} from '../../../firebase'
 export default function SingUp() {
 
+  
+//IfAlreadyLoggedInGoToHome
   useEffect(() => {
     onAuthStateChanged(auth, (res) => {
     if(res)

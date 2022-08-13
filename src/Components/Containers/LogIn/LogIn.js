@@ -1,8 +1,10 @@
-import React from 'react'
-import { LeftArrow, Google, Facebook, Twitter, CustomApp, Microsoft } from '../../../Icons'
+import React, {useEffect}from 'react'
+import { LeftArrow, Google, CustomApp } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { SignInWithGoogle, appVersion } from '../../../firebase'
+import { SignInWithGoogle, appVersion, auth } from '../../../firebase'
+import { onAuthStateChanged } from 'firebase/auth'
+
 
 export default function LogIn() {
 
@@ -14,6 +16,18 @@ export default function LogIn() {
   const Login = () => {
     SignInWithGoogle(()=>{history("/home")})
   }
+
+  
+//IfAlreadyLoggedInGoToHome
+  useEffect(() => {
+    onAuthStateChanged(auth, (res) => {
+    if(res)
+    {
+      history('/home')
+    }
+  })
+  }, [])
+
   
   return (
     <motion.div transition={{duration: 0.5, ease: "easeInOut" }} initial={{x: viewportWidth, opacity: 0}} 

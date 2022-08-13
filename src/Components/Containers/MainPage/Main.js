@@ -21,7 +21,7 @@ export default function Main() {
   const history = useNavigate()
   let viewportHeight = window.innerHeight;
   const [IsPaused, setIsPaused] = useState('false')
-  const SiteTitle = 'Home-Simply'
+  const SiteTitle = 'Home - Simply'
   document.title = SiteTitle
 
 

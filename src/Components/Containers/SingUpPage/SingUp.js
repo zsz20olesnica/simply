@@ -3,7 +3,7 @@ import { LeftArrow, Google, Facebook, Twitter, CustomApp, Microsoft } from '../.
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { SignInWithGoogle, appVersion} from '../../../firebase'
-
+import { collection, addDoc } from "firebase/firestore"; 
 
 export default function SingUp() {
 

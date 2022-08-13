@@ -1,14 +1,16 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore"
+import { collection, doc, setDoc } from "firebase/firestore"; 
 import { getAuth, 
   GoogleAuthProvider, 
   signInWithPopup, 
   signOut, 
   createUserWithEmailAndPassword, 
   updateProfile, 
-  confirmPasswordReset, 
-  signInWithEmailAndPassword,
-  onAuthStateChanged } from "firebase/auth";
+  signInWithEmailAndPassword, } from "firebase/auth";
+
+
+
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -34,7 +36,7 @@ export let Categories = []
 const app = initializeApp(firebaseConfig);
 export const appVersion = '0.5'
 //Firestore DB
-export const firestore = getFirestore(app)
+export const db = getFirestore(app)
 //Kto jest zalogowany jego dane itp
 export const auth = getAuth(app)
 //LoginProvider
@@ -45,6 +47,13 @@ export const SignInWithGoogle = (history) => {
   console.log('SignedIn')
   signInWithPopup(auth, provider)
   .then((result)=>{
+    
+    //CreateNewDBForUser CHUJSTWO NIE DZIAŁA
+    // db.collection('users').doc(result.user.uid).set({
+    //   name: result.user.displayName,
+    //   email:  result.user.email
+    // })
+
     const name = result.user.displayName
     const email = result.user.email
     localStorage.setItem('UserName', name)
