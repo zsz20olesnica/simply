@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react'
+import React, {useRef, useEffect, useState} from 'react'
 import { LeftArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -23,6 +23,8 @@ export default function SingUp() {
   const SiteTitle = 'Log In with Simply Account - Simply'
   document.title = SiteTitle
 
+  const [InvalidData, setInvalidData] = useState(false)
+
   //RegisterInputsRef
   const emailRef = useRef()
   const passwordRef = useRef()
@@ -35,7 +37,7 @@ export default function SingUp() {
 
     if(email && password)
     {
-      SingInWithEmail(email, password, ()=>{history('/home')})
+      SingInWithEmail(email, password, ()=>setInvalidData(true))
     }
   }
   
@@ -66,10 +68,17 @@ export default function SingUp() {
                   {/* Password */}
                   <p className='w-full text-[19px] font-lato text-secondary'>Password</p>
                   <input ref={passwordRef} placeholder='Type your password' type='password' className='w-full h-11 rounded-full bg-search px-5 text-secondary focus:outline-primary'></input>
-                  
+                  {
+                  InvalidData
+                  ? <p className='text-[14px] font-lato text-error self-start'>Something went wrong, check if data is correct.</p>
+                  : null
+                  }
 
                   {/* ConfirmButton */}
                   <button onClick={LogIn} className='w-[200px] h-11 my-[16px] mt-[25px] text-lg rounded-full bg-primary font-lato text-white'>Log In</button>
+
+                  <p onClick={() => history('/signup')} className='text-[14px] font-lato text-tertiary self-center'>You don't have account, Sign Up now!</p>
+
               </div>
               
                 

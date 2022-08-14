@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { LeftArrow, Google, Facebook, Twitter, CustomApp, Microsoft } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { SignInWithGoogle, appVersion} from '../../../firebase'
+import { SignInWithGoogle, appVersion, auth} from '../../../firebase'
 import { collection, addDoc } from "firebase/firestore"; 
+import { onAuthStateChanged } from 'firebase/auth'
 
 export default function SingUp() {
 
@@ -11,6 +12,16 @@ export default function SingUp() {
   const SiteTitle = 'Sign Up - Simply'
   document.title = SiteTitle
   let viewportWidth = window.innerWidth;
+  
+  //IfAlreadyLoggedInGoToHome
+  useEffect(() => {
+    onAuthStateChanged(auth, (res) => {
+    if(res)
+    {
+      history('/home')
+    }
+  })
+  }, [])
 
   const Login = () => {
     SignInWithGoogle(()=>{history("/home")})

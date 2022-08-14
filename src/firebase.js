@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore"
-import { collection, doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import { getAuth, 
   GoogleAuthProvider, 
   signInWithPopup, 
@@ -8,6 +8,7 @@ import { getAuth,
   createUserWithEmailAndPassword, 
   updateProfile, 
   signInWithEmailAndPassword, } from "firebase/auth";
+import { isImportEqualsDeclaration } from "typescript";
 
 
 
@@ -43,24 +44,46 @@ export const auth = getAuth(app)
 const provider = new GoogleAuthProvider()
 
 
-export const SignInWithGoogle = (history) => {
-  console.log('SignedIn')
+export const SignInWithGoogle = () => {
   signInWithPopup(auth, provider)
-  .then((result)=>{
-    
-    //CreateNewDBForUser CHUJSTWO NIE DZIAŁA
-    // db.collection('users').doc(result.user.uid).set({
-    //   name: result.user.displayName,
-    //   email:  result.user.email
-    // })
+  .then((result) => {
+    //GetDocFromFirebase  
+    getDoc(doc(db, "users", result.user.uid)).then(docSnap => {
+      // CheckIfExists
+      if (docSnap.exists()) {
+        console.log("User exist")
+      } 
+      else 
+      {
+        // IfNotAddNewUserData
+        console.log("No such document! Adding new user to database")
 
+        //CreateNewDBForUser
+          setDoc(doc(db, "users", result.user.uid), {
+            uid: result.user.uid,
+            email: result.user.email,
+            displayName: result.user.displayName,
+            settings: {
+              notifications: true
+            },
+            favouritesSongs:
+            {
+
+            },
+          });
+      }
+    })
+  })
+  .then((result) => {
+    // SaveUserDataInLocalStorage
     const name = result.user.displayName
     const email = result.user.email
     localStorage.setItem('UserName', name)
     localStorage.setItem('UserEmail', email)
     console.log(result)
-    history()
-  }).catch((error) =>{
+    console.log('SignedIn')
+  })
+  .catch((error) =>{
     console.log(error)
   })
 }
@@ -79,17 +102,40 @@ export const registerUser = (email, login, password) => {
     return updateProfile(auth.currentUser, {
       displayName: login,
     });
-  }).then((response) => console.log(response))
-  .catch((error) =>console.log(error))
+  }).then((result) => 
+  {
+  //CreateNewDBForUser
+  setDoc(doc(db, "users", auth.currentUser.uid), {
+    uid: auth.currentUser.uid,
+    email: auth.currentUser.email,
+    displayName: auth.currentUser.displayName,
+    settings: {
+      notifications: true
+    }
+  });
   localStorage.setItem('UserName', login)
   localStorage.setItem('UserEmail', email)
+  console.log(result)
+  
+  }
+  )
+  .catch((error) =>console.log(error))
+  
 }
 
-export const SingInWithEmail = (email, password, history) => {
+export const SingInWithEmail = (email, password, errorMessage) => {
   signInWithEmailAndPassword(auth, email, password)
-  .then((result) => console.log(result))
-  .catch((error) =>console.log(error))
-  localStorage.setItem('UserEmail', email)
+  .then((result) => 
+  {
+    console.log(result)
+    localStorage.setItem('UserEmail', email)
+  })
+  .catch((error) =>
+  {
+    console.log(error)
+    errorMessage()
+  })
+  
 }
 
 

@@ -1,20 +1,38 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { DownArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { handleDownAnim } from '../../../Utils/Animations'
 import '../../../vanilla.css'
 import { motion } from 'framer-motion';
-import { SignOut, appVersion } from '../../../firebase'
+import { SignOut, appVersion, db, auth } from '../../../firebase'
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { async } from '@firebase/util'
 
 
 export default function Settings() {
 
   const history = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
-  const [notifications, setNotifications] = useState(true)
+  const [notifications, setNotifications] = useState(false)
   const SiteTitle = 'Settings - Simply'
   document.title = SiteTitle
+
+
+//SetNotificationsOnOff
+ useEffect(() => {
+  
+  const GetFirebaseData = async () => {
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    docSnap.data().settings.notifications ? setNotifications(true) : setNotifications(false)
+  }
+
+  GetFirebaseData().catch(console.error);
+  
+ }, [])
+ 
+
 
 
   const DeleteForm = ({isVisible}) => {
@@ -38,7 +56,17 @@ export default function Settings() {
 
   const handleClickNotifications = () => {
     setNotifications(!notifications)
+    const docRef = doc(db, "users", auth.currentUser.uid)
+    const UpdateDB = async () => {
+      await updateDoc(docRef, {
+        settings:
+        {
+          notifications: !notifications
+        }
+      })
   }
+  UpdateDB().catch(console.error)
+}
   
   const Logout = () => {
     SignOut(()=>{history("/")})

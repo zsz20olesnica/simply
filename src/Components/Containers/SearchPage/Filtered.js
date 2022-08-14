@@ -54,7 +54,7 @@ export default function Filtered() {
             <div className='w-full flex flex-row flex-wrap gap-5'>
             {
               Categories.map((category, index) => (
-                <FilteredCategory category={category} index={index} handleDelete={handleDelete}/>
+                <FilteredCategory category={category} index={index} handleDelete={handleDelete} key={index}/>
                 )
               )
             
