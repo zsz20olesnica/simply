@@ -4,15 +4,15 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { onAuthStateChanged } from 'firebase/auth'
 import {appVersion, SingInWithEmail, auth} from '../../../firebase'
+
 export default function SingUp() {
 
-  
 //IfAlreadyLoggedInGoToHome
   useEffect(() => {
     onAuthStateChanged(auth, (res) => {
     if(res)
     {
-      history('/home')
+      // history('/home')
     }
   })
   }, [])

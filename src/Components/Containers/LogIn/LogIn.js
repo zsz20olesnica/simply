@@ -17,13 +17,15 @@ export default function LogIn() {
     SignInWithGoogle(()=>{history("/home")})
   }
 
+
+
   
 //IfAlreadyLoggedInGoToHome
   useEffect(() => {
     onAuthStateChanged(auth, (res) => {
     if(res)
     {
-      history('/home')
+      // history('/home')
     }
   })
   }, [])
@@ -45,28 +47,27 @@ export default function LogIn() {
 
             {/* CreateAccount */}
               <div className='w-full flex flex-col items-center justify-center gap-5 mt-10'>
-              <p className='text-6xl font-playfair text-secondary mb-32 text-center'>Log In to Simply!</p>
-              <p className='text-[20px] font-lato text-secondary'>Log in with:</p>
+                <p className='text-6xl font-playfair text-secondary mb-32 text-center'>Log In to Simply!</p>
+                <p className='text-[20px] font-lato text-secondary'>Log in with:</p>
 
-              <div className='mx-10 flex flex-row justify-center items-center gap-2'>
-                <button onClick={Login} className='h-16 w-16 rounded-lg bg-primary p-3'>
-                  <Google className={'h-full w-full fill-white'}/></button>
-                {/* <button className='h-16 w-16 rounded-lg bg-primary p-3'>
-                  <Facebook className={'h-full w-full fill-white'}/></button>
-                <button className='h-16 w-16 rounded-lg bg-primary p-3'>
-                  <Microsoft className={'h-full w-full fill-white'}/></button>
-                <button className='h-16 w-16 rounded-lg bg-primary p-3'>
-                  <Twitter className={'h-full w-full fill-white'}/></button> */}
-                <button className='h-16 w-16 rounded-lg bg-primary p-3'>
-                  <CustomApp className={'h-full w-full fill-white'}/></button>
-              </div>
-        
-              <p className='text-[20px] font-lato text-secondary'>or</p>
+                <div className='mx-10 flex flex-row justify-center items-center gap-2'>
+                  <button onClick={Login} className='h-16 w-16 rounded-lg bg-primary p-3'>
+                    <Google className={'h-full w-full fill-white'}/></button>
+                  {/* <button className='h-16 w-16 rounded-lg bg-primary p-3'>
+                    <Facebook className={'h-full w-full fill-white'}/></button>
+                  <button className='h-16 w-16 rounded-lg bg-primary p-3'>
+                    <Microsoft className={'h-full w-full fill-white'}/></button>
+                  <button className='h-16 w-16 rounded-lg bg-primary p-3'>
+                    <Twitter className={'h-full w-full fill-white'}/></button> */}
+                  <button onClick={() => history('/okaccounts')} className='h-16 w-16 rounded-lg bg-primary p-3'>
+                    <CustomApp className={'h-full w-full fill-white'}/>
+                  </button>
+                </div>
+                  
+                <p className='text-[20px] font-lato text-secondary'>or</p>
 
-              {/* ConfrimButton */}
-              <button onClick={() => {history('/loginviasimply')}} className='w-[200px] h-11 text-lg rounded-full bg-primary font-lato text-white'>Simply Account</button>
-                 
-                 
+                {/* ConfrimButton */}
+                <button onClick={() => {history('/loginviasimply')}} className='w-[200px] h-11 text-lg rounded-full bg-primary font-lato text-white'>Simply Account</button> 
               </div>
               
                 

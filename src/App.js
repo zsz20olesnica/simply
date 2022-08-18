@@ -18,6 +18,7 @@ import About from './Components/Containers/AboutPage/About'
 import Feedback from './Components/Containers/FeedbackPage/Feedback'
 import Privacy from './Components/Containers/PrivacyPage/Privacy';
 import Album from './Components/Containers/AlbumPage/AlbumPage';
+import LoginOkAccounts from './Components/Containers/LogIn/LoginOkAccounts';
 
 
 
@@ -28,23 +29,24 @@ function App() {
     <div className="h-screen w-full font-lato scroll-smooth">
     {/* Tu jest wszystko dobrze i prosze mi tu nie ruszac nie dodawać zadnego BrowserRouter ani nic takiego - Kamil */}
       <AnimatePresence exitBeforeEnter>
-            <Routes key={location.pathname} location={location}>
-                <Route path='/' element={<Home />}/>
-                <Route path='/signup' element={<SingUp />}/>
-                <Route path='/createaccount' element={<CreateAccount />}/>
-                <Route path='/home' element={<Main />}/>
-                <Route path='/favorites' element={<Favorites />}/>
-                <Route path='/settings' element={<Settings />}/>
-                <Route path='/about' element={<About />}/>
-                <Route path='/feedback' element={<Feedback />}/>
-                <Route path='/privacy' element={<Privacy />}/>
-                <Route path='/search' element={<Search />}/>
-                <Route path='/filtered' element={<Filtered />}/>
-                <Route path='/player' element={<Player />}/>
-                <Route path='/album' element={<Album />}/>
-                <Route path='/login' element={<LogIn/>}/>
-                <Route path='/loginviasimply' element={<LogInViaSimply/>}/>
-            </Routes> 
+        <Routes key={location.pathname} location={location}>
+          <Route path='/' element={<Home />}/>
+          <Route path='/signup' element={<SingUp />}/>
+          <Route path='/createaccount' element={<CreateAccount />}/>
+          <Route path='/home' element={<Main />}/>
+          <Route path='/favorites' element={<Favorites />}/>
+          <Route path='/settings' element={<Settings />}/>
+          <Route path='/about' element={<About />}/>
+          <Route path='/feedback' element={<Feedback />}/>
+          <Route path='/privacy' element={<Privacy />}/>
+          <Route path='/search' element={<Search />}/>
+          <Route path='/filtered' element={<Filtered />}/>
+          <Route path='/player' element={<Player />}/>
+          <Route path='/album' element={<Album />}/>
+          <Route path='/login' element={<LogIn />}/>
+          <Route path='/loginviasimply' element={<LogInViaSimply />} />
+          <Route path='/okaccounts' element={<LoginOkAccounts />} />
+        </Routes> 
       </AnimatePresence>
     </div>
   );
