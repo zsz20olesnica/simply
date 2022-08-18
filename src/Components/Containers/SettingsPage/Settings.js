@@ -6,7 +6,7 @@ import { handleDownAnim } from '../../../Utils/Animations'
 import '../../../vanilla.css'
 import { motion } from 'framer-motion';
 import { SignOut, appVersion, db, auth } from '../../../firebase'
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { async } from '@firebase/util'
 
 
@@ -42,7 +42,7 @@ export default function Settings() {
           <p className='font-lato text-[19px] p-9 text-secondary text-center font-semibold'>Are you sure you want to delete your account?</p>
         </div>
         <div className='w-full h-12 flex flex-row items-center justify-center divide-x divide-solid'>
-          <button className='w-1/2 h-full p-6 font-lato text-[25px] bg-primary flex justify-center items-center'>Yes</button>
+          <button onClick={handleAccountDelete} className='w-1/2 h-full p-6 font-lato text-[25px] bg-primary flex justify-center items-center'>Yes</button>
           <button onClick={handleClickDelAccount} className='w-1/2 h-full p-6 font-lato text-[25px] bg-primary flex justify-center items-center'>No</button>
         </div>
       </div>
@@ -51,8 +51,17 @@ export default function Settings() {
 
   const handleClickDelAccount = () => {
     setIsOpen(!isOpen)
-    
   }
+  
+  const handleAccountDelete = () => {
+    const DeleteAccountData = async () => {
+      await deleteDoc(doc(db, "users", auth.currentUser.uid))
+      }
+      DeleteAccountData().then(() => {
+        SignOut(()=>{history("/")})
+      }).catch(console.error)
+  }
+
 
   const handleClickNotifications = () => {
     setNotifications(!notifications)

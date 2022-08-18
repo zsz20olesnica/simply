@@ -19,6 +19,7 @@ module.exports = {
         'secondary': '#404642',
         'tertiary': '#A3ADAF',
         'error': '#FF3737',
+        'warning': '#e6d415',
         'search': '#F1F1F1'
       },
     },

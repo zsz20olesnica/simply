@@ -19,7 +19,7 @@ import Feedback from './Components/Containers/FeedbackPage/Feedback'
 import Privacy from './Components/Containers/PrivacyPage/Privacy';
 import Album from './Components/Containers/AlbumPage/AlbumPage';
 import LoginOkAccounts from './Components/Containers/LogIn/LoginOkAccounts';
-
+import AdminPanel from './Components/Containers/Admin/AdminPanel'
 
 
 
@@ -46,6 +46,8 @@ function App() {
           <Route path='/login' element={<LogIn />}/>
           <Route path='/loginviasimply' element={<LogInViaSimply />} />
           <Route path='/okaccounts' element={<LoginOkAccounts />} />
+          <Route path='/admin' element={<AdminPanel />} />
+
         </Routes> 
       </AnimatePresence>
     </div>

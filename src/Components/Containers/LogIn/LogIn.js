@@ -25,7 +25,7 @@ export default function LogIn() {
     onAuthStateChanged(auth, (res) => {
     if(res)
     {
-      // history('/home')
+      history('/home')
     }
   })
   }, [])

@@ -8,8 +8,7 @@ import { getAuth,
   createUserWithEmailAndPassword, 
   updateProfile, 
   signInWithEmailAndPassword, } from "firebase/auth";
-import { isImportEqualsDeclaration } from "typescript";
-
+import { getStorage, ref ,  uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 
 
@@ -23,7 +22,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyD7THuhoNq09m_VNRSktvGLRgJXmcSMrZk",
   authDomain: "simply-c2c77.firebaseapp.com",
   projectId: "simply-c2c77",
-  storageBucket: "simply-c2c77.appspot.com",
+  storageBucket: "gs://simply-c2c77.appspot.com/",
   messagingSenderId: "243257117322",
   appId: "1:243257117322:web:c96cb1a0685af675f77b73",
   measurementId: "G-BV9BX83Z7E"
@@ -42,6 +41,9 @@ export const db = getFirestore(app)
 export const auth = getAuth(app)
 //LoginProvider
 const provider = new GoogleAuthProvider()
+//Storage
+export const storage = getStorage();
+
 
 
 export const SignInWithGoogle = () => {
@@ -135,7 +137,5 @@ export const SingInWithEmail = (email, password, errorMessage) => {
     console.log(error)
     errorMessage()
   })
-  
 }
-
 
