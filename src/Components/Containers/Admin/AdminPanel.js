@@ -1,15 +1,18 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import { LeftArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import {db, appVersion, storage} from '../../../firebase'
+import {db, appVersion, storage, Categories} from '../../../firebase'
 import { doc, setDoc, updateDoc } from "firebase/firestore"; 
-import { ref ,  uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import userEvent from '@testing-library/user-event'
+import { ref , uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
+import OccasionCategories from '../../Reusable/OccasionCategories'
+import MoodCategories from '../../Reusable/MoodCategories'
+
 
 export default function SingUp() {
 
-  const SiteTitle = 'Sign Up - Simply'
+  const SiteTitle = 'Add Song - Simply'
   document.title = SiteTitle
   const history = useNavigate()
 
@@ -17,7 +20,7 @@ export default function SingUp() {
   const titleRef = useRef()
   const authorRef = useRef()
   const albumNameRef = useRef()
-  const SongCategoryRef = useRef()
+  const SongCategoryRef = useRef() 
   const SongThumbnailRef = useRef()
   const SongThumbnailAuthorRef = useRef()
   const SongFileRef = useRef()
@@ -25,6 +28,15 @@ export default function SingUp() {
   //RegisterUIValuesRef
   const [LoadingPercent, setLoadingPercent] = useState(50)
   const [IsUploading, setIsUploading] = useState(false)
+
+  useEffect(() => {
+    //Clear Array
+    Categories.splice(0, Categories.length)
+    console.log(Categories)
+  }, [])
+  
+
+
 
   //IsDataValid
   const [IsDataValid, setIsDataValid] = useState(true)
@@ -76,29 +88,32 @@ export default function SingUp() {
     let title = titleRef.current.value
     let author = authorRef.current.value
     let albumName = albumNameRef.current.value
-    let SongCategory = SongCategoryRef.current.value
     let SongThumbnail = SongThumbnailRef.current.value
     let SongThumbnailAuthor = SongThumbnailAuthorRef.current.value  
     let SongFile = SongFileRef.current.value  
     
     //Data Array
-    let Data = [title, author, albumName, SongCategory, SongThumbnail, SongThumbnailAuthor, SongFile]
+    let Data = [title, author, albumName, SongThumbnail, SongThumbnailAuthor, SongFile, Categories]
 
     //AllInputs
-    let InputFields = [titleRef, authorRef, albumNameRef, SongCategoryRef, SongThumbnailRef, SongThumbnailAuthorRef, SongFileRef]
+    let InputFields = [titleRef, authorRef, albumNameRef, SongThumbnailRef, SongThumbnailAuthorRef, SongFileRef]
 
     //Clear Inputs
     const ClearInputs = () => {
-        InputFields.forEach((element) => {
+        //ClearInputFields
+      InputFields.forEach((element) => {
             element.current.value = ''
         })
+
+        //Clear Array
+        Categories.splice(0, Categories.length)   
     }
 
     
 
 
     Data.forEach((element, index) => {
-        if(!element) 
+        if(!element || element.length == 0) 
         {
             setIsDataValid(false)
             console.log(`Field ${index} is empty`)
@@ -118,7 +133,7 @@ export default function SingUp() {
         Title: ${title}
         Author: ${author}
         AlbumName: ${albumName}
-        SongCategory: ${SongCategory}
+        SongCategories: ${Categories}
         SongThumbnail: ${SongThumbnailRef.current.files[0].name}
         SongThumbnailAuthor: ${SongThumbnailAuthor}
         SongFile: ${SongFileRef.current.files[0].name}
@@ -132,7 +147,7 @@ export default function SingUp() {
             title: title,
             author: author,
             albumName: albumName,
-            songCategory: SongCategory,
+            songCategories: Categories,
             songThumbnailAuthor: SongThumbnailAuthor,
             })
         console.log('Sending Data to Server')
@@ -215,8 +230,38 @@ export default function SingUp() {
                   <input ref={albumNameRef} placeholder='Type album name' type='text' className='w-full h-11 rounded-full bg-search px-5 text-secondary focus:outline-primary '></input>
                   
                   {/* SongCategory */}
-                  <p className='w-full text-[19px] font-lato text-secondary'>Song Category</p>
-                  <input ref={SongCategoryRef} placeholder='Type song category' type='text' className='w-full h-11 rounded-full bg-search px-5 text-secondary focus:outline-primary'></input>
+                  {/* <p className='w-full text-[19px] font-lato text-secondary'>Song Category</p>
+                  <input ref={SongCategoryRef} placeholder='Type song category' type='text' className='w-full h-11 rounded-full bg-search px-5 text-secondary focus:outline-primary'></input> */}
+
+
+                  {/* MoodFilters */}
+                  <h3 className='w-full font-lato text-[19px] text-secondary '>Mood</h3>
+                          <div className='w-full flex flex-row flex-wrap gap-3'>
+                              <MoodCategories category={'Calm'}  key={'Calm'} />
+                              <MoodCategories category={'Chill'}  key={'Chill'} />
+                              <MoodCategories category={'Happy'}  key={'Happy'} />
+                              <MoodCategories category={'Sad'}  key={'Sad'}/>
+                              <MoodCategories category={'Angry'}  key={'Angry'}/>
+                              <MoodCategories category={'Lonely'}  key={'Lonely'}/>
+                              <MoodCategories category={'Gloomy'}  key={'Gloomy'}/>
+                              <MoodCategories category={'Hopeful'}  key={'Hopeful'}/>
+                              <MoodCategories category={'Romantic'}  key={'Romantic'}/>
+                          </div>
+
+            
+                  {/* Occasion filters */}
+                  <h3 className='w-full font-lato text-[19px] text-secondary '>Occasion</h3>
+                      <div className='w-full flex flex-row flex-wrap gap-3'>
+                          <OccasionCategories category={'Party'} key={'Party'}/>
+                          <OccasionCategories category={'Reading'} key={'Reading'}/>
+                          <OccasionCategories category={'Dancing'} key={'Dancing'}/>
+                          <OccasionCategories category={'Christmas'} key={'Christmas'}/>
+                          <OccasionCategories category={'Gym'} key={'Gym'}/>
+                          <OccasionCategories category={'Date'} key={'Date'}/>        
+                          <OccasionCategories category={'Car'} key={'Car'}/>
+                          <OccasionCategories category={'Learning'} key={'Learning'}/>
+                      </div>
+
 
 
                   {/* SongThumbnail */}

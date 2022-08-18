@@ -17,6 +17,7 @@ export default function Search() {
   
   
   useEffect(() => {
+    //Clear Array
     Categories.splice(0, Categories.length)
     console.log(Categories)
   }, [])
@@ -41,29 +42,30 @@ export default function Search() {
             {/* MoodFilters */}
             <h3 className='w-full font-lato text-[19px] text-secondary font-bold'>Mood</h3>
             <div className='w-full flex flex-row flex-wrap gap-3'>
-               <MoodCategories category={'Move'} />
-               <MoodCategories category={'Sad'} />
-               <MoodCategories category={'Chill'} />
-               <MoodCategories category={'Hard porn'} />
-               <MoodCategories category={'Beach time'} />
-               <MoodCategories category={'Reading'} />
-               <MoodCategories category={'For black people'} />
-               <MoodCategories category={'Angry'} />
+                  <MoodCategories category={'Calm'} />
+                  <MoodCategories category={'Chill'} />
+                  <MoodCategories category={'Happy'} />
+                  <MoodCategories category={'Sad'} />
+                  <MoodCategories category={'Angry'} />
+                  <MoodCategories category={'Lonely'} />
+                  <MoodCategories category={'Gloomy'} />
+                  <MoodCategories category={'Hopeful'} />
+                  <MoodCategories category={'Romantic'} />
             </div>
 
             
             {/* Occasion filters */}
             <h3 className='w-full font-lato text-[19px] text-secondary font-bold'>Occasion</h3>
-                <div className='w-full flex flex-row flex-wrap gap-3 mb-16'>
-                    <OccasionCategories category={'Party'} />
-                    <OccasionCategories category={'Chill'} />
-                    <OccasionCategories category={'Breakup'} />
-                    <OccasionCategories category={'Angry'} />
-                    <OccasionCategories category={'Gym'} />
-                    <OccasionCategories category={'Relaxing'} />
-                    <OccasionCategories category={'For the gays'} />
-                    <OccasionCategories category={'Move'} />
-                </div>
+            <div className='w-full flex flex-row flex-wrap gap-3 mb-16'>
+                  <OccasionCategories category={'Party'} />
+                  <OccasionCategories category={'Reading'} />
+                  <OccasionCategories category={'Dancing'} />
+                  <OccasionCategories category={'Christmas'} />
+                  <OccasionCategories category={'Gym'} />
+                  <OccasionCategories category={'Date'} />
+                  <OccasionCategories category={'Car'} />
+                  <OccasionCategories category={'Learning'} />
+            </div>
             
             
 
