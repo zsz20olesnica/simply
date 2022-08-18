@@ -30,11 +30,32 @@ const firebaseConfig = {
 
 //FilteredCategoriesInSearchPanel
 export let Categories = []
+export let PlayerData = {
+  title: 'title',
+  duration: 'duration',
+  img: 'img',
+  thumbnailAuthor: 'thumbnailAuthor',
+  
+    
+  set changeTitle(newTitle) {
+        this.title = newTitle
+    },
+  set changeDuration(newDuration) {
+        this.duration = newDuration
+  },
+  set changeImg(newImg) {
+        this.img = newImg
+  },
+  set changeThumbnailAuthor(newThumbnailAuthor) {
+        this.thumbnailAuthor = newThumbnailAuthor
+ }
 
+
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const appVersion = '0.5'
+export const appVersion = '0.6'
 //Firestore DB
 export const db = getFirestore(app)
 //Kto jest zalogowany jego dane itp

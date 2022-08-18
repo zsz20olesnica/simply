@@ -47,7 +47,6 @@ function App() {
           <Route path='/loginviasimply' element={<LogInViaSimply />} />
           <Route path='/okaccounts' element={<LoginOkAccounts />} />
           <Route path='/admin' element={<AdminPanel />} />
-
         </Routes> 
       </AnimatePresence>
     </div>

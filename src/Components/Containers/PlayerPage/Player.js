@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import PlayerHero from '../../../Images/hero_player.png'
 import '../../../vanilla.css'
 
-
+import { PlayerData } from '../../../firebase'
 import { motion } from 'framer-motion';
 
 
@@ -64,13 +64,13 @@ const MoreOptionss = ({ isOpenn }) => {
                 onClick={() => history('/home')}
                 ><DownArrowWhite/></button>
                 {/* Author */}
-                <span className='h-full min-w-[160px] flex justify-center items-center bg-white opacity-90 rounded-full text-tertiary text-[14px] p-1'>Art by someone</span>
+                <span className='h-full min-w-[160px] flex justify-center items-center bg-white opacity-90 rounded-full text-tertiary text-[14px] p-1'>{PlayerData.thumbnailAuthor}</span>
             </div>
 
                      </div>
       {/* HeroSection */}
       <div className='w-full h-[60%]'>
-            <img src={PlayerHero} className='top-0 z-0 w-full h-full object-cover'/>
+            <img src={PlayerData.img} className='top-0 z-0 w-full h-full object-cover'/>
     </div>
 
 
@@ -82,7 +82,7 @@ const MoreOptionss = ({ isOpenn }) => {
             {/* Title */}
                 <div className='h-full w-full flex flex-row items-center justify-between'>
                     {/* Trzeba zrobic ze jak jest za dlugi tytuł to sie przesuwa jak slider automatycznie */}
-                    <h1 className='font-playfair font-extrabold text-[32px] break-normal min-w-[70%] text-secondary '>Feeling Arty Farty</h1>
+                    <h1 className='font-playfair font-extrabold text-[32px] break-normal min-w-[70%] text-secondary '>{PlayerData.title}</h1>
                     <div onClick={() => {HandleMoreOptions()}} className='min-w-[20%] h-full flex flex-col items-center justify-start mt-7'>
                         <More className={'scale-90'}/>
                     </div>
@@ -105,7 +105,7 @@ const MoreOptionss = ({ isOpenn }) => {
                 {/* Time and slider */}
                 <div className='w-full '>
                         <input type="range" id="PlayerSlider" defaultValue="0" className='w-full h-2 bg-search rounded-lg'></input>
-                        <p className='font-lato text-[12px] text-tertiary'>00:00</p>
+                        <p className='font-lato text-[12px] text-tertiary'>{PlayerData.duration}</p>
                 </div>
 
                 {/* Music controler */}

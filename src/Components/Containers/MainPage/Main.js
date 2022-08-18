@@ -9,12 +9,11 @@ import HeroImage from '../../../Images/home_hero.png'
 import NavBar from '../../Reusable/Navbar'
 import SongTile from '../../Reusable/SongTile'
 import HomeAlbum from '../../Reusable/HomeAlbum'
-
+import { db } from '../../../firebase'
+import { collection, query, onSnapshot } from 'firebase/firestore'
 import { motion } from "framer-motion";
 
 import '../../../vanilla.css'
-import { ElementFlags } from 'typescript'
-import { comment } from 'postcss'
 
 export default function Main() {
 
@@ -23,8 +22,7 @@ export default function Main() {
   const [IsPaused, setIsPaused] = useState('false')
   const SiteTitle = 'Home - Simply'
   document.title = SiteTitle
-
-
+ 
 //AddPadding
   useEffect(() => {
     const SongPlaying = document.querySelector('#songplaying').clientHeight
@@ -102,6 +100,25 @@ useEffect(() => {
     }
 
 
+
+
+//FirebaseData
+
+//SongsArray
+    const [Songs, setSongs] = useState([])
+    useEffect(() => {
+        const q = query(collection(db, 'songs'))
+        const unsub = onSnapshot(q, (querySnapshot) => {
+            let ExistingElementsArray = [];
+            querySnapshot.forEach((doc) => {
+                ExistingElementsArray.push({...doc.data(), id: doc.id});
+            });
+            setSongs(ExistingElementsArray)
+        });
+        return () => unsub();
+    }, []);
+
+
   return (
     <motion.div initial={{opacity: 0}} animate={{opacity: 1}}
     id="maincontainer" className='mainContainer w-full relative'>
@@ -137,11 +154,15 @@ useEffect(() => {
           className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>For you</motion.h3>
           {/* ContainerKafelków */}
           <div className='min-w-full overflow-x-scroll whitespace-nowrap bg-white flex flex-row gap-2 '>
-              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={HeroImage}/>
-              <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
-              <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
-              <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
-              <SongTile title={'Feel like dancing'}  time={'30 min'} img={FeelingArtsy}/>
+              
+              {
+                Songs.map((song) => {
+
+                    return(
+                        <SongTile title={song.title} duration={song.duration} img={song.songThumbnailLink} thumbnailAuthor={song.songThumbnailAuthor} key={song.title}/>
+                    )
+                })
+              }
           </div>
       </motion.div>
 

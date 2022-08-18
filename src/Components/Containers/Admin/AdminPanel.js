@@ -10,6 +10,7 @@ import OccasionCategories from '../../Reusable/OccasionCategories'
 import MoodCategories from '../../Reusable/MoodCategories'
 
 
+
 export default function SingUp() {
 
   const SiteTitle = 'Add Song - Simply'
@@ -29,14 +30,15 @@ export default function SingUp() {
   const [LoadingPercent, setLoadingPercent] = useState(50)
   const [IsUploading, setIsUploading] = useState(false)
 
+
+  let SongDuration;
+
   useEffect(() => {
     //Clear Array
     Categories.splice(0, Categories.length)
     console.log(Categories)
   }, [])
   
-
-
 
   //IsDataValid
   const [IsDataValid, setIsDataValid] = useState(true)
@@ -79,10 +81,38 @@ export default function SingUp() {
   ); 
   }
 
-  //Submit
+//CalculateSongDuration
+const CalcDuration = (e) => {
+  var file = e.target.files[0]
+  var reader = new FileReader()
+  reader.onload = function (event) {
+      var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      audioContext.decodeAudioData(event.target.result, function(buffer) {
+          var duration = buffer.duration;
+          let minutesAmount;
+          let secondsAmount;
+          
+          minutesAmount = Math.floor( duration / 60 )
+          secondsAmount = Math.round( duration % 60 )
+
+          function padTo2Digits(num) {
+            return num.toString().padStart(2, '0');
+          }
+          
+          SongDuration = `${padTo2Digits(minutesAmount)}:${padTo2Digits(secondsAmount)}`;
+          console.log(file.name+'   is   '+SongDuration)
+      });
+  };
+  reader.onerror = function (event) {
+      console.error("An error ocurred reading the file")
+  }
+  reader.readAsArrayBuffer(file)
+}
+
+
+
+  //SUBMIT
   const AddSong = () => {
-    
-    
 
     //Inputs Values
     let title = titleRef.current.value
@@ -94,7 +124,7 @@ export default function SingUp() {
     
     //Data Array
     let Data = [title, author, albumName, SongThumbnail, SongThumbnailAuthor, SongFile, Categories]
-
+  
     //AllInputs
     let InputFields = [titleRef, authorRef, albumNameRef, SongThumbnailRef, SongThumbnailAuthorRef, SongFileRef]
 
@@ -109,7 +139,8 @@ export default function SingUp() {
         Categories.splice(0, Categories.length)   
     }
 
-    
+
+   
 
 
     Data.forEach((element, index) => {
@@ -147,6 +178,7 @@ export default function SingUp() {
             title: title,
             author: author,
             albumName: albumName,
+            duration: SongDuration,
             songCategories: Categories,
             songThumbnailAuthor: SongThumbnailAuthor,
             })
@@ -220,7 +252,7 @@ export default function SingUp() {
                   {/* SongFile */}
                   <p className='w-full text-[19px] font-lato text-secondary'>Song File</p>
                   <div className='w-full h-11 rounded-full bg-search px-5 text-secondary focus:outline-primary text-center flex items-center justify-center'>
-                  <input ref={SongFileRef} placeholder='Type album name' type='file' accept=".mp3, .ova, .ogg"></input>
+                  <input ref={SongFileRef} onChange={(e) => CalcDuration(e)} placeholder='Type album name' type='file' accept=".mp3, .ova, .ogg"></input>
                   </div>
                   
 
