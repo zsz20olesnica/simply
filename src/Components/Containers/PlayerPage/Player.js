@@ -4,8 +4,9 @@ import { DownArrow, DownArrowWhite, Prev, Next, Pause, Play, More, CastToDevice,
 import { useNavigate } from 'react-router-dom'
 import PlayerHero from '../../../Images/hero_player.png'
 import '../../../vanilla.css'
-import { collection, query, onSnapshot, where } from 'firebase/firestore'
-import { PlayerData, db } from '../../../firebase'
+import { collection, query, onSnapshot, where, getDoc } from 'firebase/firestore'
+import { PlayerData, db, auth } from '../../../firebase'
+import { doc, updateDoc } from "firebase/firestore"; 
 import { motion } from 'framer-motion';
 
 
@@ -17,11 +18,11 @@ export default function Player() {
     const [IsPaused, setIsPaused] = useState(false) 
     const SiteTitle = 'Player - Simply'
     document.title = SiteTitle
+    const [TracksCount, setTracksCount] = useState(0)
 
 
     //FilterFirebase 
-    const [album, setAlbum] = useState([])
-
+    let album = []
     useEffect(() => {
         const q = query(collection(db, 'songs'), where('albumName', '==', `${PlayerData.albumName}`))
         const unsub = onSnapshot(q, (querySnapshot) => {
@@ -29,22 +30,34 @@ export default function Player() {
             querySnapshot.forEach((doc) => {
                 ExistingElementsArray.push({...doc.data(), id: doc.id});
             });
-            setAlbum(ExistingElementsArray)
+            album = ExistingElementsArray
             console.log(`Album to: ` + PlayerData.albumName)
             console.log(album)
             PlayerData.changeAlbumData = album
             console.log(PlayerData.albumData)
-
+            setTracksCount(PlayerData.albumData.length)
         })
         
         return () => unsub() 
     }, [])
-    //CreateAlbum
    
     //CreatePlaylist
 
+    
+    
+    const AddToFavourites = async () => {
+        const favouritesRef = doc(db, "users", auth.currentUser.uid);
+        let favourites = []
+        const docSnap = await getDoc(favouritesRef)
+        
+        await updateDoc(favouritesRef, {
+            favouritesSongs: title
+                
+          });
+    }
 
 
+    
 
 
 
@@ -55,19 +68,19 @@ const MoreOptionss = ({ isOpenn }) => {
     <>
         <motion.div transition={{duration: 0.2}} animate={{opacity: 1}} exit={{opacity: 0}} className={`${isOpenn ? 'block' : 'hidden'} absolute h-[147px] w-[226px] rounded-xl bg-white shadow-2xl`}>
 
-            <ul className='w-full  h-full flex flex-col items-start justify-center divide-y divide-solid'>
-                <motion.li transition={{delay: 0.15, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}}
-                className={'w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6'}>
-                    <Heart className={'fill-secondary w-6 h-6'}/>
-                    <p className='text-secondary text-[14px] font-lato'>Add to Favorites</p>
+            <ul className='w-full  h-full flex flex-col items-start justify-center divide-y divide-solid '>
+                <motion.li onClick={AddToFavourites} transition={{delay: 0.15, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}}
+                className={'w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6 active:bg-slate-300 active:rounded-t-xl'}>
+                    <Heart className={'fill-secondary active:fill-primary w-6 h-6'}/>
+                    <p className='text-secondary text-[14px] font-lato '>Add to Favorites</p>
                 </motion.li>
                 <motion.li transition={{delay: 0.25, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}} 
-                className='w-full  p-6 h-1/3 flex flex-row items-center justify-start gap-6'>
+                className='w-full  p-6 h-1/3 flex flex-row items-center justify-start gap-6 active:bg-slate-300 '>
                     <Share className={'fill-secondary w-6 h-6'}/>
                     <p className=' text-secondary text-[14px] font-lato'>Share</p>
                 </motion.li>
                 <motion.li transition={{delay: 0.35, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}} 
-                className='w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6'>
+                className='w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6 active:bg-slate-300 active:rounded-b-xl'>
                     <CastToDevice className={'fill-secondary w-6 h-6'}/>
                     <p className=' text-secondary text-[14px] font-lato'>Cast to Device</p>
                 </motion.li>
@@ -124,7 +137,7 @@ const MoreOptionss = ({ isOpenn }) => {
                 <div className='flex flex-row items-center gap-2'>
                     <p onClick={() =>  history('/album')} className='text-[14px] text-tertiary font-lato'>{PlayerData.albumName}</p>
                     <div className='w-[5px] h-[5px] rounded-full bg-tertiary'></div>
-                    <p className='text-[14px] text-tertiary font-lato'>7 tracks</p>
+                    <p className='text-[14px] text-tertiary font-lato'>{TracksCount} tracks</p>
                 </div>
             </div>
             {/* onClick={() => {if(PlayerData.albumName != 'Single') history('/album')}} */}

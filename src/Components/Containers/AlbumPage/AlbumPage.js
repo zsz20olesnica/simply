@@ -21,38 +21,65 @@ export default function AlbumPage() {
     const [IsPaused, setIsPaused] = useState(false) 
     const SiteTitle = 'Album - Simply'
     document.title = SiteTitle
-    let AlbumDuration = 0
-    let TracksNumber = 0
-   
-   
-   
-   
+    const [TracksCount, setTracksCount] = useState(0)
+    const [AlbumDuration, setAlbumDuration] = useState("")
+    let AlbumDurationNotState = "00:00"
+
     useEffect(() => {  
-            
+        setTracksCount(0)
         function padTo2Digits(num) {
             return num.toString().padStart(2, '0');
         }
 
         function CalcAlbumDuration(SongDuration) {
-            SongDuration = SongDuration.split(":");
-            let minutes = SongDuration[0];
-            let seconds = SongDuration[1];
-            minutes = parseInt(minutes, 10);
-            seconds = parseInt(seconds, 10);
-            let duration = minutes * 60 + seconds;
-            AlbumDuration = AlbumDuration + duration;
-            let minutesAmount = Math.floor(AlbumDuration / 60);
-            let secondsAmount = Math.round(AlbumDuration % 60);
-            AlbumDuration = `${padTo2Digits(minutesAmount)}:${padTo2Digits(secondsAmount)}`;
-            console.log(`Dlugosc trwania albumu: ` + AlbumDuration);
+            
+            //SplitString
+            SongDuration = SongDuration.split(":")
+            let AlbumDurationSplitted = AlbumDurationNotState.split(":")
+
+            let SongMinutes = SongDuration[0]
+            let SongSeconds = SongDuration[1]
+
+            let AlbumMinutes = AlbumDurationSplitted[0]
+            let AlbumSeconds = AlbumDurationSplitted[1]
+
+
+            //Change String To INT
+            AlbumMinutes = parseInt(AlbumMinutes, 10)
+            AlbumSeconds = parseInt(AlbumSeconds, 10)
+            SongMinutes = parseInt(SongMinutes, 10)
+            SongSeconds = parseInt(SongSeconds, 10)
+            
+          
+            
+            let AlbumDurationInSeconds = AlbumSeconds + (AlbumMinutes * 60)
+            let SongDurationInSeconds = SongMinutes * 60 + SongSeconds
+
+            let TotalSeconds  = AlbumDurationInSeconds+SongDurationInSeconds 
+
+            
+            let AlbumMinutesAmount = Math.floor(TotalSeconds / 60)
+            let AlbumSecondsAmount = Math.round(TotalSeconds % 60)
+
+            setAlbumDuration(`${padTo2Digits(AlbumMinutesAmount)}:${padTo2Digits(AlbumSecondsAmount)}`)
+            AlbumDurationNotState = `${padTo2Digits(AlbumMinutesAmount)}:${padTo2Digits(AlbumSecondsAmount)}`
+           
+            
+
+            console.log(`Dlugosc trwania albumu: ` + AlbumDuration)
         }
         
         
         PlayerData.albumData.forEach((song) => {
             CalcAlbumDuration(song.duration)
-            TracksNumber++
+            setTracksCount((prev) => prev+1)
         })
         
+
+
+        const SongPlaying = document.querySelector('#songplaying').clientHeight
+        const root = document.querySelector(':root')
+        root.style.setProperty('--mainPadding', `${SongPlaying +10}px`)
     }, [])
 
 
@@ -67,14 +94,7 @@ export default function AlbumPage() {
         setIsOpen(!isOpen)
       }
 
-    //AddPadding
-    useEffect(() => {
-        const SongPlaying = document.querySelector('#songplaying').clientHeight
-        const root = document.querySelector(':root')
-        root.style.setProperty('--mainPadding', `${SongPlaying +10}px`)
-
-    }, [])
-
+    
 
    
 
@@ -101,7 +121,7 @@ export default function AlbumPage() {
             <div className='flex flex-row items-center gap-5'>
                     <p className='text-[14px] text-tertiary font-lato'>{AlbumDuration}</p>  
                     <div className='w-[5px] h-[5px] rounded-full bg-tertiary'></div>
-                    <p className='text-[14px] text-tertiary font-lato'>{TracksNumber}</p>  
+                    <p className='text-[14px] text-tertiary font-lato'>{TracksCount}</p>  
                     <div className='h-[40px] w-[40px] rounded-full bg-primary'
                     onClick={() => {setIsPaused(!IsPaused)}}>
                         {
@@ -118,9 +138,8 @@ export default function AlbumPage() {
         <Reorder.Group axis="y" onReorder={setItems} values={items}>
              {
                 PlayerData.albumData.map((song) => {      
-                   console.log('Nowy song na tracku ziomal')
                    return(
-                    <SongListTile key={song.title} image={song.songThumbnailLink} title={song.title} authors={song.author}/>
+                    <SongListTile key={song.title} song={song}/>
                    )
                 })
             }     
