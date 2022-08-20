@@ -35,6 +35,8 @@ export let PlayerData = {
   duration: 'duration',
   img: 'img',
   thumbnailAuthor: 'thumbnailAuthor',
+  albumName: 'albumName',
+  albumData: [],
   
     
   set changeTitle(newTitle) {
@@ -48,14 +50,19 @@ export let PlayerData = {
   },
   set changeThumbnailAuthor(newThumbnailAuthor) {
         this.thumbnailAuthor = newThumbnailAuthor
- }
-
+ },
+  set changeAlbumName(newAlbumName) {
+        this.albumName = newAlbumName
+  },
+  set changeAlbumData(newAlbumData) {
+    this.albumData = newAlbumData
+}
 
 }
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const appVersion = '0.6'
+export const appVersion = '0.6.1'
 //Firestore DB
 export const db = getFirestore(app)
 //Kto jest zalogowany jego dane itp

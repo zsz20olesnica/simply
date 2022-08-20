@@ -4,9 +4,10 @@ import { DownArrow, DownArrowWhite, Prev, Next, Pause, Play, More, CastToDevice,
 import { useNavigate } from 'react-router-dom'
 import PlayerHero from '../../../Images/hero_player.png'
 import '../../../vanilla.css'
-
-import { PlayerData } from '../../../firebase'
+import { collection, query, onSnapshot, where } from 'firebase/firestore'
+import { PlayerData, db } from '../../../firebase'
 import { motion } from 'framer-motion';
+
 
 
 export default function Player() {
@@ -14,8 +15,40 @@ export default function Player() {
     const history = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const [IsPaused, setIsPaused] = useState(false) 
-    const SiteTitle = 'Player-Simply'
+    const SiteTitle = 'Player - Simply'
     document.title = SiteTitle
+
+
+    //FilterFirebase 
+    const [album, setAlbum] = useState([])
+
+    useEffect(() => {
+        const q = query(collection(db, 'songs'), where('albumName', '==', `${PlayerData.albumName}`))
+        const unsub = onSnapshot(q, (querySnapshot) => {
+            let ExistingElementsArray = [];
+            querySnapshot.forEach((doc) => {
+                ExistingElementsArray.push({...doc.data(), id: doc.id});
+            });
+            setAlbum(ExistingElementsArray)
+            console.log(`Album to: ` + PlayerData.albumName)
+            console.log(album)
+            PlayerData.changeAlbumData = album
+            console.log(PlayerData.albumData)
+
+        })
+        
+        return () => unsub() 
+    }, [])
+    //CreateAlbum
+   
+    //CreatePlaylist
+
+
+
+
+
+
+
 
 const MoreOptionss = ({ isOpenn }) => {
     return(
@@ -54,7 +87,7 @@ const MoreOptionss = ({ isOpenn }) => {
   return (
     <motion.div  transition={{duration: 0.5, ease: "easeInOut" }} initial={{y: viewportHeight, opacity: 0}} 
     animate={{y: 0, opacity: 1}} exit={{y: viewportHeight, opacity: 0}}>
-    <div id='container' className='mainContainer w-full h-full relative'>
+    <div id='container' className='mainContainer w-full h-screen relative'>
 
       <div className='absolute z-100 w-full h-full p-8 flex flex-col justify-between items-center'>
             {/* HeaderContainer */}
@@ -82,19 +115,19 @@ const MoreOptionss = ({ isOpenn }) => {
             {/* Title */}
                 <div className='h-full w-full flex flex-row items-center justify-between'>
                     {/* Trzeba zrobic ze jak jest za dlugi tytuł to sie przesuwa jak slider automatycznie */}
-                    <h1 className='font-playfair font-extrabold text-[32px] break-normal min-w-[70%] text-secondary '>{PlayerData.title}</h1>
+                    <h1 className='w-full font-playfair font-extrabold text-[32px] break-normal min-w-[70%] text-secondary truncate'>{PlayerData.title}</h1>
                     <div onClick={() => {HandleMoreOptions()}} className='min-w-[20%] h-full flex flex-col items-center justify-start mt-7'>
                         <More className={'scale-90'}/>
                     </div>
                 </div>
             {/* Time and number of items */}
                 <div className='flex flex-row items-center gap-2'>
-                    <p className='text-[14px] text-tertiary font-lato'>35 min</p>
+                    <p onClick={() =>  history('/album')} className='text-[14px] text-tertiary font-lato'>{PlayerData.albumName}</p>
                     <div className='w-[5px] h-[5px] rounded-full bg-tertiary'></div>
                     <p className='text-[14px] text-tertiary font-lato'>7 tracks</p>
                 </div>
             </div>
-
+            {/* onClick={() => {if(PlayerData.albumName != 'Single') history('/album')}} */}
             {/* Next Container */}
             <div className='w-full flex flex-col gap-3'>
                 <div className='flex flex-row'>

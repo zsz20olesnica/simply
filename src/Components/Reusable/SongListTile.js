@@ -12,10 +12,10 @@ export default function SongListTile({title, authors, image, item}) {
     <div className="w-full flex flex-col justify-start items-center my-1 px-2 border-b-2 border-gray">
         <div className="h-14 w-full flex flex-row items-center justify-start">
             {/* SongImage */}
-            <img src={image} className={'w-14 h-14 object-cover'}/>
+            <img src={image} className={'w-12 h-12 object-cover rounded-md'}/>
             {/* Title&Authors */}
             <div className='flex flex-col justify-center items-start ml-4'>
-                <p className='text-secondary font-semibold'>{title}</p>
+                <p className='text-secondary font-semibold'>Tytul kurwo</p>
                 <p className='text-tertiary'>{authors}</p>
             </div> 
 

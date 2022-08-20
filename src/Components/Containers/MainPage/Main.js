@@ -9,13 +9,16 @@ import HeroImage from '../../../Images/home_hero.png'
 import NavBar from '../../Reusable/Navbar'
 import SongTile from '../../Reusable/SongTile'
 import HomeAlbum from '../../Reusable/HomeAlbum'
-import { db } from '../../../firebase'
-import { collection, query, onSnapshot } from 'firebase/firestore'
 import { motion } from "framer-motion";
-
+import { PlayerData } from '../../../firebase'
 import '../../../vanilla.css'
 
-export default function Main() {
+
+export default function Main({foryousongs, songs}) {
+  
+
+  //Ograniczenie liczby piosenek w for you
+  foryousongs.splice(6)
 
   const history = useNavigate()
   let viewportHeight = window.innerHeight;
@@ -23,12 +26,22 @@ export default function Main() {
   const SiteTitle = 'Home - Simply'
   document.title = SiteTitle
  
+  //ClearPlayerData
+  useEffect(() => {
+    PlayerData.changeTitle = 'title'
+    PlayerData.changeDuration = 'duration'
+    PlayerData.changeImg = 'img'
+    PlayerData.changeThumbnailAuthor = 'thumbnailAuthor'
+    PlayerData.changeAlbumName = 'albumName'
+    PlayerData.albumData = []
+  }, [])
+
+
 //AddPadding
   useEffect(() => {
     const SongPlaying = document.querySelector('#songplaying').clientHeight
     const Navbar = document.getElementById('navbar').clientHeight
     const root = document.querySelector(':root')
-
     root.style.setProperty('--mainPadding', `${SongPlaying + Navbar+10}px`)
 
   }, [])
@@ -70,7 +83,7 @@ useEffect(() => {
     albums = Array.from(document.getElementsByClassName('homealbum'))
 }, [])
 
-
+//ScrollAlbums
     const HandleTouchEnd = (element, index) => 
     {
         console.log(index)
@@ -98,25 +111,6 @@ useEffect(() => {
             dots[index-1].classList.remove('bg-white')
         }
     }
-
-
-
-
-//FirebaseData
-
-//SongsArray
-    const [Songs, setSongs] = useState([])
-    useEffect(() => {
-        const q = query(collection(db, 'songs'))
-        const unsub = onSnapshot(q, (querySnapshot) => {
-            let ExistingElementsArray = [];
-            querySnapshot.forEach((doc) => {
-                ExistingElementsArray.push({...doc.data(), id: doc.id});
-            });
-            setSongs(ExistingElementsArray)
-        });
-        return () => unsub();
-    }, []);
 
 
   return (
@@ -156,70 +150,60 @@ useEffect(() => {
           <div className='min-w-full overflow-x-scroll whitespace-nowrap bg-white flex flex-row gap-2 '>
               
               {
-                Songs.map((song) => {
+                foryousongs.map((foryou) => {
 
                     return(
-                        <SongTile title={song.title} duration={song.duration} img={song.songThumbnailLink} thumbnailAuthor={song.songThumbnailAuthor} key={song.title}/>
+                        <SongTile 
+                        title={foryou.title} 
+                        duration={foryou.duration} 
+                        img={foryou.songThumbnailLink}
+                        thumbnailAuthor={foryou.songThumbnailAuthor} 
+                        key={foryou.title}
+                        albumName={foryou.albumName}
+                       />      
                     )
                 })
               }
           </div>
       </motion.div>
 
-      {/* POPULAR Section */}
-      <motion.div initial={{opacity: 0}}  whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.8 }}
-      className='w-full flex flex-col px-4'>
-          <motion.h3 transition={{delay: 0.1, duration: 0.5}} initial={{x: -120}} animate={{x: 0}}
-          className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>Popular</motion.h3>
-          {/* ContainerKafelków */}
-          <div className='w-full bg-white flex flex-row gap-2'>
-              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={FeelingArtsy}/>
-              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={PlayImage}/>
-          </div>
-      </motion.div>
-
-      <motion.div initial={{opacity: 0}}  whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.8 }}
-      className='w-full flex flex-col px-4'>
-          <motion.h3 transition={{delay: 0.1, duration: 0.5}} initial={{x: -120}} animate={{x: 0}}
-          className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>Popular</motion.h3>
-          {/* ContainerKafelków */}
-          <div className='w-full bg-white flex flex-row gap-2'>
-              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={FeelingArtsy}/>
-              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={PlayImage}/>
-          </div>
-      </motion.div>
-      <motion.div initial={{opacity: 0}}  whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.8 }}
-      className='w-full flex flex-col px-4'>
-          <motion.h3 transition={{delay: 0.1, duration: 0.5}} initial={{x: -120}} animate={{x: 0}}
-          className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>Popular</motion.h3>
-          {/* ContainerKafelków */}
-          <div className='w-full bg-white flex flex-row gap-2'>
-              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={FeelingArtsy}/>
-              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={PlayImage}/>
-          </div>
-      </motion.div>
-      <motion.div initial={{opacity: 0}}  whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.8 }}
-      className='w-full flex flex-col px-4'>
-          <motion.h3 transition={{delay: 0.1, duration: 0.5}} initial={{x: -120}} animate={{x: 0}}
-          className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>Popular</motion.h3>
-          {/* ContainerKafelków */}
-          <div className='w-full bg-white flex flex-row gap-2'>
-              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={FeelingArtsy}/>
-              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={PlayImage}/>
-          </div>
-      </motion.div>
-      <motion.div initial={{opacity: 0}}  whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.8 }}
-      className='w-full flex flex-col px-4'>
-          <motion.h3 transition={{delay: 0.1, duration: 0.5}} initial={{x: -120}} animate={{x: 0}}
-          className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>Popular</motion.h3>
-          {/* ContainerKafelków */}
-          <div className='w-full bg-white flex flex-row gap-2'>
-              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={FeelingArtsy}/>
-              <SongTile title={'Feeling Artsy'} time={'2 hours'} img={PlayImage}/>
-          </div>
-      </motion.div>
-
-
+    {
+        
+        songs.map((Category) => {
+            if(!Category[1].length == 0)
+            {
+                return(
+                <>
+                    <motion.div initial={{opacity: 0}}  whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.8 }}
+                    className='w-full flex flex-col px-4'>
+                        <motion.h3 transition={{delay: 0.1, duration: 0.5}} initial={{x: -120}} animate={{x: 0}}
+                        className='w-full text-[30px] text-secondary font-playfair font-extrabold my-[18px]'>{Category[0]}</motion.h3>
+                        {/* ContainerKafelków */}
+                        <div className='w-full bg-white min-w-full overflow-x-scroll flex flex-row gap-2'>
+                            
+                        {
+                            Category[1].map((song) => {
+                                return(
+                                <>
+                                <SongTile 
+                                    title={song.title} 
+                                    duration={song.duration} 
+                                    img={song.songThumbnailLink} 
+                                    thumbnailAuthor={song.songThumbnailAuthor} 
+                                    albumName={song.albumName}
+                                    key={song.title}/>   
+                                </>
+                            )
+                            })
+                        }          
+                        </div>
+                    </motion.div>
+                </>
+            )
+            }    
+    })
+}
+      
 
         {/* SongPlaying */}
         <div  id='songplaying' className='songplaying bg-white w-full h-[88px] gap-2 flex justify-center items-center fixed z-10 bottom-[56px] shadow-inner'>

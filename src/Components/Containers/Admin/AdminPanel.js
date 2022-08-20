@@ -259,7 +259,7 @@ const CalcDuration = (e) => {
 
                   {/* AlbumName */}
                   <p className='w-full text-[19px] font-lato text-secondary'>Album Name</p>
-                  <input ref={albumNameRef} placeholder='Type album name' type='text' className='w-full h-11 rounded-full bg-search px-5 text-secondary focus:outline-primary '></input>
+                  <input ref={albumNameRef} placeholder='Type album name (Type Single if dont have own album)' type='text' className='w-full h-11 rounded-full bg-search px-5 text-secondary focus:outline-primary '></input>
                   
                   {/* SongCategory */}
                   {/* <p className='w-full text-[19px] font-lato text-secondary'>Song Category</p>
