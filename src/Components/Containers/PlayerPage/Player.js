@@ -6,8 +6,10 @@ import PlayerHero from '../../../Images/hero_player.png'
 import '../../../vanilla.css'
 import { collection, query, onSnapshot, where, getDoc } from 'firebase/firestore'
 import { PlayerData, db, auth } from '../../../firebase'
-import { doc, updateDoc } from "firebase/firestore"; 
+import { doc, updateDoc, setDoc } from "firebase/firestore"; 
 import { motion } from 'framer-motion';
+import { flushSync } from 'react-dom'
+import { async } from '@firebase/util'
 
 
 
@@ -19,11 +21,14 @@ export default function Player() {
     const SiteTitle = 'Player - Simply'
     document.title = SiteTitle
     const [TracksCount, setTracksCount] = useState(0)
-
+    const [IsFavourites, setIsFavourites] = useState(false)
 
     //FilterFirebase 
     let album = []
     useEffect(() => {
+        
+        
+        //CreateAlbum
         const q = query(collection(db, 'songs'), where('albumName', '==', `${PlayerData.albumName}`))
         const unsub = onSnapshot(q, (querySnapshot) => {
             let ExistingElementsArray = [];
@@ -37,6 +42,28 @@ export default function Player() {
             console.log(PlayerData.albumData)
             setTracksCount(PlayerData.albumData.length)
         })
+
+
+
+        //CheckIfSongIsInFavourites
+        const CheckIfSongIsInFavourites = async () => {
+            const docRef = doc(db, "users", auth.currentUser.uid)
+            const docSnap = await getDoc(docRef)
+    
+            if (docSnap.exists()) {
+    
+                //CheckIfIsAlreadyFavourite
+                docSnap.data().favouritesSongs.forEach((e) => {
+                    if(e == PlayerData.title)
+                    {
+                        setIsFavourites(true)
+                    }
+                })
+            }
+        }
+        CheckIfSongIsInFavourites()
+        
+
         
         return () => unsub() 
     }, [])
@@ -44,23 +71,57 @@ export default function Player() {
     //CreatePlaylist
 
     
-    
-    const AddToFavourites = async () => {
-        const favouritesRef = doc(db, "users", auth.currentUser.uid);
-        let favourites = []
-        const docSnap = await getDoc(favouritesRef)
+    const handleFavourites = async () => {
         
-        await updateDoc(favouritesRef, {
-            favouritesSongs: title
-                
-          });
+        const docRef = doc(db, "users", auth.currentUser.uid)
+        const docSnap = await getDoc(docRef)
+        let UserData
+        let FavouritesSongs = []
+        let IsFavourite = false
+
+        if (docSnap.exists()) {
+            UserData = docSnap.data()
+            FavouritesSongs = UserData.favouritesSongs
+
+            //CheckIfIsAlreadyFavourite
+            FavouritesSongs.forEach((e) => {
+                if(e == PlayerData.title)
+                {
+                    IsFavourite = true
+                }
+            })
+            
+            
+            if(!IsFavourite)
+            {
+                //AddSongToArray
+                FavouritesSongs.push(PlayerData.title)
+
+
+                //UpdateDB
+                await setDoc(doc(db, 'users', auth.currentUser.uid), {
+                    favouritesSongs: FavouritesSongs
+                }, {merge: true})
+
+                setIsFavourites(true)
+
+            }
+            else
+            {
+                //RemoveSongFromArray
+                let index = FavouritesSongs.indexOf(PlayerData.title)
+                FavouritesSongs.splice(index, 1)
+
+                //UpdateDB
+                await setDoc(doc(db, 'users', auth.currentUser.uid), {
+                    favouritesSongs: FavouritesSongs
+                }, {merge: true})
+
+                setIsFavourites(false)
+            }
+            
+        }
     }
-
-
-    
-
-
-
 
 
 const MoreOptionss = ({ isOpenn }) => {
@@ -69,16 +130,42 @@ const MoreOptionss = ({ isOpenn }) => {
         <motion.div transition={{duration: 0.2}} animate={{opacity: 1}} exit={{opacity: 0}} className={`${isOpenn ? 'block' : 'hidden'} absolute h-[147px] w-[226px] rounded-xl bg-white shadow-2xl`}>
 
             <ul className='w-full  h-full flex flex-col items-start justify-center divide-y divide-solid '>
-                <motion.li onClick={AddToFavourites} transition={{delay: 0.15, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}}
-                className={'w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6 active:bg-slate-300 active:rounded-t-xl'}>
-                    <Heart className={'fill-secondary active:fill-primary w-6 h-6'}/>
-                    <p className='text-secondary text-[14px] font-lato '>Add to Favorites</p>
-                </motion.li>
+
+
+                {/* AddToFavourites */}
+                {
+                !IsFavourites
+                ? 
+                    <motion.li  onClick={handleFavourites} transition={{delay: 0.15, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}}
+                        className={'w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6 active:bg-slate-300 active:rounded-t-xl'}>
+                        <Heart className={'fill-secondary active:fill-primary w-6 h-6'}/>
+                        <p className='text-secondary text-[14px] font-lato '>Add to Favourites</p>
+                    </motion.li>
+                :
+                    <motion.li  onClick={handleFavourites} transition={{delay: 0.15, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}}
+                    className={'w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6 active:bg-slate-300 active:rounded-t-xl'}>
+                        <Heart className={'fill-error active:fill-error w-6 h-6'}/>
+                        <p className='text-secondary text-[14px] font-lato '>Remove from Favourites</p>
+                    </motion.li>
+                
+                }
+
+
+                
+
+
+
+                {/* Share */}
                 <motion.li transition={{delay: 0.25, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}} 
                 className='w-full  p-6 h-1/3 flex flex-row items-center justify-start gap-6 active:bg-slate-300 '>
                     <Share className={'fill-secondary w-6 h-6'}/>
                     <p className=' text-secondary text-[14px] font-lato'>Share</p>
                 </motion.li>
+
+
+
+
+                {/* CastToDevice */}
                 <motion.li transition={{delay: 0.35, duration: 0.5}} initial={{opacity: 0}} animate={{opacity: 1}} 
                 className='w-full p-6 h-1/3 flex flex-row items-center justify-start gap-6 active:bg-slate-300 active:rounded-b-xl'>
                     <CastToDevice className={'fill-secondary w-6 h-6'}/>

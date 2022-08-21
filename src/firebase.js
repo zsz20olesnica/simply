@@ -96,10 +96,7 @@ export const SignInWithGoogle = () => {
             settings: {
               notifications: true
             },
-            favouritesSongs:
-            {
-
-            },
+            favouritesSongs: [],
           });
       }
     })
