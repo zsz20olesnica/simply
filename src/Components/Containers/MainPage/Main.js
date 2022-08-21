@@ -10,7 +10,7 @@ import NavBar from '../../Reusable/Navbar'
 import SongTile from '../../Reusable/SongTile'
 import HomeAlbum from '../../Reusable/HomeAlbum'
 import { motion } from "framer-motion";
-import { PlayerData } from '../../../firebase'
+import { PlayerData, AlbumData } from '../../../firebase'
 import '../../../vanilla.css'
 
 
@@ -26,14 +26,10 @@ export default function Main({foryousongs, songs}) {
   const SiteTitle = 'Home - Simply'
   document.title = SiteTitle
  
-  //ClearPlayerData
+  //ClearPlayer&AlbumData
   useEffect(() => {
-    PlayerData.changeTitle = 'title'
-    PlayerData.changeDuration = 'duration'
-    PlayerData.changeImg = 'img'
-    PlayerData.changeThumbnailAuthor = 'thumbnailAuthor'
-    PlayerData.changeAlbumName = 'albumName'
-    PlayerData.albumData = []
+    PlayerData.splice(0, PlayerData.length)
+    AlbumData.splice(0, AlbumData.length)
   }, [])
 
 
@@ -150,16 +146,11 @@ useEffect(() => {
           <div className='min-w-full overflow-x-scroll whitespace-nowrap bg-white flex flex-row gap-2 '>
               
               {
-                foryousongs.map((foryou) => {
+                foryousongs.map((song) => {
 
                     return(
                         <SongTile 
-                        title={foryou.title} 
-                        duration={foryou.duration} 
-                        img={foryou.songThumbnailLink}
-                        thumbnailAuthor={foryou.songThumbnailAuthor} 
-                        key={foryou.title}
-                        albumName={foryou.albumName}
+                        song={song}
                        />      
                     )
                 })
@@ -185,13 +176,7 @@ useEffect(() => {
                             Category[1].map((song) => {
                                 return(
                                 <>
-                                <SongTile 
-                                    title={song.title} 
-                                    duration={song.duration} 
-                                    img={song.songThumbnailLink} 
-                                    thumbnailAuthor={song.songThumbnailAuthor} 
-                                    albumName={song.albumName}
-                                    key={song.title}/>   
+                                <SongTile song={song}/>   
                                 </>
                             )
                             })

@@ -2,13 +2,11 @@ import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UpArrow, Pause, Play} from '../../Icons'
-import PlayImage from '../../Images/playlist2.png'
 import { PlayerData } from '../../firebase'
 export default function PlayerNavbar() {
     const history = useNavigate()
     const [IsPaused, setIsPaused] = useState('false')
-
-
+    const song = PlayerData[0]
 
     
   return (
@@ -21,7 +19,7 @@ export default function PlayerNavbar() {
                     {/* Image/Pause Container */}
                     <div className='w-[20%] flex items-center justify-center'>
                         <div onClick={() => {setIsPaused(!IsPaused)}} className='w-[55px] h-[55px] rounded-full ring-4 ring-primary flex flex-col justify-center items-center relative '>
-                                <img src={PlayerData.img} className='absolute rounded-full h-full w-full object-cover'/>
+                                <img src={song.songThumbnailLink} className='absolute rounded-full h-full w-full object-cover'/>
 
                                 <div className='absolute rounded-full h-full w-full bg-[#1D1D1D] bg-opacity-[40%]'>
 
@@ -35,9 +33,9 @@ export default function PlayerNavbar() {
                     {/* Song title/author container */}
                     <div className='w-[60%] flex flex-col justify-center items-start'>
                         {/* Title */}
-                        <p className='text-secondary max-w-[90%] truncate'>{PlayerData.title}</p>
+                        <p className='text-secondary max-w-[90%] truncate'>{song.title}</p>
                         {/* AlbumName */}
-                        <p className='text-tertiary'>{PlayerData.albumName}</p>
+                        <p className='text-tertiary'>{song.albumName}</p>
 
                     </div>
                     {/* Arrow */}

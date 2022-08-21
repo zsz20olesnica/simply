@@ -1,15 +1,13 @@
-import React, { createContext } from "react";
+import React from "react"
 import { LeftArrow } from '../../../Icons'
-import { DownArrow, DownArrowWhite, Prev, Next, Pause, Play, More, CastToDevice, Share, Heart } from '../../../Icons'
-import { useState, useEffect, useRef } from 'react'
+import { Pause, Play} from '../../../Icons'
+import { useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
-import PlayerHero from '../../../Images/hero_player.png'
 import '../../../vanilla.css'
 import PlayerNavbar from "../../Reusable/AlbumNavbar";
-import Navbar from "../../Reusable/Navbar";
 import SongListTile from "../../Reusable/SongListTile";
 
-import { PlayerData } from '../../../firebase'
+import { PlayerData, AlbumData } from '../../../firebase'
 
 import { motion, Reorder, useDragControls } from 'framer-motion';
 
@@ -23,7 +21,17 @@ export default function AlbumPage() {
     document.title = SiteTitle
     const [TracksCount, setTracksCount] = useState(0)
     const [AlbumDuration, setAlbumDuration] = useState("")
+    
+    //Song&AlbumData
+    let currentsong = PlayerData[0]
+    let Album = AlbumData[0]
+    let AlbumName = AlbumData[1]
+    let thumbnail = AlbumData[2]
+    let thumbnailAuthor= AlbumData[3]
+    
     let AlbumDurationNotState = "00:00"
+
+    console.log(Album)
 
     useEffect(() => {  
         setTracksCount(0)
@@ -70,7 +78,7 @@ export default function AlbumPage() {
         }
         
         
-        PlayerData.albumData.forEach((song) => {
+        Album.forEach((song) => {
             CalcAlbumDuration(song.duration)
             setTracksCount((prev) => prev+1)
         })
@@ -113,10 +121,10 @@ export default function AlbumPage() {
                 onClick={() => history('/home')}
                 ><LeftArrow/></button>
                 {/* Author */}
-                <span className='h-full min-w-[160px] flex justify-center items-center bg-white opacity-90 rounded-full text-tertiary text-[14px] p-1'>{PlayerData.thumbnailAuthor}</span>
+                <span className='h-full min-w-[160px] flex justify-center items-center bg-white opacity-90 rounded-full text-tertiary text-[14px] p-1'>{thumbnailAuthor}</span>
             </div>
             {/* AlbumTitle */}
-            <h1 className='font-lato font-extrabold text-[32px] text-center break-normal min-w-[70%] text-secondary'>{PlayerData.albumName}</h1>
+            <h1 className='font-lato font-extrabold text-[32px] text-center break-normal min-w-[70%] text-secondary'>{AlbumName}</h1>
 
             <div className='flex flex-row items-center gap-5'>
                     <p className='text-[14px] text-tertiary font-lato'>{AlbumDuration}</p>  
@@ -137,7 +145,7 @@ export default function AlbumPage() {
         </div>
         <Reorder.Group axis="y" onReorder={setItems} values={items}>
              {
-                PlayerData.albumData.map((song) => {      
+                Album.map((song) => {      
                    return(
                     <SongListTile key={song.title} song={song}/>
                    )

@@ -30,7 +30,7 @@ const firebaseConfig = {
 
 //FilteredCategoriesInSearchPanel
 export let Categories = []
-export let PlayerData = {
+export let PlayerDataObject = {
   title: 'title',
   duration: 'duration',
   img: 'img',
@@ -56,9 +56,12 @@ export let PlayerData = {
   },
   set changeAlbumData(newAlbumData) {
     this.albumData = newAlbumData
+  }
 }
 
-}
+export let PlayerData = []
+export let AlbumData = []
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

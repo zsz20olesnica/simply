@@ -9,16 +9,11 @@ export default function SongListTile({song, item}) {
   const dragControls = useDragControls();
   const history = useNavigate()
   const handleClick = () => {
-    PlayerData.changeTitle = song.title
-    PlayerData.changeDuration = song.duration
-    PlayerData.changeImg = song.songThumbnailLink
-    PlayerData.changeThumbnailAuthor = song.songThumbnailAuthor
-    PlayerData.changeAlbumName = song.albumName
+    PlayerData.splice(0, PlayerData.length)
+    PlayerData.push(song)
     console.log(PlayerData)
     history('/player')
   }
-
-
 
   return (
     <>

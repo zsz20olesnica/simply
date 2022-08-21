@@ -109,7 +109,7 @@ function App() {
           <Route path='/signup' element={<SingUp />}/>
           <Route path='/createaccount' element={<CreateAccount />}/>
           <Route path='/home' element={<Main songs={SongsByCategory} foryousongs={songs}/>}/>
-          <Route path='/favorites' element={<Favorites />}/>
+          <Route path='/favourites' element={<Favorites />}/>
           <Route path='/settings' element={<Settings />}/>
           <Route path='/about' element={<About />}/>
           <Route path='/feedback' element={<Feedback />}/>

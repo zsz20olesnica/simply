@@ -1,19 +1,22 @@
-import React, { useContext } from 'react'
-import { useState, useEffect, useRef } from 'react'
-import { DownArrow, DownArrowWhite, Prev, Next, Pause, Play, More, CastToDevice, Share, Heart } from '../../../Icons'
+import React from 'react'
+import { useState, useEffect } from 'react'
+import { DownArrowWhite, Prev, Next, Pause, Play, More, CastToDevice, Share, Heart } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
-import PlayerHero from '../../../Images/hero_player.png'
 import '../../../vanilla.css'
 import { collection, query, onSnapshot, where, getDoc } from 'firebase/firestore'
-import { PlayerData, db, auth } from '../../../firebase'
-import { doc, updateDoc, setDoc } from "firebase/firestore"; 
+import { PlayerData, AlbumData, db, auth,  } from '../../../firebase'
+import { doc, setDoc } from "firebase/firestore"; 
 import { motion } from 'framer-motion';
-import { flushSync } from 'react-dom'
-import { async } from '@firebase/util'
+
+
 
 
 
 export default function Player() {
+    let song = PlayerData[0]
+    console.log('Player Data:')
+    console.log(song)
+    
 
     const history = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
@@ -28,19 +31,27 @@ export default function Player() {
     useEffect(() => {
         
         
+        
         //CreateAlbum
-        const q = query(collection(db, 'songs'), where('albumName', '==', `${PlayerData.albumName}`))
+        const q = query(collection(db, 'songs'), where('albumName', '==', `${song.albumName}`))
         const unsub = onSnapshot(q, (querySnapshot) => {
             let ExistingElementsArray = [];
             querySnapshot.forEach((doc) => {
                 ExistingElementsArray.push({...doc.data(), id: doc.id});
             });
             album = ExistingElementsArray
-            console.log(`Album to: ` + PlayerData.albumName)
-            console.log(album)
-            PlayerData.changeAlbumData = album
-            console.log(PlayerData.albumData)
-            setTracksCount(PlayerData.albumData.length)
+            console.log(`Album to: ` + song.albumName)
+
+            if(AlbumData[0] != album)
+            {
+                AlbumData.push(album)
+                AlbumData.push(song.albumName)
+                AlbumData.push(song.songThumbnailLink)
+                AlbumData.push(song.songThumbnailAuthor)
+            }
+            setTracksCount(AlbumData[0].length)
+            console.log('Album Data:')
+            console.log(AlbumData)
         })
 
 
@@ -54,7 +65,7 @@ export default function Player() {
     
                 //CheckIfIsAlreadyFavourite
                 docSnap.data().favouritesSongs.forEach((e) => {
-                    if(e == PlayerData.title)
+                    if(e == song.title)
                     {
                         setIsFavourites(true)
                     }
@@ -75,7 +86,7 @@ export default function Player() {
         
         const docRef = doc(db, "users", auth.currentUser.uid)
         const docSnap = await getDoc(docRef)
-        let UserData
+        let UserData;
         let FavouritesSongs = []
         let IsFavourite = false
 
@@ -85,7 +96,7 @@ export default function Player() {
 
             //CheckIfIsAlreadyFavourite
             FavouritesSongs.forEach((e) => {
-                if(e == PlayerData.title)
+                if(e == song.title)
                 {
                     IsFavourite = true
                 }
@@ -95,7 +106,7 @@ export default function Player() {
             if(!IsFavourite)
             {
                 //AddSongToArray
-                FavouritesSongs.push(PlayerData.title)
+                FavouritesSongs.push(song.title)
 
 
                 //UpdateDB
@@ -109,7 +120,7 @@ export default function Player() {
             else
             {
                 //RemoveSongFromArray
-                let index = FavouritesSongs.indexOf(PlayerData.title)
+                let index = FavouritesSongs.indexOf(song.title)
                 FavouritesSongs.splice(index, 1)
 
                 //UpdateDB
@@ -197,13 +208,13 @@ const MoreOptionss = ({ isOpenn }) => {
                 onClick={() => history('/home')}
                 ><DownArrowWhite/></button>
                 {/* Author */}
-                <span className='h-full min-w-[160px] flex justify-center items-center bg-white opacity-90 rounded-full text-tertiary text-[14px] p-1'>{PlayerData.thumbnailAuthor}</span>
+                <span className='h-full min-w-[160px] flex justify-center items-center bg-white opacity-90 rounded-full text-tertiary text-[14px] p-1'>{song.songThumbnailAuthor}</span>
             </div>
 
                      </div>
       {/* HeroSection */}
       <div className='w-full h-[60%]'>
-            <img src={PlayerData.img} className='top-0 z-0 w-full h-full object-cover'/>
+            <img src={song.songThumbnailLink} className='top-0 z-0 w-full h-full object-cover'/>
     </div>
 
 
@@ -215,14 +226,14 @@ const MoreOptionss = ({ isOpenn }) => {
             {/* Title */}
                 <div className='h-full w-full flex flex-row items-center justify-between'>
                     {/* Trzeba zrobic ze jak jest za dlugi tytuł to sie przesuwa jak slider automatycznie */}
-                    <h1 className='w-full font-playfair font-extrabold text-[32px] break-normal min-w-[70%] text-secondary truncate'>{PlayerData.title}</h1>
+                    <h1 className='w-full font-playfair font-extrabold text-[32px] break-normal min-w-[70%] text-secondary truncate'>{song.title}</h1>
                     <div onClick={() => {HandleMoreOptions()}} className='min-w-[20%] h-full flex flex-col items-center justify-start mt-7'>
                         <More className={'scale-90'}/>
                     </div>
                 </div>
             {/* Time and number of items */}
                 <div className='flex flex-row items-center gap-2'>
-                    <p onClick={() =>  history('/album')} className='text-[14px] text-tertiary font-lato'>{PlayerData.albumName}</p>
+                    <p onClick={() =>  history('/album')} className='text-[14px] text-tertiary font-lato'>{song.albumName}</p>
                     <div className='w-[5px] h-[5px] rounded-full bg-tertiary'></div>
                     <p className='text-[14px] text-tertiary font-lato'>{TracksCount} tracks</p>
                 </div>
@@ -238,7 +249,7 @@ const MoreOptionss = ({ isOpenn }) => {
                 {/* Time and slider */}
                 <div className='w-full '>
                         <input type="range" id="PlayerSlider" defaultValue="0" className='w-full h-2 bg-search rounded-lg'></input>
-                        <p className='font-lato text-[12px] text-tertiary'>{PlayerData.duration}</p>
+                        <p className='font-lato text-[12px] text-tertiary'>{song.duration}</p>
                 </div>
 
                 {/* Music controler */}

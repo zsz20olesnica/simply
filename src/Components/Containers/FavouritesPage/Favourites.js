@@ -1,8 +1,12 @@
-import React from 'react'
+import  { React, useEffect, useState } from 'react'
 import { Heart, DownArrow, Play } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import { handleDownAnim } from '../../../Utils/Animations'
 import '../../../vanilla.css'
+
+
+import {db, auth} from '../../../firebase'
+import { doc, updateDoc, setDoc, getDoc } from "firebase/firestore"; 
 
 
 import FeelingArtsy from '../../../Images/playlist1.png'
@@ -23,13 +27,87 @@ import FilteredCategory from '../../Reusable/FilteredCategory'
 
 
 
-export default function Favorites() {
+export default function Favourites() {
 
   const history = useNavigate()
   let viewportHeight = window.innerHeight;
   const SiteTitle = 'Favourites - Simply'
   document.title = SiteTitle
-  let UserHasFavourites =  Math.random() < 0.5
+  const [UserHasFavourites, setUserHasFavourites] = useState(false)
+  const [FavouritesSongs, setFavouritesSongs] = useState([])
+  const [FavouritesSongsFromDB, setFavouritesSongsFromDB] = useState([])
+  let Fav = []
+ 
+
+  useEffect(() => {
+    const GetData = async () => {
+      const docRef = doc(db, "users", auth.currentUser.uid)
+      const docSnap = await getDoc(docRef)
+      
+      if(docSnap.data().favouritesSongs)
+      {
+        console.log('User has favourites')
+        setUserHasFavourites(true)
+        Fav = docSnap.data().favouritesSongs
+        console.log('Fav ==' , Fav)
+        setFavouritesSongs(Fav)
+      }
+      else
+      {
+        console.log('User has not favourites')
+      }
+    }
+
+    GetData()
+  }, []);
+
+
+  useEffect(() => {
+    
+    const GetSongsFromDB = async () => {
+      FavouritesSongs.forEach( async (song) => {
+        
+        const docReference = doc(db, "songs", song)
+        const SongDocSnap =  await getDoc(docReference)
+        
+        setFavouritesSongsFromDB((current) => 
+        {
+          let CanAdd = true
+          if(current)
+          {
+            current.forEach((song) =>
+            {
+              if(song == SongDocSnap.data())
+              {
+                CanAdd = false
+              }
+            })
+          }
+          if(CanAdd)
+          {
+            return [...current, SongDocSnap.data()]
+          }
+          
+        })
+
+      })
+    }
+
+
+    console.log(FavouritesSongs)
+    if(FavouritesSongs.length > 0)
+    {
+      GetSongsFromDB()
+      console.log(FavouritesSongsFromDB)
+    }
+    
+
+  }, [FavouritesSongs])
+
+
+
+
+
   const NoFavourites = () => {
     return(
       <div className='w-full h-full p-8 bg-white flex flex-col justify-start items-center'>
@@ -65,6 +143,13 @@ export default function Favorites() {
     )
   }
 
+
+
+
+
+
+
+
 const ExistingFavorites = () => {
 return(
   <div className='w-full h-full p-8 bg-white flex flex-col justify-start items-start gap-4'>
@@ -83,43 +168,25 @@ return(
             
 
              {/* KafelkiContainer */}
-            <div className='w-full flex flex-row flex-wrap items-start justify-start gap-5  overflow-y-auto'>
-             {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
-                  
-                  <SongTile title={'Feel Like Dancing'} img={FeelingArtsy} time={'2 hours'} />
-                  
-                  <SongTile title={'Be active'} img={ImageSport} time={'5 minutes'} />
-              </div>
-              {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
+            <div className='w-full flex flex-row flex-wrap justify-between gap-4 items-start overflow-y-auto'>
+            
+              {
+                FavouritesSongsFromDB.map((song) => {
+                  return(
+                      <SongTile key={song.title} song={song} 
+                      className={'flex flex-col items-start justify-center w-[47.5%]'}
+                      imgClassName={'h-[136px] w-full rounded-[12px] object-cover'}  />
+                  )
+                })
+              }
 
-                  <SongTile title={'Eat healthy'} img={ImageDinner} time={'4 days'} />
-                 
-                  <SongTile title={'I feel like a gruby'} img={ImageGruby} time={'2 weeks'} />
-              </div>
+              
               {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
-              <SongTile title={'Halloween suko'} img={ImageHorror} time={'3 minutes'} />
-              <SongTile title={'Feel like a kid'} img={ImageInsomnia} time={'20 seconds'} />
-              </div>
-              {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
-              <SongTile title={'Colorful'} img={ImageColors} time={'1 hour'} />
-              <SongTile title={'I feel like a gruby'} img={ImageHorror} time={'20 minutes'} />
-              </div>
-              {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
-              <SongTile title={'Old school times'} img={PlayImage} time={'69 seconds'} />
-              <SongTile title={'Bedoes'} img={ImageFiesco} time={'420 minutes'} />
-              </div>
-              {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
+              {/* <div className='flex flex-row gap-5'>
               <SongTile title={'I feel like a gruby'} img={ImageGruby} time={'20 minutes'} />
-              <SongTile title={'I feel like a gruby'} img={ImageColors} time={'420 minutes'} />
+              <SongTile title={'I feel like a gruby'} img={ImageColors} time={'420 minutes'} /> */}
                   
-              </div>
-              </div>    
+              </div> 
         </div>       
 )
 }
@@ -128,7 +195,7 @@ return(
     animate={{y: 0, opacity: 1}} exit={{y: viewportHeight, opacity: 0}}
      id='container' className='mainContainer w-full h-full relative'>
 
-      {UserHasFavourites? ExistingFavorites(): NoFavourites()}   
+      {UserHasFavourites ? ExistingFavorites(): NoFavourites()}   
 
     </motion.div>
   )
