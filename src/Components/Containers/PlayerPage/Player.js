@@ -329,7 +329,7 @@ const MoreOptionss = ({ isOpenn }) => {
                 </div>
             {/* Time and number of items */}
                 <div className='flex flex-row items-center gap-2'>
-                    <p onClick={() =>  history('/album')} className='text-[14px] text-tertiary font-lato'>{song.albumName}</p>
+                    <p onClick={() => {if(PlayerData.albumName != 'Single') history('/album')}} className='text-[14px] text-tertiary font-lato'>{song.albumName}</p>
                     <div className='w-[5px] h-[5px] rounded-full bg-tertiary'></div>
                     <p className='text-[14px] text-tertiary font-lato'>
                     {TracksCount} 
@@ -337,7 +337,7 @@ const MoreOptionss = ({ isOpenn }) => {
                     </p>
                 </div>
             </div>
-            {/* onClick={() => {if(PlayerData.albumName != 'Single') history('/album')}} */}
+            
             {/* Next Container */}
             <div className='w-full flex flex-col gap-3'>
                 <div className='flex flex-row'>
