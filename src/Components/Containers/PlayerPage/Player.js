@@ -33,7 +33,7 @@ export default function Player() {
     const [IsTrackCountPlural, setIsTrackCountPlural] = useState(false)
     const [PlaylistCreated, setPlaylistCreated] = useState([])
     const [AlbumCreated, setAlbumCreated] = useState(false)
-
+    const [IsSingle, setIsSingle] = useState(false)
 
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
@@ -68,6 +68,8 @@ export default function Player() {
             setAlbumCreated(true)
         })
 
+        //CheckIfSingle
+        if(song.albumName == 'Single') setIsSingle(true)
         return () => unsub() 
         }, [])
   
@@ -154,17 +156,17 @@ export default function Player() {
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
 
-    // //CheckTracksPlular
-    // useEffect(() => {
-    //     if(TracksCount > 1)
-    //     {
-    //         setIsTrackCountPlural(true)
-    //     }
-    //     else
-    //     {
-    //         setIsTrackCountPlural(false)
-    //     }
-    // }, [TracksCount])
+    //CheckTracksPlular
+    useEffect(() => {
+        if(TracksCount > 1)
+        {
+            setIsTrackCountPlural(true)
+        }
+        else
+        {
+            setIsTrackCountPlural(false)
+        }
+    }, [TracksCount])
     
 
 
@@ -329,11 +331,33 @@ const MoreOptionss = ({ isOpenn }) => {
                 </div>
             {/* Time and number of items */}
                 <div className='flex flex-row items-center gap-2'>
-                    <p onClick={() => {if(PlayerData.albumName != 'Single') history('/album')}} className='text-[14px] text-tertiary font-lato'>{song.albumName}</p>
-                    <div className='w-[5px] h-[5px] rounded-full bg-tertiary'></div>
+                    <p onClick={() => {if(song.albumName !== 'Single') history('/album')}} className='text-[14px] text-tertiary font-lato'>{song.albumName}</p>
+                    
+                    {
+                        IsSingle?
+                        null
+                        : <div className='w-[5px] h-[5px] rounded-full bg-tertiary'></div>
+                    }
+                    
+
                     <p className='text-[14px] text-tertiary font-lato'>
-                    {TracksCount} 
-                    {IsTrackCountPlural ? ' tracks' : ' track'}
+                            
+                            {
+                                IsSingle?
+                                null
+                                : TracksCount
+                            }
+                            {
+                                IsSingle?
+                                null
+                                : (IsTrackCountPlural? ' tracks' : ' track')
+                            }
+                            
+                    
+                          
+                            
+                            {/* {TracksCount}{IsTrackCountPlural ? ' tracks' : ' track'} */}
+
                     </p>
                 </div>
             </div>
