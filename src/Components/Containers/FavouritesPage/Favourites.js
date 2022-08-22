@@ -40,6 +40,7 @@ export default function Favourites() {
  
 
   useEffect(() => {
+    
     const GetData = async () => {
       const docRef = doc(db, "users", auth.currentUser.uid)
       const docSnap = await getDoc(docRef)
@@ -64,32 +65,16 @@ export default function Favourites() {
 
   useEffect(() => {
     
+    //ClearFavouritesSongsFromDB
+    setFavouritesSongsFromDB([])
+    let SongsArray = []
+    
     const GetSongsFromDB = async () => {
       FavouritesSongs.forEach( async (song) => {
         
         const docReference = doc(db, "songs", song)
         const SongDocSnap =  await getDoc(docReference)
-        
-        setFavouritesSongsFromDB((current) => 
-        {
-          let CanAdd = true
-          if(current)
-          {
-            current.forEach((song) =>
-            {
-              if(song == SongDocSnap.data())
-              {
-                CanAdd = false
-              }
-            })
-          }
-          if(CanAdd)
-          {
-            return [...current, SongDocSnap.data()]
-          }
-          
-        })
-
+        setFavouritesSongsFromDB((current) => [...current, SongDocSnap.data()])
       })
     }
 
@@ -98,7 +83,6 @@ export default function Favourites() {
     if(FavouritesSongs.length > 0)
     {
       GetSongsFromDB()
-      console.log(FavouritesSongsFromDB)
     }
     
 
