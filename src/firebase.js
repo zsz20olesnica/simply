@@ -61,11 +61,22 @@ export let PlayerDataObject = {
 
 export let PlayerData = []
 export let AlbumData = []
+//Album Data[0] = albumSongs
+//Album Data[1] = albumName
+//Album Data[2] = songThumbnailLink
+//Album Data[3] = songThumbnailAuthor
+
+
+export let PlaylistData = []
+export let PlaylistFromFavourites = [true]
+
+
+
 
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const appVersion = '0.6.1'
+const app = initializeApp(firebaseConfig)
+export const appVersion = '0.6.2'
 //Firestore DB
 export const db = getFirestore(app)
 //Kto jest zalogowany jego dane itp

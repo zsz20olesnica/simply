@@ -69,12 +69,11 @@ export default function AlbumPage() {
             let AlbumMinutesAmount = Math.floor(TotalSeconds / 60)
             let AlbumSecondsAmount = Math.round(TotalSeconds % 60)
 
+
             setAlbumDuration(`${padTo2Digits(AlbumMinutesAmount)}:${padTo2Digits(AlbumSecondsAmount)}`)
             AlbumDurationNotState = `${padTo2Digits(AlbumMinutesAmount)}:${padTo2Digits(AlbumSecondsAmount)}`
-           
-            
-
             console.log(`Dlugosc trwania albumu: ` + AlbumDuration)
+            
         }
         
         

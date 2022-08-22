@@ -1,12 +1,11 @@
 import  { React, useEffect, useState } from 'react'
-import { Heart, DownArrow, Play } from '../../../Icons'
+import { DownArrow, Play } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
-import { handleDownAnim } from '../../../Utils/Animations'
 import '../../../vanilla.css'
 
 
-import {db, auth} from '../../../firebase'
-import { doc, updateDoc, setDoc, getDoc } from "firebase/firestore"; 
+import { db, auth } from '../../../firebase'
+import { doc, getDoc } from "firebase/firestore"; 
 
 
 import FeelingArtsy from '../../../Images/playlist1.png'
@@ -21,9 +20,9 @@ import ImageSport from '../../../Images/playlist9.png'
 
 import SongTile from '../../Reusable/SongTile'
 import { motion } from 'framer-motion';
-import FilteredCategory from '../../Reusable/FilteredCategory'
 
-
+import {PlaylistData, PlayerData, PlaylistFromFavourites} from '../../../firebase'
+import Player from '../PlayerPage/Player'
 
 
 
@@ -45,7 +44,7 @@ export default function Favourites() {
       const docRef = doc(db, "users", auth.currentUser.uid)
       const docSnap = await getDoc(docRef)
       
-      if(docSnap.data().favouritesSongs)
+      if(docSnap.data().favouritesSongs.length > 0)
       {
         console.log('User has favourites')
         setUserHasFavourites(true)
@@ -55,7 +54,8 @@ export default function Favourites() {
       }
       else
       {
-        console.log('User has not favourites')
+        console.log('User has no favourites')
+        setUserHasFavourites(false)
       }
     }
 
@@ -84,10 +84,29 @@ export default function Favourites() {
     {
       GetSongsFromDB()
     }
-    
-
   }, [FavouritesSongs])
 
+
+  const CreatePlaylist = () => {
+    if(FavouritesSongsFromDB.length > 0)
+    {
+      PlaylistData.splice(0, PlaylistData.length)
+      PlaylistData.push(FavouritesSongsFromDB)
+      
+      PlaylistFromFavourites.splice(0, PlaylistFromFavourites.length)
+      PlaylistFromFavourites.push(true)
+ 
+      console.log(PlaylistData)
+      if(PlayerData[0] && PlayerData[0].length > 0)
+      {
+        PlayerData[0].splice(0, PlayerData[0].length)
+      }
+      PlayerData.push(PlaylistData[0][0])
+      console.log(PlayerData)
+
+      history('/player')
+    }
+  }
 
 
 
@@ -99,10 +118,6 @@ export default function Favourites() {
                 <button className='' onClick={() =>  history('/home')}><DownArrow/></button>
             </div>
             <div className='mt-40 flex flex-col items-center justify-center gap-6'>
-                {/* <Heart className={'scale-[250%] !fill-primary'}/> */}
-
-               
-
                 <svg 
                   className={'scale-[250%] !fill-primary'} width="48" height="43" viewBox="0 0 48 43" fill="none" >
                   <motion.path 
@@ -128,12 +143,6 @@ export default function Favourites() {
   }
 
 
-
-
-
-
-
-
 const ExistingFavorites = () => {
 return(
   <div className='w-full h-full p-8 bg-white flex flex-col justify-start items-start gap-4'>
@@ -145,8 +154,8 @@ return(
             {/* FilterFields */}
             <div className='flex flex-row justify-center items-start gap-2'>
             <p className='w-full font-playfair font-extrabold text-secondary text-3xl'>Favourites</p>
-            <div className='h-[40px] w-[40px] rounded-full bg-primary'>
-                <Play className={'h-[40px] w-[40px]'}  second_fill={'#fff'}/>    
+            <div onClick={CreatePlaylist} className='h-[40px] w-[40px] rounded-full bg-primary'>
+                <Play className={'h-[40px] w-[40px]'}  second_fill={'#fff'} />    
             </div>
             </div>
             
@@ -164,11 +173,6 @@ return(
                 })
               }
 
-              
-              {/* RowKafelkiContainer */}
-              {/* <div className='flex flex-row gap-5'>
-              <SongTile title={'I feel like a gruby'} img={ImageGruby} time={'20 minutes'} />
-              <SongTile title={'I feel like a gruby'} img={ImageColors} time={'420 minutes'} /> */}
                   
               </div> 
         </div>       

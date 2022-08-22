@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PlayerData } from '../../firebase'
+import { PlayerData, PlaylistFromFavourites } from '../../firebase'
 import { motion } from 'framer-motion'
 
 export default function SongTile({song, className, imgClassName}) {
@@ -9,6 +9,8 @@ export default function SongTile({song, className, imgClassName}) {
     const HandleClick = () => {
       PlayerData.splice(0, PlayerData.length)
       PlayerData.push(song)
+      PlaylistFromFavourites.splice(0, PlaylistFromFavourites.length)
+      PlaylistFromFavourites.push(false)
       history('/player')
     }
 

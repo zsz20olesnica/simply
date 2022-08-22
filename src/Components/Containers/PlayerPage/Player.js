@@ -4,44 +4,57 @@ import { DownArrowWhite, Prev, Next, Pause, Play, More, CastToDevice, Share, Hea
 import { useNavigate } from 'react-router-dom'
 import '../../../vanilla.css'
 import { collection, query, onSnapshot, where, getDoc } from 'firebase/firestore'
-import { PlayerData, AlbumData, db, auth,  } from '../../../firebase'
+import { PlayerData, AlbumData, PlaylistData, db, auth} from '../../../firebase'
 import { doc, setDoc } from "firebase/firestore"; 
 import { motion } from 'framer-motion';
-
+import { PlaylistFromFavourites } from '../../../firebase'
+import { createBuilderStatusReporter } from 'typescript'
 
 
 
 
 export default function Player() {
-    let song = PlayerData[0]
-    console.log('Player Data:')
-    console.log(song)
     
+    let song = PlayerData[0]
+    let album = []
 
-    const history = useNavigate()
-    const [isOpen, setIsOpen] = useState(false)
-    const [IsPaused, setIsPaused] = useState(false) 
+
     const SiteTitle = 'Player - Simply'
     document.title = SiteTitle
+
+    const history = useNavigate()
+
+    let NextSongIndex = 0
+    const [isOpen, setIsOpen] = useState(false)
+    const [IsPaused, setIsPaused] = useState(false) 
     const [TracksCount, setTracksCount] = useState(0)
     const [IsFavourites, setIsFavourites] = useState(false)
+    const [NextSongTitle, setNextSongTitle] = useState('')
+    const [IsTrackCountPlural, setIsTrackCountPlural] = useState(false)
+    const [PlaylistCreated, setPlaylistCreated] = useState([])
+    const [AlbumCreated, setAlbumCreated] = useState(false)
 
-    //FilterFirebase 
-    let album = []
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+
+    //CreateAlbum
     useEffect(() => {
         
-        
-        
-        //CreateAlbum
+        //FindAlbum
         const q = query(collection(db, 'songs'), where('albumName', '==', `${song.albumName}`))
+        
+        //QueryDB
         const unsub = onSnapshot(q, (querySnapshot) => {
             let ExistingElementsArray = [];
             querySnapshot.forEach((doc) => {
                 ExistingElementsArray.push({...doc.data(), id: doc.id});
             });
             album = ExistingElementsArray
+
             console.log(`Album to: ` + song.albumName)
 
+            //SaveAlbum
             if(AlbumData[0] != album)
             {
                 AlbumData.push(album)
@@ -52,36 +65,113 @@ export default function Player() {
             setTracksCount(AlbumData[0].length)
             console.log('Album Data:')
             console.log(AlbumData)
+            setAlbumCreated(true)
         })
 
+        return () => unsub() 
+        }, [])
+  
+        
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+
+    //CreateOrReadPlaylist
+    useEffect(() => {       
+                  
+                  if (PlaylistFromFavourites[0] == true) {
+                    console.log('Playlist IS From Favourites'); 
+                    //PlaylistIsAlreadyFavourites
+                    setPlaylistCreated((current) => [...current, true])
+                  }
+                   else 
+                  {
+                    console.log('Playlist IS NOT From Favourites'); 
+                    //SaveAlbumAsPlaylist   
+                    
+                      console.log('Playlist Data before clear', PlaylistData);
+                      PlaylistData.splice(0, PlaylistData.length)
+                      console.log('Playlist Data after clear', PlaylistData)
+                      PlaylistData.push(AlbumData[0])
+                      console.log(AlbumData[0])
+                      console.log('Playlist Data after push', PlaylistData)
+
+                      setPlaylistCreated((current) => [...current, true])
+                   }
+    }, [AlbumCreated])
 
 
-        //CheckIfSongIsInFavourites
-        const CheckIfSongIsInFavourites = async () => {
-            const docRef = doc(db, "users", auth.currentUser.uid)
-            const docSnap = await getDoc(docRef)
-    
-            if (docSnap.exists()) {
-    
-                //CheckIfIsAlreadyFavourite
-                docSnap.data().favouritesSongs.forEach((e) => {
-                    if(e == song.title)
+
+
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+
+    //SetNextTitle
+     useEffect(() => {
+         console.log(PlaylistData[0])
+         
+         if(PlaylistData[0] != undefined)
+         {
+            if(PlaylistData[0].length > 1)
+            {
+                let CurrentSongIndex = 0
+                console.log('Playlist Data ma wiecej niż 1')
+                PlaylistData[0].forEach((playlist_song, index) => {
+                    if(playlist_song.title === song.title)
                     {
-                        setIsFavourites(true)
+                        CurrentSongIndex = index
                     }
                 })
+                console.log(CurrentSongIndex)
+                console.log(PlaylistData[0])
+
+                NextSongIndex = CurrentSongIndex + 1
+
+                if(PlaylistData[0].length != NextSongIndex)
+                    {
+                        setNextSongTitle(PlaylistData[0][NextSongIndex].title)
+                    }
+                    else
+                    {
+                    console.log('Playlist Data ma mniej niż 1')
+                    NextSongIndex = 0
+                    setNextSongTitle(PlaylistData[0][0].title)
+                    }
             }
-        }
-        CheckIfSongIsInFavourites()
-        
+            else
+            {
+               console.log('Playlist Data ma mniej niż 1')
+               NextSongIndex = 0
+               setNextSongTitle(PlaylistData[0][0].title)
+            }
+         }
+         
 
-        
-        return () => unsub() 
-    }, [])
-   
-    //CreatePlaylist
+     }, [PlaylistCreated])
 
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+
+    // //CheckTracksPlular
+    // useEffect(() => {
+    //     if(TracksCount > 1)
+    //     {
+    //         setIsTrackCountPlural(true)
+    //     }
+    //     else
+    //     {
+    //         setIsTrackCountPlural(false)
+    //     }
+    // }, [TracksCount])
     
+
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+
+    //HandleFavourites
     const handleFavourites = async () => {
         
         const docRef = doc(db, "users", auth.currentUser.uid)
@@ -133,6 +223,12 @@ export default function Player() {
             
         }
     }
+
+
+
+        
+
+
 
 
 const MoreOptionss = ({ isOpenn }) => {
@@ -235,15 +331,20 @@ const MoreOptionss = ({ isOpenn }) => {
                 <div className='flex flex-row items-center gap-2'>
                     <p onClick={() =>  history('/album')} className='text-[14px] text-tertiary font-lato'>{song.albumName}</p>
                     <div className='w-[5px] h-[5px] rounded-full bg-tertiary'></div>
-                    <p className='text-[14px] text-tertiary font-lato'>{TracksCount} tracks</p>
+                    <p className='text-[14px] text-tertiary font-lato'>
+                    {TracksCount} 
+                    {IsTrackCountPlural ? ' tracks' : ' track'}
+                    </p>
                 </div>
             </div>
             {/* onClick={() => {if(PlayerData.albumName != 'Single') history('/album')}} */}
             {/* Next Container */}
             <div className='w-full flex flex-col gap-3'>
                 <div className='flex flex-row'>
-                    <p className='text-[14px] text-tertiary font-lato'>Playing next</p>
-                    <p className='text-[14px] text-secondary font-lato font-bold ml-5'>David Manson - The ways to live</p>
+                    <p className='text-[14px] text-tertiary font-lato w-24'>Playing next</p>
+                    <p className='text-[14px] text-secondary font-lato font-bold ml-5 truncate'>
+                        {NextSongTitle}
+                    </p>
                 </div>
 
                 {/* Time and slider */}
