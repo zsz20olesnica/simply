@@ -252,7 +252,7 @@ const CalcDuration = (e) => {
                   {/* SongFile */}
                   <p className='w-full text-[19px] font-lato text-secondary'>Song File</p>
                   <div className='w-full h-11 rounded-full bg-search px-5 text-secondary focus:outline-primary text-center flex items-center justify-center'>
-                  <input ref={SongFileRef} onChange={(e) => CalcDuration(e)} placeholder='Type album name' type='file' accept=".mp3, .ova, .ogg"></input>
+                  <input ref={SongFileRef} onChange={(e) => CalcDuration(e)} placeholder='Type album name' type='file' accept="audio/*"></input>
                   </div>
                   
 

@@ -2,11 +2,28 @@ import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UpArrow, Pause, Play} from '../../Icons'
-import { PlayerData } from '../../firebase'
+import { useAudio } from '../../Contexts/AudioContext'
+
+
+
 export default function PlayerNavbar() {
+    const { currentSong } = useAudio()
+    
     const history = useNavigate()
-    const [IsPaused, setIsPaused] = useState('false')
-    const song = PlayerData[0]
+    const [IsPaused, setIsPaused] = useState(true)
+    
+
+    function playPauseSong() {
+        const audio = document.querySelector('audio')
+        
+        if(audio.src !== currentSong.songFileLink)
+            audio.src = currentSong.songFileLink
+        if(IsPaused)
+            audio.play()
+        if(!IsPaused)
+            audio.pause()
+        setIsPaused(!IsPaused)
+    }
 
     
   return (
@@ -19,12 +36,12 @@ export default function PlayerNavbar() {
                     {/* Image/Pause Container */}
                     <div className='w-[20%] flex items-center justify-center'>
                         <div onClick={() => {setIsPaused(!IsPaused)}} className='w-[55px] h-[55px] rounded-full ring-4 ring-primary flex flex-col justify-center items-center relative '>
-                                <img src={song.songThumbnailLink} className='absolute rounded-full h-full w-full object-cover'/>
+                                <img src={currentSong.songThumbnailLink} className='absolute rounded-full h-full w-full object-cover'/>
 
                                 <div className='absolute rounded-full h-full w-full bg-[#1D1D1D] bg-opacity-[40%]'>
 
                                     <div className='w-full h-full flex flex-row justify-center items-center'>
-                                    {IsPaused? <Pause className={'!fill-white w-6 h-6 '}/>:<Play className={'w-10 h-10'}second_fill='#fff'/>}
+                                    {IsPaused ? <Pause className={'!fill-white w-6 h-6 '} onClick={playPauseSong}/> : <Play className={'w-10 h-10'} second_fill='#fff' onClick={playPauseSong}/>}
                                 </div>
                             </div>
                         </div> 
@@ -33,9 +50,9 @@ export default function PlayerNavbar() {
                     {/* Song title/author container */}
                     <div className='w-[60%] flex flex-col justify-center items-start'>
                         {/* Title */}
-                        <p className='text-secondary max-w-[90%] truncate'>{song.title}</p>
+                        <p className='text-secondary max-w-[90%] truncate'>{currentSong.title}</p>
                         {/* AlbumName */}
-                        <p className='text-tertiary'>{song.albumName}</p>
+                        <p className='text-tertiary'>{currentSong.albumName}</p>
 
                     </div>
                     {/* Arrow */}

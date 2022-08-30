@@ -4,14 +4,18 @@ import {  More } from '../../Icons'
 import { motion, Reorder, useDragControls, useMotionValue } from 'framer-motion';
 import { PlayerData } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
-
+import { useAudio } from '../../Contexts/AudioContext';
 export default function SongListTile({song, item}) {
   const dragControls = useDragControls();
   const history = useNavigate()
+  const { currentSong } = useAudio()
+  
   const handleClick = () => {
-    PlayerData.splice(0, PlayerData.length)
-    PlayerData.push(song)
-    console.log(PlayerData)
+    currentSong = song
+    console.log('CurrentSong to:', currentSong)
+    // PlayerData.splice(0, PlayerData.length)
+    // PlayerData.push(song)
+    // console.log(PlayerData)
     history('/player')
   }
 

@@ -3,30 +3,30 @@ import { useState, useEffect } from 'react'
 import { DownArrowWhite, Prev, Next, Pause, Play, More, CastToDevice, Share, Heart } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import '../../../vanilla.css'
-import { collection, query, onSnapshot, where, getDoc } from 'firebase/firestore'
-import { PlayerData, AlbumData, PlaylistData, db, auth} from '../../../firebase'
+import { collection, query, onSnapshot, where, getDoc, documentId } from 'firebase/firestore'
+
+import { db, auth} from '../../../firebase'
+
 import { doc, setDoc } from "firebase/firestore"; 
 import { motion } from 'framer-motion';
-import { PlaylistFromFavourites } from '../../../firebase'
 import { createBuilderStatusReporter } from 'typescript'
-
+import Audio from '../../Player/Audio'
+import { useRef } from 'react'
+import { useAudio } from '../../../Contexts/AudioContext'
 
 
 
 export default function Player() {
-    
-    let song = PlayerData[0]
+    const { currentSong, Album, Playlist, setPlaylist, audio, progressBar, duration, currentTime, playPauseSong, changePlayerSlider, IsPaused, PlaylistFromFavourites } = useAudio()
     let album = []
 
-
-    const SiteTitle = 'Player - Simply'
-    document.title = SiteTitle
+    document.title = `${currentSong.title} - Simply player`
 
     const history = useNavigate()
+    
 
     let NextSongIndex = 0
-    const [isOpen, setIsOpen] = useState(false)
-    const [IsPaused, setIsPaused] = useState(false) 
+    const [isMoreOptionsOpen, setIsMoreOptionsOpen] = useState(false)
     const [TracksCount, setTracksCount] = useState(0)
     const [IsFavourites, setIsFavourites] = useState(false)
     const [NextSongTitle, setNextSongTitle] = useState('')
@@ -35,14 +35,16 @@ export default function Player() {
     const [AlbumCreated, setAlbumCreated] = useState(false)
     const [IsSingle, setIsSingle] = useState(false)
 
-    //////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
+
+    useEffect(() => {
+        console.log(currentSong, Album, Playlist)
+    }, [])
 
     //CreateAlbum
     useEffect(() => {
         
         //FindAlbum
-        const q = query(collection(db, 'songs'), where('albumName', '==', `${song.albumName}`))
+        const q = query(collection(db, 'songs'), where('albumName', '==', `${currentSong.albumName}`))
         
         //QueryDB
         const unsub = onSnapshot(q, (querySnapshot) => {
@@ -52,127 +54,98 @@ export default function Player() {
             });
             album = ExistingElementsArray
 
-            console.log(`Album to: ` + song.albumName)
+            console.log(`Album to: ` + currentSong.albumName)
 
             //SaveAlbum
-            if(AlbumData[0] != album)
+            if(Album.albumSongs != album)
             {
-                AlbumData.push(album)
-                AlbumData.push(song.albumName)
-                AlbumData.push(song.songThumbnailLink)
-                AlbumData.push(song.songThumbnailAuthor)
+                album.forEach((AlbumSong) => {
+                    console.log(AlbumSong)
+                    Album.albumSongs.push(AlbumSong)
+                })
+                Album.ChangeAlbumName = currentSong.albumName
+                Album.ChangeThumbnail = currentSong.songThumbnailLink
+                Album.ChangeAuthor = currentSong.songThumbnailAuthor
+
             }
-            setTracksCount(AlbumData[0].length)
+            else
+            {
+                console.log('ALBUM IS EXISTING')
+            }
+            setTracksCount(Album.albumSongs.length)
             console.log('Album Data:')
-            console.log(AlbumData)
+            console.log(Album)
             setAlbumCreated(true)
         })
 
         //CheckIfSingle
-        if(song.albumName == 'Single') setIsSingle(true)
+        if(currentSong.albumName == 'Single') setIsSingle(true)
         return () => unsub() 
         }, [])
-  
-        
 
-    //////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-
+    
     //CreateOrReadPlaylist
     useEffect(() => {       
                   
-                  if (PlaylistFromFavourites[0] == true) {
-                    console.log('Playlist IS From Favourites'); 
-                    //PlaylistIsAlreadyFavourites
-                    setPlaylistCreated((current) => [...current, true])
-                  }
-                   else 
-                  {
-                    console.log('Playlist IS NOT From Favourites'); 
-                    //SaveAlbumAsPlaylist   
-                    
-                      console.log('Playlist Data before clear', PlaylistData);
-                      PlaylistData.splice(0, PlaylistData.length)
-                      console.log('Playlist Data after clear', PlaylistData)
-                      PlaylistData.push(AlbumData[0])
-                      console.log(AlbumData[0])
-                      console.log('Playlist Data after push', PlaylistData)
+        if (PlaylistFromFavourites == true) {
+          console.log('Playlist == Favourites') 
+          setPlaylistCreated((current) => [...current, true])
+        }
+        else { 
+            console.log('Playlist IS NOT From Favourites'); 
 
-                      setPlaylistCreated((current) => [...current, true])
-                   }
+            //ClearPlaylist
+            setPlaylist('')
+            console.log(Album)
+                      
+            //SaveAlbumAsPlaylist 
+            Album.albumSongs.forEach((albumSong) => {
+                setPlaylist((prev) => [...prev, albumSong])
+            })
+            console.log('Playlist Data after push', Playlist)
+            console.log(Album)
+            console.log(PlaylistCreated)
+            setPlaylistCreated((current) => [...current, true])
+        }
     }, [AlbumCreated])
 
 
-
-
-
-    //////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-
     //SetNextTitle
-     useEffect(() => {
-         console.log(PlaylistData[0])
-         
-         if(PlaylistData[0] != undefined)
-         {
-            if(PlaylistData[0].length > 1)
-            {
-                let CurrentSongIndex = 0
-                console.log('Playlist Data ma wiecej niż 1')
-                PlaylistData[0].forEach((playlist_song, index) => {
-                    if(playlist_song.title === song.title)
-                    {
-                        CurrentSongIndex = index
-                    }
-                })
-                console.log(CurrentSongIndex)
-                console.log(PlaylistData[0])
-
-                NextSongIndex = CurrentSongIndex + 1
-
-                if(PlaylistData[0].length != NextSongIndex)
-                    {
-                        setNextSongTitle(PlaylistData[0][NextSongIndex].title)
-                    }
-                    else
-                    {
-                    console.log('Playlist Data ma mniej niż 1')
-                    NextSongIndex = 0
-                    setNextSongTitle(PlaylistData[0][0].title)
-                    }
-            }
-            else
-            {
-               console.log('Playlist Data ma mniej niż 1')
-               NextSongIndex = 0
-               setNextSongTitle(PlaylistData[0][0].title)
+     useEffect(() => {     
+         if(Playlist && Playlist.length > 1) {
+            let CurrentSongIndex = 0
+            console.log('Playlista ma wiele utworów')
+            Playlist.forEach((playlistItem, index) => {
+                if(playlistItem.title === currentSong.title)
+                    CurrentSongIndex = index
+            })
+            console.log(CurrentSongIndex)
+            console.log(Playlist)
+            console.log(Album)
+            NextSongIndex = CurrentSongIndex + 1
+            
+            if(Playlist.length != NextSongIndex) 
+                setNextSongTitle(Playlist[NextSongIndex].title)
+            else{
+                setNextSongTitle('')
             }
          }
-         
-
+         else {
+            console.log('Playlist Data ma mniej niż 1 utwór')
+            NextSongIndex = 0
+            setNextSongTitle('')
+         }
      }, [PlaylistCreated])
 
-
-    //////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
 
     //CheckTracksPlular
     useEffect(() => {
         if(TracksCount > 1)
-        {
             setIsTrackCountPlural(true)
-        }
         else
-        {
             setIsTrackCountPlural(false)
-        }
     }, [TracksCount])
     
-
-
-    //////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-
     //HandleFavourites
     const handleFavourites = async () => {
         
@@ -188,7 +161,7 @@ export default function Player() {
 
             //CheckIfIsAlreadyFavourite
             FavouritesSongs.forEach((e) => {
-                if(e == song.title)
+                if(e == currentSong.title)
                 {
                     IsFavourite = true
                 }
@@ -198,7 +171,7 @@ export default function Player() {
             if(!IsFavourite)
             {
                 //AddSongToArray
-                FavouritesSongs.push(song.title)
+                FavouritesSongs.push(currentSong.title)
 
 
                 //UpdateDB
@@ -212,7 +185,7 @@ export default function Player() {
             else
             {
                 //RemoveSongFromArray
-                let index = FavouritesSongs.indexOf(song.title)
+                let index = FavouritesSongs.indexOf(currentSong.title)
                 FavouritesSongs.splice(index, 1)
 
                 //UpdateDB
@@ -225,8 +198,6 @@ export default function Player() {
             
         }
     }
-
-
 
         
 
@@ -288,14 +259,13 @@ const MoreOptionss = ({ isOpenn }) => {
   }
 
   const HandleMoreOptions = () => {
-    setIsOpen(!isOpen)
+    setIsMoreOptionsOpen(!isMoreOptionsOpen)
   }
   
-  let viewportHeight = window.innerHeight;
 
   return (
-    <motion.div  transition={{duration: 0.5, ease: "easeInOut" }} initial={{y: viewportHeight, opacity: 0}} 
-    animate={{y: 0, opacity: 1}} exit={{y: viewportHeight, opacity: 0}}>
+    <motion.div  transition={{duration: 0.5, ease: "easeInOut" }} initial={{y: window.innerHeight, opacity: 0}} 
+    animate={{y: 0, opacity: 1}} exit={{y: window.innerHeight, opacity: 0}}>
     <div id='container' className='mainContainer w-full h-screen relative'>
 
       <div className='absolute z-100 w-full h-full p-8 flex flex-col justify-between items-center'>
@@ -306,32 +276,32 @@ const MoreOptionss = ({ isOpenn }) => {
                 onClick={() => history('/home')}
                 ><DownArrowWhite/></button>
                 {/* Author */}
-                <span className='h-full min-w-[160px] flex justify-center items-center bg-white opacity-90 rounded-full text-tertiary text-[14px] p-1'>{song.songThumbnailAuthor}</span>
+                <span className='h-full min-w-[160px] flex justify-center items-center bg-white opacity-90 rounded-full text-tertiary text-[14px] p-1'>{currentSong.songThumbnailAuthor}</span>
             </div>
 
                      </div>
       {/* HeroSection */}
       <div className='w-full h-[60%]'>
-            <img src={song.songThumbnailLink} className='top-0 z-0 w-full h-full object-cover'/>
+            <img src={currentSong.songThumbnailLink} className='top-0 z-0 w-full h-full object-cover'/>
     </div>
 
 
     {/* Container */}
     <div className='w-full h-[40%] px-8 flex flex-col items-center justify-between py-10 relative'>
-    <MoreOptionss isOpenn={isOpen}/>
+    <MoreOptionss isOpenn={isMoreOptionsOpen}/>
             {/* Title/Time Container */}
             <div className='w-full h-[32%] flex flex-col justify-center items-start gap-5'>
             {/* Title */}
                 <div className='h-full w-full flex flex-row items-center justify-between'>
                     {/* Trzeba zrobic ze jak jest za dlugi tytuł to sie przesuwa jak slider automatycznie */}
-                    <h1 className='w-full font-playfair font-extrabold text-[32px] break-normal min-w-[70%] text-secondary truncate'>{song.title}</h1>
+                    <h1 className='w-full font-playfair font-extrabold text-[32px] break-normal min-w-[70%] text-secondary truncate'>{currentSong.title}</h1>
                     <div onClick={() => {HandleMoreOptions()}} className='min-w-[20%] h-full flex flex-col items-center justify-start mt-7'>
                         <More className={'scale-90'}/>
                     </div>
                 </div>
             {/* Time and number of items */}
                 <div className='flex flex-row items-center gap-2'>
-                    <p onClick={() => {if(song.albumName !== 'Single') history('/album')}} className='text-[14px] text-tertiary font-lato'>{song.albumName}</p>
+                    <p onClick={() => {if(currentSong.albumName !== 'Single') history('/album')}} className='text-[14px] text-tertiary font-lato'>{currentSong.albumName}</p>
                     
                     {
                         IsSingle?
@@ -340,24 +310,18 @@ const MoreOptionss = ({ isOpenn }) => {
                     }
                     
 
-                    <p className='text-[14px] text-tertiary font-lato'>
-                            
-                            {
-                                IsSingle?
-                                null
-                                : TracksCount
-                            }
-                            {
-                                IsSingle?
-                                null
-                                : (IsTrackCountPlural? ' tracks' : ' track')
-                            }
-                            
-                    
-                          
-                            
-                            {/* {TracksCount}{IsTrackCountPlural ? ' tracks' : ' track'} */}
-
+                    <p className='text-[14px] text-tertiary font-lato'>       
+                        {
+                            IsSingle?
+                            null
+                            : TracksCount
+                        }
+                        {
+                            IsSingle?
+                            null
+                            : (IsTrackCountPlural? ' tracks' : ' track')
+                        }
+                        {/* {TracksCount}{IsTrackCountPlural ? ' tracks' : ' track'} */}
                     </p>
                 </div>
             </div>
@@ -373,8 +337,11 @@ const MoreOptionss = ({ isOpenn }) => {
 
                 {/* Time and slider */}
                 <div className='w-full '>
-                        <input type="range" id="PlayerSlider" defaultValue="0" className='w-full h-2 bg-search rounded-lg'></input>
-                        <p className='font-lato text-[12px] text-tertiary'>{song.duration}</p>
+                        <input ref={progressBar} onChange={changePlayerSlider} type="range" id="PlayerSlider" defaultValue="0" className='w-full h-2 bg-search rounded-lg'></input>
+                        <div className='flex items-start justify-between'>
+                            <p className='font-lato text-[12px] text-tertiary'>{currentTime}</p>
+                            <p className='font-lato text-[12px] text-tertiary'>{currentSong.duration}</p>
+                        </div>
                 </div>
 
                 {/* Music controler */}
@@ -382,16 +349,15 @@ const MoreOptionss = ({ isOpenn }) => {
                     
                     <Prev className={'!fill-primary'}/>
                     
-                    <div className='h-[53.67px] w-[53.67px] rounded-full bg-primary' onClick={() => {setIsPaused(!IsPaused)}}>
+                    <div className='h-[53.67px] w-[53.67px] rounded-full bg-primary' onClick={playPauseSong}>
                         {
                         IsPaused
-                        ?                 
-                        <Pause  className={'h-full w-full scale-[55%]'} first_fill={'#fff'} second_fill={'#fff'}/>               
+                        ? 
+                        <Play className={''}  second_fill={'#fff'}/>              
                         :             
-                        <Play className={''}  second_fill={'#fff'}/>
+                        <Pause  className={'h-full w-full scale-[55%]'} first_fill={'#fff'} second_fill={'#fff'}/> 
                         } 
-                    </div>  
-
+                    </div>
                     <Next className={'!fill-primary'}/>
                     
                     

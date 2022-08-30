@@ -30,6 +30,8 @@ const firebaseConfig = {
 
 //FilteredCategoriesInSearchPanel
 export let Categories = []
+
+
 export let PlayerDataObject = {
   title: 'title',
   duration: 'duration',
@@ -59,15 +61,21 @@ export let PlayerDataObject = {
   }
 }
 
-export let PlayerData = []
+
+//CurrentSongDataFromFirebase
+export let PlayerData1 = []
+
 export let AlbumData = []
-//Album Data[0] = albumSongs
+
+//Album Data[0] = albumSongs from firebase
 //Album Data[1] = albumName
 //Album Data[2] = songThumbnailLink
 //Album Data[3] = songThumbnailAuthor
 
 
+//PlaylistData[0]- songs array from firebase
 export let PlaylistData = []
+
 export let PlaylistFromFavourites = [true]
 
 
@@ -76,7 +84,7 @@ export let PlaylistFromFavourites = [true]
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-export const appVersion = '0.6.2'
+export const appVersion = '0.7.3'
 //Firestore DB
 export const db = getFirestore(app)
 //Kto jest zalogowany jego dane itp
