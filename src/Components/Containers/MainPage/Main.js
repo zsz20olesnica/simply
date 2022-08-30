@@ -12,10 +12,11 @@ import HomeAlbum from '../../Reusable/HomeAlbum'
 import { motion } from "framer-motion";
 import { PlayerData, AlbumData } from '../../../firebase'
 import '../../../vanilla.css'
-
+import { useAudio } from "../../../Contexts/AudioContext"
 
 export default function Main({foryousongs, songs}) {
-  
+    
+  const {currentSong, setCurrentSong, Album} = useAudio()
 
   //Ograniczenie liczby piosenek w for you
   foryousongs.splice(6)
@@ -28,8 +29,14 @@ export default function Main({foryousongs, songs}) {
  
   //ClearPlayer&AlbumData
   useEffect(() => {
-    PlayerData.splice(0, PlayerData.length)
-    AlbumData.splice(0, AlbumData.length)
+    
+    setCurrentSong([])
+    Album.ChangeAlbumName = ''
+    Album.ChangeThumbnail = ''
+    Album.ChangeAuthor = ''
+    
+    // Album.albumSongs.splice(0, AlbumData.length)
+    // AlbumData.splice(0, AlbumData.length)
   }, [])
 
 

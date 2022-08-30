@@ -2,15 +2,20 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PlayerData, PlaylistFromFavourites } from '../../firebase'
 import { motion } from 'framer-motion'
+import { useAudio } from '../../Contexts/AudioContext'
 
 export default function SongTile({song, className, imgClassName}) {
     const history = useNavigate()
+    const { currentSong, setCurrentSong, PlaylistFromFavourites, setPlaylistFromFavourites } = useAudio()
+    
+    
+    
     
     const HandleClick = () => {
-      PlayerData.splice(0, PlayerData.length)
-      PlayerData.push(song)
-      PlaylistFromFavourites.splice(0, PlaylistFromFavourites.length)
-      PlaylistFromFavourites.push(false)
+      setCurrentSong(song)
+      // PlayerData.splice(0, PlayerData.length)
+      // PlayerData.push(song)
+      setPlaylistFromFavourites(false)
       history('/player')
     }
 

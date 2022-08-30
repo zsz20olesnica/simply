@@ -2,31 +2,20 @@ import  { React, useEffect, useState } from 'react'
 import { DownArrow, Play } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 import '../../../vanilla.css'
-
-
+import { useAudio } from "../../../Contexts/AudioContext"
 import { db, auth } from '../../../firebase'
 import { doc, getDoc } from "firebase/firestore"; 
-
-
-import FeelingArtsy from '../../../Images/playlist1.png'
-import PlayImage from '../../../Images/playlist2.png'
-import ImageGruby from '../../../Images/playlist3.png'
-import ImageColors from '../../../Images/playlist4.png'
-import ImageInsomnia from '../../../Images/playlist5.png'
-import ImageDinner from '../../../Images/playlist6.png'
-import ImageFiesco from '../../../Images/playlist7.png'
-import ImageHorror from '../../../Images/playlist8.png'
-import ImageSport from '../../../Images/playlist9.png'
 
 import SongTile from '../../Reusable/SongTile'
 import { motion } from 'framer-motion';
 
-import {PlaylistData, PlayerData, PlaylistFromFavourites} from '../../../firebase'
-import Player from '../PlayerPage/Player'
+
 
 
 
 export default function Favourites() {
+
+  const { Playlist, currentSong, PlaylistFromFavourites } = useAudio()
 
   const history = useNavigate()
   let viewportHeight = window.innerHeight;
@@ -36,7 +25,10 @@ export default function Favourites() {
   const [FavouritesSongs, setFavouritesSongs] = useState([])
   const [FavouritesSongsFromDB, setFavouritesSongsFromDB] = useState([])
   let Fav = []
+  let PlaylistData = Playlist
+  let PlayerData = currentSong
  
+  
 
   useEffect(() => {
     
@@ -88,8 +80,7 @@ export default function Favourites() {
 
 
   const CreatePlaylist = () => {
-    if(FavouritesSongsFromDB.length > 0)
-    {
+    if(FavouritesSongsFromDB.length > 0) {
       PlaylistData.splice(0, PlaylistData.length)
       PlaylistData.push(FavouritesSongsFromDB)
       
@@ -97,8 +88,7 @@ export default function Favourites() {
       PlaylistFromFavourites.push(true)
  
       console.log(PlaylistData)
-      if(PlayerData[0] && PlayerData[0].length > 0)
-      {
+      if(PlayerData[0] && PlayerData[0].length > 0) {
         PlayerData[0].splice(0, PlayerData[0].length)
       }
       PlayerData.push(PlaylistData[0][0])

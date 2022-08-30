@@ -7,12 +7,15 @@ import '../../../vanilla.css'
 import PlayerNavbar from "../../Reusable/AlbumNavbar";
 import SongListTile from "../../Reusable/SongListTile";
 
-import { PlayerData, AlbumData } from '../../../firebase'
 
 import { motion, Reorder, useDragControls } from 'framer-motion';
+import { useAudio } from "../../../Contexts/AudioContext"
 
 export default function AlbumPage() {
 
+
+    const { currentSong, Playlist, Album} = useAudio()
+    
     let viewportWidth = window.innerWidth;
     const history = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
@@ -23,11 +26,9 @@ export default function AlbumPage() {
     const [AlbumDuration, setAlbumDuration] = useState("")
     
     //Song&AlbumData
-    let currentsong = PlayerData[0]
-    let Album = AlbumData[0]
-    let AlbumName = AlbumData[1]
-    let thumbnail = AlbumData[2]
-    let thumbnailAuthor= AlbumData[3]
+    let AlbumName = Album.albumName
+    let thumbnail = Album.thumbnail
+    let thumbnailAuthor= Album.author
     
     let AlbumDurationNotState = "00:00"
 
@@ -77,7 +78,7 @@ export default function AlbumPage() {
         }
         
         
-        Album.forEach((song) => {
+        Album.albumSongs.forEach((song) => {
             CalcAlbumDuration(song.duration)
             setTracksCount((prev) => prev+1)
         })
@@ -144,7 +145,7 @@ export default function AlbumPage() {
         </div>
         <Reorder.Group axis="y" onReorder={setItems} values={items}>
              {
-                Album.map((song) => {      
+                Album.albumSongs.map((song) => {      
                    return(
                     <SongListTile key={song.title} song={song}/>
                    )
