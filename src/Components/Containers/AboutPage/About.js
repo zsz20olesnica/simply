@@ -27,6 +27,8 @@ export default function About() {
                 <p className='text-primary font-playfair text-6xl'>Simply</p>
                 <p className='text-tertiary'>App version {appVersion}</p>
                 <p className='text-tertiary text-center'>Created by Kamil Kubiczek, Hubert Kuświk <br></br> & Dawid Matiaszewski</p>
+                <p className='text-tertiary text-center'>Tested by Kamila Frysztak</p>
+
                 <p className='text-tertiary'>Designed by <a href='https://fabrx.co'>fabrx.co</a></p>
             </div>
             {/* Footer */}
