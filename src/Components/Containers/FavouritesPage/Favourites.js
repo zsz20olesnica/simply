@@ -15,7 +15,7 @@ import { motion } from 'framer-motion';
 
 export default function Favourites() {
 
-  const { Playlist, currentSong, PlaylistFromFavourites } = useAudio()
+  const { Playlist, currentSong, setPlaylistFromFavourites, setPlaylist, setCurrentSong } = useAudio()
 
   const history = useNavigate()
   let viewportHeight = window.innerHeight;
@@ -25,8 +25,6 @@ export default function Favourites() {
   const [FavouritesSongs, setFavouritesSongs] = useState([])
   const [FavouritesSongsFromDB, setFavouritesSongsFromDB] = useState([])
   let Fav = []
-  let PlaylistData = Playlist
-  let PlayerData = currentSong
  
   
 
@@ -81,18 +79,14 @@ export default function Favourites() {
 
   const CreatePlaylist = () => {
     if(FavouritesSongsFromDB.length > 0) {
-      PlaylistData.splice(0, PlaylistData.length)
-      PlaylistData.push(FavouritesSongsFromDB)
+      setPlaylist(FavouritesSongsFromDB)
       
-      PlaylistFromFavourites.splice(0, PlaylistFromFavourites.length)
-      PlaylistFromFavourites.push(true)
+      setPlaylistFromFavourites(true)
  
-      console.log(PlaylistData)
-      if(PlayerData[0] && PlayerData[0].length > 0) {
-        PlayerData[0].splice(0, PlayerData[0].length)
+      if(currentSong) {
+        setCurrentSong(Playlist[0])
       }
-      PlayerData.push(PlaylistData[0][0])
-      console.log(PlayerData)
+      console.log(currentSong)
 
       history('/player')
     }

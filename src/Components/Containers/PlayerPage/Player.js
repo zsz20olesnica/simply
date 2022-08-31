@@ -7,7 +7,7 @@ import { collection, query, onSnapshot, where, getDoc, documentId } from 'fireba
 
 import { db, auth} from '../../../firebase'
 
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc, getDocs  } from "firebase/firestore"; 
 import { motion } from 'framer-motion';
 import { createBuilderStatusReporter } from 'typescript'
 import Audio from '../../Player/Audio'
@@ -31,120 +31,119 @@ export default function Player() {
     const [IsFavourites, setIsFavourites] = useState(false)
     const [NextSongTitle, setNextSongTitle] = useState('')
     const [IsTrackCountPlural, setIsTrackCountPlural] = useState(false)
-    const [PlaylistCreated, setPlaylistCreated] = useState([])
-    const [AlbumCreated, setAlbumCreated] = useState(false)
     const [IsSingle, setIsSingle] = useState(false)
 
 
+    //CreateAlbum&Playlist
     useEffect(() => {
-        console.log(currentSong, Album, Playlist)
-    }, [])
+        
+        let SaveAlbum = async () => {
 
-    //CreateAlbum
-    useEffect(() => {
-        
-        //FindAlbum
-        const q = query(collection(db, 'songs'), where('albumName', '==', `${currentSong.albumName}`))
-        
-        //QueryDB
-        const unsub = onSnapshot(q, (querySnapshot) => {
-            let ExistingElementsArray = [];
+            //ClearData
+            setPlaylist('')
+            Album.albumSongs.splice(0, Album.albumSongs.length)
+            Album.ChangeAlbumName = ''
+            Album.ChangeThumbnail = ''
+            Album.ChangeAuthor = ''
+            console.log('Album clear')
+            album = []
+            
+            //FindAlbum
+            const q = query(collection(db, 'songs'), where('albumName', '==', `${currentSong.albumName}`))
+            
+            
+            //QueryDB
+            const querySnapshot = await getDocs(q)   
+            
             querySnapshot.forEach((doc) => {
-                ExistingElementsArray.push({...doc.data(), id: doc.id});
+                album.push({...doc.data(), id: doc.id});
             });
-            album = ExistingElementsArray
 
-            console.log(`Album to: ` + currentSong.albumName)
+            console.log(`Album name: ` + currentSong.albumName)
+            console.log(`LOCAL ALBUM: `, album)
 
-            //SaveAlbum
-            if(Album.albumSongs != album)
-            {
-                album.forEach((AlbumSong) => {
-                    console.log(AlbumSong)
-                    Album.albumSongs.push(AlbumSong)
-                })
-                Album.ChangeAlbumName = currentSong.albumName
-                Album.ChangeThumbnail = currentSong.songThumbnailLink
-                Album.ChangeAuthor = currentSong.songThumbnailAuthor
 
-            }
-            else
-            {
-                console.log('ALBUM IS EXISTING')
-            }
-            setTracksCount(Album.albumSongs.length)
-            console.log('Album Data:')
-            console.log(Album)
-            setAlbumCreated(true)
-        })
+                //SaveAlbum
+                if(Album.albumSongs != album)
+                {
+                    album.forEach((AlbumSong) => {
+                        Album.albumSongs.push(AlbumSong)
+                    })
 
-        //CheckIfSingle
-        if(currentSong.albumName == 'Single') setIsSingle(true)
-        return () => unsub() 
+                    Album.ChangeAlbumName = currentSong.albumName
+                    Album.ChangeThumbnail = currentSong.songThumbnailLink
+                    Album.ChangeAuthor = currentSong.songThumbnailAuthor
+                    
+                    console.log('ALBUM TO:', Album)
+                    setTracksCount(Album.albumSongs.length)
+                   
+                    //CheckIfSingle
+                    if(currentSong.albumName == 'Single') setIsSingle(true)
+
+                
+                    if (PlaylistFromFavourites == true) {
+                        console.log('Playlist == Favourites') 
+                        
+                    }
+                    else { 
+                        console.log('Playlist IS NOT From Favourites'); 
+
+                        //ClearPlaylist
+                        setPlaylist('')
+                                    
+                        //SaveAlbumAsPlaylist 
+                        Album.albumSongs.map((albumSong) => {
+                            setPlaylist((prev) => [...prev, albumSong])
+                        })
+                        console.log('Playlist Data after push', Playlist)
+                        
+                    }
+                    console.log(Playlist)
+                   
+                        
+                        if(Playlist && Playlist.length > 1) {
+                            
+                            console.log('Playlista ma dużo utworów')
+                            
+                            let CurrentSongIndex = 0
+                            Playlist.forEach((playlistSong, index) => {
+                                if(playlistSong.title === currentSong.title)
+                                    CurrentSongIndex = index
+                            })
+                            console.log(CurrentSongIndex)
+                            
+                            
+                            NextSongIndex = CurrentSongIndex + 1
+                            
+                            if(Playlist.length > NextSongIndex) 
+                                setNextSongTitle(Playlist[NextSongIndex].title)
+                            else{
+                                setNextSongTitle('')
+                            }
+                        }
+                        else {
+                            console.log('Playlista ma mniej niż 1 utwór')
+                            NextSongIndex = 0
+                            setNextSongTitle('')
+                        }
+                   
+                        if(TracksCount > 1)
+                            setIsTrackCountPlural(true)
+                        else
+                            setIsTrackCountPlural(false)
+
+                            console.log(Album)
+                }
+                else
+                {
+                    console.log('ALBUM IS EXISTING')   
+                }
+        }
+        
+        SaveAlbum()
         }, [])
 
     
-    //CreateOrReadPlaylist
-    useEffect(() => {       
-                  
-        if (PlaylistFromFavourites == true) {
-          console.log('Playlist == Favourites') 
-          setPlaylistCreated((current) => [...current, true])
-        }
-        else { 
-            console.log('Playlist IS NOT From Favourites'); 
-
-            //ClearPlaylist
-            setPlaylist('')
-            console.log(Album)
-                      
-            //SaveAlbumAsPlaylist 
-            Album.albumSongs.forEach((albumSong) => {
-                setPlaylist((prev) => [...prev, albumSong])
-            })
-            console.log('Playlist Data after push', Playlist)
-            console.log(Album)
-            console.log(PlaylistCreated)
-            setPlaylistCreated((current) => [...current, true])
-        }
-    }, [AlbumCreated])
-
-
-    //SetNextTitle
-     useEffect(() => {     
-         if(Playlist && Playlist.length > 1) {
-            let CurrentSongIndex = 0
-            console.log('Playlista ma wiele utworów')
-            Playlist.forEach((playlistItem, index) => {
-                if(playlistItem.title === currentSong.title)
-                    CurrentSongIndex = index
-            })
-            console.log(CurrentSongIndex)
-            console.log(Playlist)
-            console.log(Album)
-            NextSongIndex = CurrentSongIndex + 1
-            
-            if(Playlist.length != NextSongIndex) 
-                setNextSongTitle(Playlist[NextSongIndex].title)
-            else{
-                setNextSongTitle('')
-            }
-         }
-         else {
-            console.log('Playlist Data ma mniej niż 1 utwór')
-            NextSongIndex = 0
-            setNextSongTitle('')
-         }
-     }, [PlaylistCreated])
-
-
-    //CheckTracksPlular
-    useEffect(() => {
-        if(TracksCount > 1)
-            setIsTrackCountPlural(true)
-        else
-            setIsTrackCountPlural(false)
-    }, [TracksCount])
     
     //HandleFavourites
     const handleFavourites = async () => {

@@ -16,7 +16,9 @@ export default function AudioProvider({ children }) {
     const audio = useRef(null)
     const progressBar = useRef(null)
     
-    let Album = {
+
+
+    const [Album, setAlbum] = useState({
         albumSongs: [],
         albumName: '',
         thumbnail: '',
@@ -31,8 +33,11 @@ export default function AudioProvider({ children }) {
         set ChangeAuthor(newauthor) {
           this.author = newauthor
         }
-    }
+    }) 
     
+    useEffect(() => {
+        console.log('SONG CHANGED')
+    }, [currentSong])
     
 
     const [IsPaused, setIsPaused] = useState(true) 

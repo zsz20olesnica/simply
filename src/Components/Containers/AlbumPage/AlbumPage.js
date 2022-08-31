@@ -4,7 +4,7 @@ import { Pause, Play} from '../../../Icons'
 import { useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../../../vanilla.css'
-import PlayerNavbar from "../../Reusable/AlbumNavbar";
+import PlayerNavbar from "../../Reusable/SongNavbar";
 import SongListTile from "../../Reusable/SongListTile";
 
 
