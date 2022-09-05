@@ -17,7 +17,7 @@ import { useAudio } from '../../../Contexts/AudioContext'
 
 
 export default function Player() {
-    const { currentSong, Album, Playlist, setPlaylist, audio, progressBar, duration, currentTime, playPauseSong, changePlayerSlider, IsPaused, PlaylistFromFavourites } = useAudio()
+    const { currentSong, Album, Playlist, setPlaylist, audio, progressBar, duration, currentTime, setCurrentTime, playPauseSong, changePlayerSlider, IsPaused, AudioDuration, setAudioDuration, PlaylistFromFavourites, progressBarPercent } = useAudio()
     let album = []
 
     document.title = `${currentSong.title} - Simply player`
@@ -32,15 +32,16 @@ export default function Player() {
     const [NextSongTitle, setNextSongTitle] = useState('')
     const [IsTrackCountPlural, setIsTrackCountPlural] = useState(false)
     const [IsSingle, setIsSingle] = useState(false)
-
+    
 
     //CreateAlbum&Playlist
     useEffect(() => {
-        
+        setCurrentTime('00:00')
+
         let SaveAlbum = async () => {
 
             //ClearData
-            setPlaylist('')
+            setPlaylist('No playlist')
             Album.albumSongs.splice(0, Album.albumSongs.length)
             Album.ChangeAlbumName = ''
             Album.ChangeThumbnail = ''
@@ -60,7 +61,6 @@ export default function Player() {
             });
 
             console.log(`Album name: ` + currentSong.albumName)
-            console.log(`LOCAL ALBUM: `, album)
 
 
                 //SaveAlbum
@@ -74,7 +74,6 @@ export default function Player() {
                     Album.ChangeThumbnail = currentSong.songThumbnailLink
                     Album.ChangeAuthor = currentSong.songThumbnailAuthor
                     
-                    console.log('ALBUM TO:', Album)
                     setTracksCount(Album.albumSongs.length)
                    
                     //CheckIfSingle
@@ -92,13 +91,11 @@ export default function Player() {
                         setPlaylist('')
                                     
                         //SaveAlbumAsPlaylist 
-                        Album.albumSongs.map((albumSong) => {
-                            setPlaylist((prev) => [...prev, albumSong])
+                        Album.albumSongs.map((song) => {
+                            setPlaylist((prev) => [...prev, song])
                         })
-                        console.log('Playlist Data after push', Playlist)
                         
                     }
-                    console.log(Playlist)
                    
                         
                         if(Playlist && Playlist.length > 1) {
@@ -106,7 +103,7 @@ export default function Player() {
                             console.log('Playlista ma dużo utworów')
                             
                             let CurrentSongIndex = 0
-                            Playlist.forEach((playlistSong, index) => {
+                            Playlist.map((playlistSong, index) => {
                                 if(playlistSong.title === currentSong.title)
                                     CurrentSongIndex = index
                             })
@@ -127,12 +124,16 @@ export default function Player() {
                             setNextSongTitle('')
                         }
                    
-                        if(TracksCount > 1)
-                            setIsTrackCountPlural(true)
-                        else
-                            setIsTrackCountPlural(false)
+                        
 
-                            console.log(Album)
+
+                        console.log('Album to: ', Album)
+                        console.log('Playlista to: ', Playlist)
+
+                        if(IsPaused)
+                        {
+                            playPauseSong()
+                        }
                 }
                 else
                 {
@@ -144,6 +145,19 @@ export default function Player() {
         }, [])
 
     
+//UpdateTrackCount
+    useEffect(() => {
+         if(TracksCount > 1)
+                {
+                    setIsTrackCountPlural(true)
+                    console.log('true')
+                }
+                else
+                {
+                    setIsTrackCountPlural(false)
+                    console.log('false')   
+                }
+    }, [TracksCount])
     
     //HandleFavourites
     const handleFavourites = async () => {

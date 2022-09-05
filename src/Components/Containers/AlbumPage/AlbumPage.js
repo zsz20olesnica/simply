@@ -143,7 +143,6 @@ export default function AlbumPage() {
             </div>
             
         </div>
-        <Reorder.Group axis="y" onReorder={setItems} values={items}>
              {
                 Album.albumSongs.map((song) => {      
                    return(
@@ -151,7 +150,6 @@ export default function AlbumPage() {
                    )
                 })
             }     
-        </Reorder.Group>
     </div>
     
     <PlayerNavbar/>
