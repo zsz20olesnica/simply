@@ -9,7 +9,7 @@ import { db, auth} from '../../../firebase'
 
 import { doc, setDoc, getDocs  } from "firebase/firestore"; 
 import { motion } from 'framer-motion';
-import { createBuilderStatusReporter } from 'typescript'
+import { createBuilderStatusReporter, isPlusToken } from 'typescript'
 import Audio from '../../Player/Audio'
 import { useRef } from 'react'
 import { useAudio } from '../../../Contexts/AudioContext'
@@ -130,10 +130,15 @@ export default function Player() {
                         console.log('Album to: ', Album)
                         console.log('Playlista to: ', Playlist)
 
-                        if(IsPaused)
+                        if(currentSong.songFileLink != audio.current.src)
+                        {
+                                playPauseSong()
+                        }
+                        else if(IsPaused)
                         {
                             playPauseSong()
                         }
+                        
                 }
                 else
                 {
