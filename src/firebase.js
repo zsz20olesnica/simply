@@ -84,9 +84,9 @@ export let PlaylistFromFavourites = [true]
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-export const appVersion = '0.7.3'
+export const appVersion = '0.8'
 //Firestore DB
-export const db = getFirestore(app)
+export const db = getFirestore(app) 
 //Kto jest zalogowany jego dane itp
 export const auth = getAuth(app)
 //LoginProvider

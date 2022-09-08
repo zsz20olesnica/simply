@@ -11,7 +11,7 @@ export function useAudio() {
 export default function AudioProvider({ children }) {
     const [current, setCurrent] = useState(0)
     const [currentSong, setCurrentSong] = useState('')
-    const [Playlist, setPlaylist] = useState('')
+    const [Playlist, setPlaylist] = useState([])
     const [PlaylistFromFavourites, setPlaylistFromFavourites] = useState(false)
     const [AudioDuration, setAudioDuration] = useState(0)
 
@@ -37,10 +37,7 @@ export default function AudioProvider({ children }) {
           this.author = newauthor
         }
     }) 
-    
-    useEffect(() => {
-        console.log('SONG CHANGED')
-    }, [currentSong])
+
     
 
     const [IsPaused, setIsPaused] = useState(true) 
@@ -61,10 +58,6 @@ export default function AudioProvider({ children }) {
         setIsPaused(!IsPaused)
     }
 
-
-    useEffect(() => {
-        console.log('Playlist Changed')
-    }, [Playlist])
     
 
     useEffect(() => {
@@ -91,14 +84,45 @@ export default function AudioProvider({ children }) {
         
         if(audio.current.currentTime == audio.current.duration)
         {
-           console.log(Playlist)
-           let currentSongIndex =  Playlist.indexOf(currentSong)
-           console.log('CurrentIndex', currentSongIndex)
            
-           setCurrentSong(Album.albumSongs[currentSongIndex + 1])
+
+        //    nextSong ()
         }
     }
 
+
+    function nextSong () {
+        
+        let currentSongIndex =  Playlist.indexOf(currentSong)
+        let nextSongIndex = 0
+        if((Playlist.length - 1) > currentSongIndex)
+        {
+            //NextIndex
+            nextSongIndex = currentSongIndex + 1
+        }
+        else
+        {
+            //FirstIndex
+            nextSongIndex = 0
+        }
+        console.log('CurrentIndex', currentSongIndex)
+        setCurrentSong(Playlist[nextSongIndex])
+
+    }
+
+    function prevSong () {
+        
+        let currentSongIndex =  Playlist.indexOf(currentSong)
+        let nextSongIndex = 0
+        if(0 < currentSongIndex)
+        {
+            //PrevIndex
+            nextSongIndex = currentSongIndex - 1
+        }
+        console.log('CurrentIndex', currentSongIndex)
+        setCurrentSong(Playlist[nextSongIndex])
+
+    }
 
 
 //Utils
@@ -143,7 +167,9 @@ function padTo2Digits(num) {
         playPauseSong,
         changePlayerSlider,
         AudioDuration, 
-        setAudioDuration
+        setAudioDuration,
+        nextSong,
+        prevSong
     }
 
   return (

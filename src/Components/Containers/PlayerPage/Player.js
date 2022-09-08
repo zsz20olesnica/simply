@@ -9,16 +9,17 @@ import { db, auth} from '../../../firebase'
 
 import { doc, setDoc, getDocs  } from "firebase/firestore"; 
 import { motion } from 'framer-motion';
-import { createBuilderStatusReporter, isPlusToken } from 'typescript'
+
 import Audio from '../../Player/Audio'
 import { useRef } from 'react'
 import { useAudio } from '../../../Contexts/AudioContext'
+import { async } from '@firebase/util'
 
 
 
 export default function Player() {
-    const { currentSong, Album, Playlist, setPlaylist, audio, progressBar, duration, currentTime, setCurrentTime, playPauseSong, changePlayerSlider, IsPaused, AudioDuration, setAudioDuration, PlaylistFromFavourites, progressBarPercent } = useAudio()
-    let album = []
+    const { currentSong, Album, prevSong, nextSong, Playlist, setPlaylist, audio, progressBar, duration, currentTime, setCurrentTime, playPauseSong, changePlayerSlider, IsPaused, AudioDuration, setAudioDuration, PlaylistFromFavourites, progressBarPercent } = useAudio()
+    
 
     document.title = `${currentSong.title} - Simply player`
 
@@ -36,118 +37,141 @@ export default function Player() {
 
     //CreateAlbum&Playlist
     useEffect(() => {
-        setCurrentTime('00:00')
 
-        let SaveAlbum = async () => {
+        let saveAlbum = () => {
 
-            //ClearData
-            setPlaylist('No playlist')
-            Album.albumSongs.splice(0, Album.albumSongs.length)
-            Album.ChangeAlbumName = ''
-            Album.ChangeThumbnail = ''
-            Album.ChangeAuthor = ''
-            console.log('Album clear')
-            album = []
-            
-            //FindAlbum
-            const q = query(collection(db, 'songs'), where('albumName', '==', `${currentSong.albumName}`))
-            
-            
-            //QueryDB
-            const querySnapshot = await getDocs(q)   
-            
-            querySnapshot.forEach((doc) => {
-                album.push({...doc.data(), id: doc.id});
-            });
-
-            console.log(`Album name: ` + currentSong.albumName)
-
-
-                //SaveAlbum
-                if(Album.albumSongs != album)
-                {
-                    album.forEach((AlbumSong) => {
-                        Album.albumSongs.push(AlbumSong)
-                    })
-
-                    Album.ChangeAlbumName = currentSong.albumName
-                    Album.ChangeThumbnail = currentSong.songThumbnailLink
-                    Album.ChangeAuthor = currentSong.songThumbnailAuthor
-                    
-                    setTracksCount(Album.albumSongs.length)
-                   
-                    //CheckIfSingle
-                    if(currentSong.albumName == 'Single') setIsSingle(true)
-
+            //SaveAlbum
+                Album.ChangeAlbumName = currentSong.albumName
+                Album.ChangeThumbnail = currentSong.songThumbnailLink
+                Album.ChangeAuthor = currentSong.songThumbnailAuthor
                 
+                setTracksCount(Album.albumSongs.length)
+               
+                //CheckIfSingle
+                if(currentSong.albumName == 'Single') 
+                {
+                    setIsSingle(true)
+                }
+                else
+                {
                     if (PlaylistFromFavourites == true) {
                         console.log('Playlist == Favourites') 
                         
                     }
                     else { 
                         console.log('Playlist IS NOT From Favourites'); 
-
+    
                         //ClearPlaylist
                         setPlaylist('')
                                     
                         //SaveAlbumAsPlaylist 
-                        Album.albumSongs.map((song) => {
+                        Album.albumSongs.forEach((song) => {
                             setPlaylist((prev) => [...prev, song])
                         })
                         
                     }
-                   
+                    
+
                         
-                        if(Playlist && Playlist.length > 1) {
-                            
-                            console.log('Playlista ma dużo utworów')
-                            
-                            let CurrentSongIndex = 0
-                            Playlist.map((playlistSong, index) => {
-                                if(playlistSong.title === currentSong.title)
-                                    CurrentSongIndex = index
-                            })
-                            console.log(CurrentSongIndex)
-                            
-                            
-                            NextSongIndex = CurrentSongIndex + 1
-                            
-                            if(Playlist.length > NextSongIndex) 
-                                setNextSongTitle(Playlist[NextSongIndex].title)
-                            else{
-                                setNextSongTitle('')
-                            }
-                        }
-                        else {
-                            console.log('Playlista ma mniej niż 1 utwór')
-                            NextSongIndex = 0
-                            setNextSongTitle('')
-                        }
-                   
                         
+    
+
 
 
                         console.log('Album to: ', Album)
-                        console.log('Playlista to: ', Playlist)
 
                         if(currentSong.songFileLink != audio.current.src)
                         {
-                                playPauseSong()
+                            playPauseSong()
                         }
                         else if(IsPaused)
                         {
                             playPauseSong()
                         }
-                        
                 }
-                else
-                {
-                    console.log('ALBUM IS EXISTING')   
-                }
-        }
+                
+         
+    }
         
-        SaveAlbum()
+
+        
+        setCurrentTime('00:00')
+
+        
+        //ClearData
+        setPlaylist('')
+        Album.albumSongs.splice(0, Album.albumSongs.length)
+        Album.ChangeAlbumName = ''
+        Album.ChangeThumbnail = ''
+        Album.ChangeAuthor = ''
+        
+        
+
+        console.log(`Album name: ` + currentSong.albumName)
+        
+ 
+        // FindAlbum
+        const q = query(collection(db, 'songs'), where('albumName', '==', `${currentSong.albumName}`))
+                
+                
+        // QueryDB
+        const querySnapshot = async () => await getDocs(q)  
+                    
+        querySnapshot().then((query) => {
+            console.log(query, 'to jest query')
+            query.forEach((doc) => {
+                Album.albumSongs.push({...doc.data(), id: doc.id});
+            });
+
+        }).then(() => {saveAlbum()})
+        
         }, [])
+
+
+
+//PlaylistCallback
+useEffect(() => {
+
+    if(Playlist.length > 1) {
+                            
+        console.log('Playlista ma dużo utworów')
+        
+        let CurrentSongIndex = 0
+        Playlist.map((song, index) => {
+            if(song.title === currentSong.title)
+                CurrentSongIndex = index
+        })
+        console.log(CurrentSongIndex)
+        
+        
+        NextSongIndex = CurrentSongIndex + 1
+        
+        if(Playlist.length > NextSongIndex) 
+            setNextSongTitle(Playlist[NextSongIndex].title)
+        else{
+            setNextSongTitle('')
+        }
+    }
+    else {
+        console.log('Playlista ma mniej niż 1 utwór')
+        NextSongIndex = 0
+        setNextSongTitle('')
+    }
+    console.log('Playlista to: ', Playlist)
+
+}, [Playlist])
+
+
+//PlaylistCallback
+useEffect(() => {
+    if(Playlist.length != 0 && currentSong)
+    {
+        console.log(Playlist)
+        let currentIndex = Playlist.indexOf(currentSong)
+        // setNextSongTitle(Playlist[currentIndex + 1].title)
+    }   
+
+}, [currentSong])
 
     
 //UpdateTrackCount
@@ -347,10 +371,19 @@ const MoreOptionss = ({ isOpenn }) => {
             {/* Next Container */}
             <div className='w-full flex flex-col gap-3'>
                 <div className='flex flex-row'>
-                    <p className='text-[14px] text-tertiary font-lato w-24'>Playing next</p>
-                    <p className='text-[14px] text-secondary font-lato font-bold ml-5 truncate'>
-                        {NextSongTitle}
-                    </p>
+                    {
+                    !IsSingle
+                    ? <p className='text-[14px] text-tertiary font-lato w-24'>Playing next</p>
+                    : null
+                    }
+
+                    {
+                    !IsSingle
+                    ? <p className='text-[14px] text-secondary font-lato font-bold ml-5 truncate'>
+                                            {NextSongTitle}
+                                        </p>
+                    : null
+                    }
                 </div>
 
                 {/* Time and slider */}
@@ -365,8 +398,8 @@ const MoreOptionss = ({ isOpenn }) => {
                 {/* Music controler */}
                 <div className='flex flex-row justify-center items-center gap-16'>
                     
-                    <Prev className={'!fill-primary'}/>
                     
+                    <button onClick={prevSong}><Prev className={'!fill-primary'}/></button>
                     <div className='h-[53.67px] w-[53.67px] rounded-full bg-primary' onClick={playPauseSong}>
                         {
                         IsPaused
@@ -376,8 +409,7 @@ const MoreOptionss = ({ isOpenn }) => {
                         <Pause  className={'h-full w-full scale-[55%]'} first_fill={'#fff'} second_fill={'#fff'}/> 
                         } 
                     </div>
-                    <Next className={'!fill-primary'}/>
-                    
+                    <button onClick={nextSong}><Next className={'!fill-primary'}/></button>
                     
                 </div>
             </div>
