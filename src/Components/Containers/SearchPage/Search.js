@@ -69,7 +69,8 @@ export default function Search() {
             
             
 
-            <button className='text-white rounded-full w-[186px] h-[46px] bg-primary text-2xl' onClick={() => history('/filtered')}>Filter</button>
+            <button className='text-white rounded-full w-[186px] h-[46px] bg-primary text-2xl' 
+            onClick={() => history('/filtered')}>Filter</button>
         </div>       
     </motion.div>
   )

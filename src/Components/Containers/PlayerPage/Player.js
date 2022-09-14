@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import '../../../vanilla.css'
 import { collection, query, onSnapshot, where, getDoc, documentId } from 'firebase/firestore'
 
-import { db, auth} from '../../../firebase'
+import { db, auth } from '../../../firebase'
 
 import { doc, setDoc, getDocs  } from "firebase/firestore"; 
 import { motion } from 'framer-motion';
@@ -13,7 +13,6 @@ import { motion } from 'framer-motion';
 import Audio from '../../Player/Audio'
 import { useRef } from 'react'
 import { useAudio } from '../../../Contexts/AudioContext'
-import { async } from '@firebase/util'
 
 
 

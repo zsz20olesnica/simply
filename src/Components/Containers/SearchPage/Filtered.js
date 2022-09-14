@@ -1,23 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { LeftArrow } from '../../../Icons'
 import { useNavigate } from 'react-router-dom'
 
 import SongTile from '../../Reusable/SongTile'
 
-import FeelingArtsy from '../../../Images/playlist1.png'
-import PlayImage from '../../../Images/playlist2.png'
-import ImageGruby from '../../../Images/playlist3.png'
-import ImageColors from '../../../Images/playlist4.png'
-import ImageInsomnia from '../../../Images/playlist5.png'
-import ImageDinner from '../../../Images/playlist6.png'
-import ImageFiesco from '../../../Images/playlist7.png'
-import ImageHorror from '../../../Images/playlist8.png'
-import ImageSport from '../../../Images/playlist9.png'
-
 import FilteredCategory from '../../Reusable/FilteredCategory'
 
 import { motion } from 'framer-motion';
 import { Categories } from '../../../firebase'
+import { useAudio } from '../../../Contexts/AudioContext'
+
+
+import { collection, query, onSnapshot, where, getDoc, documentId } from 'firebase/firestore'
+import { db, auth } from '../../../firebase'
+import { doc, setDoc, getDocs  } from "firebase/firestore"; 
+
 
 export default function Filtered() {
 
@@ -25,7 +22,10 @@ export default function Filtered() {
   let viewportWidth = window.innerWidth;
   const SiteTitle = 'Filtered - Simply'
   document.title = SiteTitle
-  console.log(Categories)
+  const { Playlist } = useAudio()
+
+  const [FilteredSongs, SetFitleredSongs] = useState([])
+
   const [categ, setCateg] = useState([])
 
   const handleDelete = (index) => {
@@ -34,6 +34,29 @@ export default function Filtered() {
     // Rerender
     setCateg((prev) => prev.splice(index, 1))
   }
+
+  useEffect(() => {
+    
+    const q = query(collection(db, "songs"), 
+    where('songCategories', 'in', [Categories]));
+    // where('songCategories', '==', 'Gym'));
+
+
+    const querySnapshot = async () => await getDocs(q)
+
+    querySnapshot().then((query) => {
+      query.forEach((doc) => {
+      console.log(doc)
+
+        SetFitleredSongs(
+          (prev) => [...prev, {...doc.data(), id: doc.id}])
+      });
+    }
+
+
+
+)}, [categ])
+  
 
 
   return (
@@ -64,44 +87,16 @@ export default function Filtered() {
             </div>
              
              {/* KafelkiContainer */}
-            <div className='w-full flex flex-row flex-wrap items-start justify-start gap-5  overflow-y-auto'>
-             {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
-                  
-                  <SongTile title={'Feel Like Dancing'} img={FeelingArtsy} time={'2 hours'} />
-                  
-                  <SongTile title={'Be active'} img={ImageSport} time={'5 minutes'} />
-              </div>
-              {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
+            <div className='w-full flex flex-row flex-wrap items-start justify-start gap-5 overflow-y-auto'>
+            
+            {
+            Playlist.map((song) => {
+              <SongTile song={song}/>
+            })
+            }
 
-                  <SongTile title={'Eat healthy'} img={ImageDinner} time={'4 days'} />
-                 
-                  <SongTile title={'I feel like a gruby'} img={ImageGruby} time={'2 weeks'} />
-              </div>
-              {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
-              <SongTile title={'Halloween suko'} img={ImageHorror} time={'3 minutes'} />
-              <SongTile title={'Feel like a kid'} img={ImageInsomnia} time={'20 seconds'} />
-              </div>
-              {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
-              <SongTile title={'Colorful'} img={ImageColors} time={'1 hour'} />
-              <SongTile title={'I feel like a gruby'} img={ImageHorror} time={'20 minutes'} />
-              </div>
-              {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
-              <SongTile title={'Old school times'} img={PlayImage} time={'69 seconds'} />
-              <SongTile title={'Bedoes'} img={ImageFiesco} time={'420 minutes'} />
-              </div>
-              {/* RowKafelkiContainer */}
-              <div className='flex flex-row gap-5'>
-              <SongTile title={'I feel like a gruby'} img={ImageGruby} time={'20 minutes'} />
-              <SongTile title={'I feel like a gruby'} img={ImageColors} time={'420 minutes'} />
-                  
-              </div>
-              </div>    
-        </div>       
+            </div>
+        </div>
     </motion.div>
   )
 }
